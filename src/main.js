@@ -266,6 +266,12 @@ const createElement = (template) => {
 const isExtraBlock = (modifier) => {
   return modifier ? CARD_COUNT_EXTRA : CARD_COUNT;
 };
+const renderCards = (modifier, container) => {
+  let count = isExtraBlock(modifier);
+  for (let i = 0; i < count; i++) {
+    renderElement(container, createFilmCardTemplate());
+  }
+};
 
 renderElement(headerElement, createUserProfileTemplate());
 renderElement(mainElement, createMainMenuTemplate());
@@ -278,10 +284,7 @@ const renderFilmsBlock = (container, title, modifier = ``) => {
   const containerListElement = createElement(createFilmsListTemplate(title, modifier));
   const containerElement = containerListElement.querySelector(`.films-list__container`);
   container.appendChild(containerListElement);
-  let count = isExtraBlock(modifier);
-  for (let i = 0; i < count; i++) {
-    renderElement(containerElement, createFilmCardTemplate());
-  }
+  renderCards(modifier, containerElement);
   if (!modifier) {
     renderElement(containerListElement, createShowMoreBtnTemplate());
   }
@@ -291,4 +294,4 @@ renderFilmsBlock(filmsElement, `All movies. Upcoming`);
 renderFilmsBlock(filmsElement, `Top rated`, `extra`);
 renderFilmsBlock(filmsElement, `Most commented`, `extra`);
 renderElement(footerElement, createMovieStatisticTemplate());
-renderElement(document.body, createDetailsTemplate());
+// renderElement(document.body, createDetailsTemplate());
