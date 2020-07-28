@@ -294,4 +294,4 @@ renderFilmsBlock(filmsElement, `All movies. Upcoming`);
 renderFilmsBlock(filmsElement, `Top rated`, `extra`);
 renderFilmsBlock(filmsElement, `Most commented`, `extra`);
 renderElement(footerElement, createMovieStatisticTemplate());
-// renderElement(document.body, createDetailsTemplate());
+renderElement(document.body, createDetailsTemplate());
