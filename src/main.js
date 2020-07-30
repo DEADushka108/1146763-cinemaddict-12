@@ -16,21 +16,21 @@ const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 
 /**
- * Генерирует елемент из шаблона
- * @param {element} контейнер для генерации
- * @param {str} генерируемый шаблон
- * @param {str} положение для генерации
- */
+  * Генерирует элемент из шаблона
+  * @param {element} container
+  * @param {str} template
+  * @param {str} position
+  */
 const renderElement = (container, template, position = `beforeend`) => {
   container.insertAdjacentHTML(position, template);
 };
 
 /**
- * Создает элемент из шаблона
- * @param {str} шаблон
- * 
- * @return {Node} элемент DOM'a
- */
+  * Создает элемент из шаблона
+  * @param {str} template
+  *
+  * @return {Node}
+  */
 const createElement = (template) => {
   let element = document.createElement(`div`);
   element.innerHTML = template;
@@ -38,20 +38,21 @@ const createElement = (template) => {
 };
 
 /**
- * Устанавливает количество карточек для генерации
- * @param {boolean} наличие модификатора
- * 
- * @return {int} колтчество карточек
- */
+  * Устанавливает количество карточек на рендер
+  * @param {boolean} isExtra
+  *
+  * @return {int}
+  */
+
 const setCount = (isExtra) => {
   return isExtra ? CARD_COUNT_EXTRA : CARD_COUNT;
 };
 
 /**
- * Отрисовывает карточки согласно установленому количеству
- * @param {boolean} наличие модификатора
- * @param {element} контейнер для генерации карточек  
- */
+  * Отрисовывает карточки согласно установленому количеству
+  * @param {boolean} isExtra
+  * @param {element} container
+  */
 const renderCards = (isExtra, container) => {
   let count = setCount(isExtra);
 
@@ -69,17 +70,17 @@ renderElement(mainElement, createFilmsTemplate());
 const filmsElement = mainElement.querySelector(`.films`);
 
 /**
- * Генерирует блок с элементами
- * @param {element} контейнер  
- * @param {str} заголовок блока 
- * @param {str} модификатор блока 
- */
+  * Генерирует блок с элементами
+  * @param {element} container
+  * @param {str} title
+  * @param {str} modifier
+  */
 const renderFilmsBlock = (container, title, modifier) => {
   const containerListElement = createElement(createFilmsListTemplate(title, modifier));
   const containerElement = containerListElement.querySelector(`.films-list__container`);
   container.appendChild(containerListElement);
   renderCards(modifier, containerElement);
-  
+
   if (!modifier) {
     renderElement(containerListElement, createShowMoreBtnTemplate());
   }
