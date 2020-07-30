@@ -11,9 +11,10 @@ module.exports = {
   },
   devServer: {
     contentBase: path.join(__dirname, `public`),
-    // publicPath: `http://localhost:8080/`,
     compress: true,
     port: 9000,
-    watchContentBase: true
+    watchContentBase: true,
+    historyApiFallback: true,
+    inline: true,
   },
 };
