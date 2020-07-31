@@ -17,22 +17,20 @@ const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 
 /**
-  * Устанавливает количество карточек на рендер
-  * @param {boolean} isExtra проверка на модификатор
+  * Get number of render cards
+  * @param {boolean} isExtra contain modifier
   *
-  * @return {int} количество карточек
+  * @return {int} number of cards
   */
-const setCount = (isExtra) => {
-  return isExtra ? CARD_COUNT_EXTRA : CARD_COUNT;
-};
+const getCardCount = (isExtra) => isExtra ? CARD_COUNT_EXTRA : CARD_COUNT;
 
 /**
-  * Отрисовывает карточки согласно установленому количеству
-  * @param {boolean} isExtra проверка на модификатор
-  * @param {element} container контейнер для вставки елемента
+  * Render film cards
+  * @param {boolean} isExtra contain modifier
+  * @param {element} container
   */
 const renderCards = (isExtra, container) => {
-  let count = setCount(isExtra);
+  let count = getCardCount(isExtra);
 
   for (let i = 0; i < count; i++) {
     renderElement(container, createFilmCardTemplate());
@@ -48,25 +46,25 @@ renderElement(mainElement, createFilmsTemplate());
 const filmsElement = mainElement.querySelector(`.films`);
 
 /**
-  * Генерирует блок с элементами
-  * @param {element} container контейнер для вставки элемента
-  * @param {str} title заголовок блока
-  * @param {str} modifier модификатор блока
+  * Render films block element
+  * @param {Element} container
+  * @param {string} title of block
+  * @param {boolean} isExtra contain modifier
   */
-const renderFilmsBlock = (container, title, modifier) => {
-  const containerListElement = createElement(createFilmsListTemplate(title, modifier));
+const renderFilmsBlock = (container, title, isExtra) => {
+  const containerListElement = createElement(createFilmsListTemplate(title, isExtra ? `extra` : ``));
   const containerElement = containerListElement.querySelector(`.films-list__container`);
   container.appendChild(containerListElement);
-  renderCards(modifier, containerElement);
+  renderCards(isExtra, containerElement);
 
-  if (!modifier) {
+  if (!isExtra) {
     renderElement(containerListElement, createShowMoreBtnTemplate());
   }
 
 };
 
 renderFilmsBlock(filmsElement, `All movies. Upcoming`);
-renderFilmsBlock(filmsElement, `Top rated`, `extra`);
-renderFilmsBlock(filmsElement, `Most commented`, `extra`);
+renderFilmsBlock(filmsElement, `Top rated`, true);
+renderFilmsBlock(filmsElement, `Most commented`, true);
 renderElement(footerElement, createMovieStatisticTemplate());
 renderElement(document.body, createDetailsTemplate());

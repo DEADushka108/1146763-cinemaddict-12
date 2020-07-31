@@ -1,18 +1,18 @@
 /**
-  * Генерирует элемент из шаблона
-  * @param {element} container контейнер для генерации
-  * @param {str} template шаблон для генерации
-  * @param {str} position положение для вставки
+  * Render element from template
+  * @param {Element} container
+  * @param {string} template
+  * @param {string} position
   */
 const renderElement = (container, template, position = `beforeend`) => {
   container.insertAdjacentHTML(position, template);
 };
 
 /**
-  * Создает элемент из шаблона
-  * @param {str} template шаблон
+  * Create element from template
+  * @param {string} template
   *
-  * @return {Node} готовый элемент
+  * @return {Node}
   */
 const createElement = (template) => {
   let element = document.createElement(`div`);
