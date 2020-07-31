@@ -69,4 +69,4 @@ renderFilmsBlock(filmsElement, `All movies. Upcoming`);
 renderFilmsBlock(filmsElement, `Top rated`, true);
 renderFilmsBlock(filmsElement, `Most commented`, true);
 renderElement(footerElement, createMovieStatisticTemplate());
-// renderElement(document.body, createDetailsTemplate());
+renderElement(document.body, createDetailsTemplate());
