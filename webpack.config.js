@@ -15,5 +15,6 @@ module.exports = {
     watchContentBase: true,
     historyApiFallback: true,
     inline: true,
+    progress: true,
   },
 };
