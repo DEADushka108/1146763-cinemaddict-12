@@ -7,6 +7,7 @@ import {createFilmCardTemplate} from './components/film-card';
 import {createShowMoreBtnTemplate} from './components/show-more-btn';
 import {createDetailsTemplate} from './components/details';
 import {createMovieStatisticTemplate} from './components/movie-statistic';
+import {renderElement, createElement} from './util';
 
 const CARD_COUNT = 5;
 const CARD_COUNT_EXTRA = 2;
@@ -16,42 +17,19 @@ const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 
 /**
-  * Генерирует элемент из шаблона
-  * @param {element} container
-  * @param {str} template
-  * @param {str} position
-  */
-const renderElement = (container, template, position = `beforeend`) => {
-  container.insertAdjacentHTML(position, template);
-};
-
-/**
-  * Создает элемент из шаблона
-  * @param {str} template
-  *
-  * @return {Node}
-  */
-const createElement = (template) => {
-  let element = document.createElement(`div`);
-  element.innerHTML = template;
-  return element.firstChild;
-};
-
-/**
   * Устанавливает количество карточек на рендер
-  * @param {boolean} isExtra
+  * @param {boolean} isExtra проверка на модификатор
   *
-  * @return {int}
+  * @return {int} количество карточек
   */
-
 const setCount = (isExtra) => {
   return isExtra ? CARD_COUNT_EXTRA : CARD_COUNT;
 };
 
 /**
   * Отрисовывает карточки согласно установленому количеству
-  * @param {boolean} isExtra
-  * @param {element} container
+  * @param {boolean} isExtra проверка на модификатор
+  * @param {element} container контейнер для вставки елемента
   */
 const renderCards = (isExtra, container) => {
   let count = setCount(isExtra);
@@ -71,9 +49,9 @@ const filmsElement = mainElement.querySelector(`.films`);
 
 /**
   * Генерирует блок с элементами
-  * @param {element} container
-  * @param {str} title
-  * @param {str} modifier
+  * @param {element} container контейнер для вставки элемента
+  * @param {str} title заголовок блока
+  * @param {str} modifier модификатор блока
   */
 const renderFilmsBlock = (container, title, modifier) => {
   const containerListElement = createElement(createFilmsListTemplate(title, modifier));
