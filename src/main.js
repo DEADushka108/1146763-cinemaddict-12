@@ -38,7 +38,7 @@ const createFilmsTemplate = () => {
     `<section class="films"></section>`
   );
 };
-const createFilmsListTemplate = (title, modifier = ``) => {
+const createFilmsListTemplate = (title, modifier = false) => {
   return (
     `<section class="${ modifier ? `films-list--${ modifier }` : `films-list`}">
       <h2 class="films-list__title ${ modifier ? `` : `visually-hidden`}">${ title }</h2>
@@ -71,11 +71,7 @@ const createShowMoreBtnTemplate = () => {
     `<button class="films-list__show-more">Show more</button>`
   );
 };
-const createMovieStatisticTemplate = () => {
-  return (
-    `<p>130 291 movies inside</p>`
-  );
-};
+const createMovieStatisticTemplate = () => `<p>130 291 movies inside</p>`;
 const createDetailsTemplate = () => {
   return (
     `<section class="film-details">
@@ -263,11 +259,11 @@ const createElement = (template) => {
   element.innerHTML = template;
   return element.firstChild;
 };
-const isExtraBlock = (modifier) => {
-  return modifier ? CARD_COUNT_EXTRA : CARD_COUNT;
+const setCount = (isExtra) => {
+  return isExtra ? CARD_COUNT_EXTRA : CARD_COUNT;
 };
-const renderCards = (modifier, container) => {
-  let count = isExtraBlock(modifier);
+const renderCards = (isExtra, container) => {
+  let count = setCount(isExtra);
   for (let i = 0; i < count; i++) {
     renderElement(container, createFilmCardTemplate());
   }
@@ -280,7 +276,7 @@ renderElement(mainElement, createFilmsTemplate());
 
 const filmsElement = mainElement.querySelector(`.films`);
 
-const renderFilmsBlock = (container, title, modifier = ``) => {
+const renderFilmsBlock = (container, title, modifier) => {
   const containerListElement = createElement(createFilmsListTemplate(title, modifier));
   const containerElement = containerListElement.querySelector(`.films-list__container`);
   container.appendChild(containerListElement);
