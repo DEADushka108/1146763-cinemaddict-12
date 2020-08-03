@@ -9,8 +9,10 @@ import {createDetailsTemplate} from './components/details';
 import {createMovieStatisticTemplate} from './components/movie-statistic';
 import {renderElement, createElement} from './util';
 
-const CARD_COUNT = 5;
-const CARD_COUNT_EXTRA = 2;
+const CARD_COUNT = {
+  DEAFULT: 5,
+  EXTRA: 2
+};
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
@@ -22,7 +24,7 @@ const footerElement = document.querySelector(`.footer`);
   *
   * @return {int} number of cards
   */
-const getCardCount = (isExtra) => isExtra ? CARD_COUNT_EXTRA : CARD_COUNT;
+const getCardCount = (isExtra) => isExtra ? CARD_COUNT.EXTRA : CARD_COUNT.DEAFULT;
 
 /**
   * Render film cards
