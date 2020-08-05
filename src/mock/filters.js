@@ -9,7 +9,7 @@ const FILTER_ADDRESS = [`all`, `watchlist`, `history`, `favorites`];
 const filterValues = Object.values(FILTER);
 
 /**
- * Calculate how much filter's name contain in data
+ * Calculate how much filter's name contains array
  * @param {String} filterName
  * @param {Array} filmsArray
  * @return {Number} count
@@ -30,6 +30,9 @@ const calculateCount = (filterName, filmsArray) => {
     case FILTER.FAVORITES:
       count = filmsArray.filter((it) => it.isInFavorites).length;
       break;
+
+    default:
+      count = -1;
   }
 
   return count;
