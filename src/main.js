@@ -12,7 +12,7 @@ import {generateFilmCard} from './mock/films-mock';
 import {generateFilters} from './mock/filters';
 
 const CARD_COUNT = {
-  DEAFULT: 20,
+  DEAFULT: 41,
   ON_START: 5,
   STEP: 5,
   EXTRA: 2
@@ -82,33 +82,6 @@ const filmsSortedByComments = getTopCommentedFilms(filmsArray);
 
 renderFilmsBlock(filmsElement, `All movies. Upcoming`, currentFilmsArray);
 
-const showMoreBtn = mainElement.querySelector(`.films-list__show-more`);
-const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
-
-/**
- * Render new cards on show-more-btn click
- */
-const onShowMoreBtnMouseClick = () => {
-  let currentCardCount = showCardCount;
-  showCardCount += CARD_COUNT.STEP;
-
-  filmsArray.slice(currentCardCount, showCardCount).forEach((film) => {
-    renderElement(filmsListContainerElement, createFilmCardTemplate(film));
-  });
-
-  filmCards = Array.from(filmListElement.querySelectorAll(`.film-card`));
-  addShowingPopupOnClick(filmCards.slice(currentCardCount, showCardCount));
-
-  if (showCardCount >= filmsArray.length) {
-    showMoreBtn.remove();
-  }
-};
-
-showMoreBtn.addEventListener(`click`, onShowMoreBtnMouseClick);
-
-renderFilmsBlock(filmsElement, `Top rated`, filmsSortedByRating, true);
-renderFilmsBlock(filmsElement, `Most commented`, filmsSortedByComments, true);
-
 /**
  * Add eventListeners on rendered cards
  * @param {Array} cardArray
@@ -129,13 +102,45 @@ const addShowingPopupOnClick = (cardArray, data) => {
 };
 
 const filmListElement = document.querySelector(`.films-list`);
+let filmCards = Array.from(filmListElement.querySelectorAll(`.film-card`));
+
+addShowingPopupOnClick(filmCards, currentFilmsArray);
+
+const showMoreBtn = mainElement.querySelector(`.films-list__show-more`);
+const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
+
+/**
+ * Render new cards on show-more-btn click
+ */
+const onShowMoreBtnMouseClick = () => {
+  let currentCardCount = showCardCount;
+  showCardCount += CARD_COUNT.STEP;
+  currentFilmsArray = filmsArray.slice(currentCardCount, showCardCount);
+
+  currentFilmsArray.forEach((film) => {
+    renderElement(filmsListContainerElement, createFilmCardTemplate(film));
+  });
+
+  filmCards = Array.from(filmListElement.querySelectorAll(`.film-card`));
+  addShowingPopupOnClick(filmCards.slice(currentCardCount, showCardCount), currentFilmsArray);
+
+  if (showCardCount >= filmsArray.length) {
+    showMoreBtn.remove();
+  }
+};
+
+showMoreBtn.addEventListener(`click`, onShowMoreBtnMouseClick);
+
+renderFilmsBlock(filmsElement, `Top rated`, filmsSortedByRating, true);
+renderFilmsBlock(filmsElement, `Most commented`, filmsSortedByComments, true);
+
 const filmListExtraElements = Array.from(document.querySelectorAll(`.films-list--extra`));
 
 addShowingPopupOnClick(Array.from(filmListExtraElements[0].querySelectorAll(`.film-card`)), filmsSortedByRating);
 addShowingPopupOnClick(Array.from(filmListExtraElements[1].querySelectorAll(`.film-card`)), filmsSortedByComments);
 
-let filmCards = Array.from(filmListElement.querySelectorAll(`.film-card`));
+// let filmCards = Array.from(filmListElement.querySelectorAll(`.film-card`));
 
-addShowingPopupOnClick(filmCards, filmsArray);
+// addShowingPopupOnClick(filmCards, filmsArray);
 
 renderElement(footerElement, createMovieStatisticTemplate(filmsArray.length));
