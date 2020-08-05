@@ -87,7 +87,7 @@ renderFilmsBlock(filmsElement, `All movies. Upcoming`, currentFilmsArray);
  * @param {Array} cardArray
  * @param {Array} data
  */
-const addShowingPopupOnClick = (cardArray, data) => {
+const addCardPopupOnClick = (cardArray, data) => {
   cardArray.forEach((it, i) => {
 
     it.addEventListener(`click`, () => {
@@ -104,7 +104,7 @@ const addShowingPopupOnClick = (cardArray, data) => {
 const filmListElement = document.querySelector(`.films-list`);
 let filmCards = Array.from(filmListElement.querySelectorAll(`.film-card`));
 
-addShowingPopupOnClick(filmCards, currentFilmsArray);
+addCardPopupOnClick(filmCards, currentFilmsArray);
 
 const showMoreBtn = mainElement.querySelector(`.films-list__show-more`);
 const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
@@ -122,7 +122,7 @@ const onShowMoreBtnMouseClick = () => {
   });
 
   filmCards = Array.from(filmListElement.querySelectorAll(`.film-card`));
-  addShowingPopupOnClick(filmCards.slice(currentCardCount, showCardCount), currentFilmsArray);
+  addCardPopupOnClick(filmCards.slice(currentCardCount, showCardCount), currentFilmsArray);
 
   if (showCardCount >= filmsArray.length) {
     showMoreBtn.remove();
@@ -136,11 +136,7 @@ renderFilmsBlock(filmsElement, `Most commented`, filmsSortedByComments, true);
 
 const filmListExtraElements = Array.from(document.querySelectorAll(`.films-list--extra`));
 
-addShowingPopupOnClick(Array.from(filmListExtraElements[0].querySelectorAll(`.film-card`)), filmsSortedByRating);
-addShowingPopupOnClick(Array.from(filmListExtraElements[1].querySelectorAll(`.film-card`)), filmsSortedByComments);
-
-// let filmCards = Array.from(filmListElement.querySelectorAll(`.film-card`));
-
-// addShowingPopupOnClick(filmCards, filmsArray);
+addCardPopupOnClick(Array.from(filmListExtraElements[0].querySelectorAll(`.film-card`)), filmsSortedByRating);
+addCardPopupOnClick(Array.from(filmListExtraElements[1].querySelectorAll(`.film-card`)), filmsSortedByComments);
 
 renderElement(footerElement, createMovieStatisticTemplate(filmsArray.length));
