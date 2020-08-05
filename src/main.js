@@ -7,8 +7,8 @@ import {createFilmCardTemplate} from './components/film-card';
 import {createShowMoreBtnTemplate} from './components/show-more-btn';
 import {createDetailsTemplate} from './components/details';
 import {createMovieStatisticTemplate} from './components/movie-statistic';
-import {renderElement, createElement} from './util';
-import {generateFilmCards} from './mock/films-mock';
+import {renderElement, createElement, generateArray, closePopup} from './util';
+import {generateFilmCard} from './mock/films-mock';
 import {generateFilters} from './mock/filters';
 
 const CARD_COUNT = {
@@ -22,7 +22,7 @@ const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 
-const filmsArray = generateFilmCards(CARD_COUNT.DEAFULT);
+const filmsArray = generateArray(CARD_COUNT.DEAFULT, generateFilmCard);
 let currentFilmsArray = filmsArray.slice(0, CARD_COUNT.ON_START);
 let filtersArray = generateFilters(filmsArray);
 let showCardCount = CARD_COUNT.ON_START;
@@ -34,6 +34,13 @@ renderElement(mainElement, createFilmsTemplate());
 
 const filmsElement = mainElement.querySelector(`.films`);
 
+/**
+ * Render films block
+ * @param {Element} container
+ * @param {String} title
+ * @param {Array} films data array
+ * @param {Boolean} isExtra
+ */
 const renderFilmsBlock = (container, title, films, isExtra) => {
   const containerListElement = createElement(createFilmsListTemplate(title, isExtra ? `extra` : ``));
   const containerElement = containerListElement.querySelector(`.films-list__container`);
@@ -47,6 +54,11 @@ const renderFilmsBlock = (container, title, films, isExtra) => {
   }
 };
 
+/**
+ * Get sorted array by rating
+ * @param {Array} array
+ * @return {Array} sorted array
+ */
 const getTopRatedFilms = (array) => {
   return array.slice()
               .sort((a, b) => b.rating - a.rating)
@@ -55,6 +67,11 @@ const getTopRatedFilms = (array) => {
 
 const filmsSortedByRating = getTopRatedFilms(filmsArray);
 
+/**
+ * Get sorted array by comments
+ * @param {Array} array
+ * @return {Array} sorted array
+ */
 const getTopCommentedFilms = (array) => {
   return array.slice()
               .sort((a, b) => b.comments.length - a.comments.length)
@@ -65,10 +82,13 @@ const filmsSortedByComments = getTopCommentedFilms(filmsArray);
 
 renderFilmsBlock(filmsElement, `All movies. Upcoming`, currentFilmsArray);
 
-const button = mainElement.querySelector(`.films-list__show-more`);
+const showMoreBtn = mainElement.querySelector(`.films-list__show-more`);
 const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
 
-button.addEventListener(`click`, () => {
+/**
+ * Render new cards on show-more-btn click
+ */
+const onShowMoreBtnMouseClick = () => {
   let currentCardCount = showCardCount;
   showCardCount += CARD_COUNT.STEP;
 
@@ -76,34 +96,29 @@ button.addEventListener(`click`, () => {
     renderElement(filmsListContainerElement, createFilmCardTemplate(film));
   });
 
-  filmCards = Array.from(mainElement.querySelectorAll(`.film-card`));
+  filmCards = Array.from(filmListElement.querySelectorAll(`.film-card`));
   addShowingPopupOnClick(filmCards.slice(currentCardCount, showCardCount));
 
   if (showCardCount >= filmsArray.length) {
-    button.remove();
+    showMoreBtn.remove();
   }
-});
+};
+
+showMoreBtn.addEventListener(`click`, onShowMoreBtnMouseClick);
 
 renderFilmsBlock(filmsElement, `Top rated`, filmsSortedByRating, true);
 renderFilmsBlock(filmsElement, `Most commented`, filmsSortedByComments, true);
 
-const closePopup = (btn, popup) => {
-  btn.addEventListener(`click`, () => {
-    popup.remove();
-  });
-
-  document.addEventListener(`keydown`, (evt) => {
-    if (evt.keyCode === 27) {
-      popup.remove();
-    }
-  });
-};
-
-const addShowingPopupOnClick = (cardArray) => {
+/**
+ * Add eventListeners on rendered cards
+ * @param {Array} cardArray
+ * @param {Array} data
+ */
+const addShowingPopupOnClick = (cardArray, data) => {
   cardArray.forEach((it, i) => {
 
     it.addEventListener(`click`, () => {
-      renderElement(footerElement, createDetailsTemplate(filmsArray[i]), `afterend`);
+      renderElement(footerElement, createDetailsTemplate(data[i]), `afterend`);
 
       const detailsCloseButton = document.querySelector(`.film-details__close-btn`);
       const details = document.querySelector(`.film-details`);
@@ -113,7 +128,14 @@ const addShowingPopupOnClick = (cardArray) => {
   });
 };
 
-let filmCards = mainElement.querySelectorAll(`.film-card`);
-addShowingPopupOnClick(filmCards);
+const filmListElement = document.querySelector(`.films-list`);
+const filmListExtraElements = Array.from(document.querySelectorAll(`.films-list--extra`));
+
+addShowingPopupOnClick(Array.from(filmListExtraElements[0].querySelectorAll(`.film-card`)), filmsSortedByRating);
+addShowingPopupOnClick(Array.from(filmListExtraElements[1].querySelectorAll(`.film-card`)), filmsSortedByComments);
+
+let filmCards = Array.from(filmListElement.querySelectorAll(`.film-card`));
+
+addShowingPopupOnClick(filmCards, filmsArray);
 
 renderElement(footerElement, createMovieStatisticTemplate(filmsArray.length));

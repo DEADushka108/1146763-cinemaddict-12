@@ -19,9 +19,7 @@ const createCommentsTemplate = (comments) => {
 };
 
 const createGenresTemplate = (genres) => {
-  return genres.map((genre) => {
-    return `<span class="film-details__genre">${genre}</span>`;
-  }).join(`\n`);
+  return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(`\n`);
 };
 
 export const createDetailsTemplate = (film) => {
@@ -31,13 +29,9 @@ export const createDetailsTemplate = (film) => {
   const commentsTemplate = createCommentsTemplate(comments);
   const genresTemplate = createGenresTemplate(genres);
 
-  const getPluralOrSingularWordGenre = () => {
-    return genres.length > 1 ? `Genres` : `Genre`;
-  };
+  const getPluralOrSingularWordGenre = () => genres.length > 1 ? `Genres` : `Genre`;
 
-  const getCommentsCount = () => {
-    return comments ? comments.length : `0`;
-  };
+  const getCommentsCount = () => comments ? comments.length : 0;
 
   return (
     `<section class="film-details">

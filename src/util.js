@@ -1,3 +1,7 @@
+const KEY_CODE = {
+  ESC: 27,
+};
+
 /**
   * Render element from template
   * @param {Element} container
@@ -37,7 +41,7 @@ const getRandomNumber = (a = 1, b = 0) => {
  * Generate random integer number
  * @param {number} a from
  * @param {number} b to
- * @return {number}
+ * @return {number} random numder
  */
 const getRandomIntegerNumber = (a = 1, b = 0) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -46,11 +50,12 @@ const getRandomIntegerNumber = (a = 1, b = 0) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-const getRandomArrayItem = (array) => {
-  const randomIndex = getRandomIntegerNumber(0, array.length - 1);
-
-  return array[randomIndex];
-};
+/**
+ * Choose random array element
+ * @param {array} array
+ * @return {string|number} random array element
+ */
+const getRandomArrayItem = (array) => array[getRandomIntegerNumber(0, array.length - 1)];
 
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -63,6 +68,13 @@ const shuffleArray = (array) => {
   return array;
 };
 
+/**
+ * Create new random array in range from max to min values
+ * @param {array} array
+ * @param {number} min
+ * @param {number} max
+ * @return {array} random array
+ */
 const getRandomArrayElements = (array, min, max) => {
   const randomMax = getRandomIntegerNumber(min, max);
   const newArray = array.slice();
@@ -72,10 +84,41 @@ const getRandomArrayElements = (array, min, max) => {
   return newArray.slice(0, randomMax);
 };
 
-function getRandomDate(start, end) {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-}
+/**
+ * Create random date in range from start to end dates
+ * @param {Date} start
+ * @param {Date} end
+ * @return {Date} random date
+ */
+const getRandomDate = (start, end) => new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 
+
+/**
+ * Generate new array
+ * @param {number} count number of elements
+ * @param {void} func function
+ * @return {array}
+ */
+const generateArray = (count, func) => {
+  return new Array(count).fill(``).map(func);
+};
+
+/**
+ * Close popup on mouse click and ESC button
+ * @param {Element} closeBtn DOM element
+ * @param {Element} popup DOM element which must be closed
+ */
+const closePopup = (closeBtn, popup) => {
+  closeBtn.addEventListener(`click`, () => {
+    popup.remove();
+  });
+
+  document.addEventListener(`keydown`, (evt) => {
+    if (evt.keyCode === KEY_CODE.ESC) {
+      popup.remove();
+    }
+  });
+};
 
 export {
   renderElement,
@@ -84,5 +127,7 @@ export {
   getRandomIntegerNumber,
   getRandomDate,
   getRandomArrayElements,
-  getRandomArrayItem
+  getRandomArrayItem,
+  generateArray,
+  closePopup,
 };

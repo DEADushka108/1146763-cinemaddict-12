@@ -3,23 +3,24 @@ import {
   getRandomIntegerNumber,
   getRandomDate,
   getRandomArrayElements,
-  getRandomArrayItem
+  getRandomArrayItem,
+  generateArray,
 } from '../util';
 
-const MONTH_NAMES = [
-  `January`,
-  `Fabruary`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`,
-];
+const MONTH_NAMES = {
+  0: `January`,
+  1: `Fabruary`,
+  2: `March`,
+  3: `April`,
+  4: `May`,
+  5: `June`,
+  6: `July`,
+  7: `August`,
+  8: `September`,
+  9: `October`,
+  10: `November`,
+  11: `December`,
+};
 
 const FILM_TITLES = [
   `Knokin' on heaven doors`,
@@ -194,48 +195,100 @@ const TEXT = [
 
 const FILM_AGES = [`0+`, `6+`, `12+`, `16+`, `18+`];
 
+const DESCRIPTION_LENGTH = {
+  MIN: 1,
+  MAX: 5,
+};
+const COMMENT_PARAMETER = {
+  MIN: 0,
+  MAX: 20,
+  YEAR: 1970,
+  MONTH: 0,
+  DAY: 1,
+};
+
+const RATING_PARAMETER = {
+  MIN: 0,
+  MAX: 10,
+  FIXED: 1,
+};
+
+const DURATION_PARAMETERS = {
+  HOUR: {
+    MIN: 1,
+    MAX: 4,
+  },
+  MINUTE: {
+    MIN: 0,
+    MAX: 59,
+  }
+};
+
+const GENRE_PARAMETER = {
+  MIN: 1,
+  MAX: 3,
+};
+
+const WRITER_PARAMETER = {
+  MIN: 1,
+  MAX: 3,
+};
+
+const ACTOR_PARAMETER = {
+  MIN: 2,
+  MAX: 6
+};
+
+const FILM_START_DATE = {
+  YEAR: 1900,
+  MONTH: 0,
+  DAY: 1,
+};
+
+/**
+ * Create new comment object
+ * @return {object} new comment
+ */
 const generateFilmComment = () => {
+  const commentDate = getRandomDate(new Date(COMMENT_PARAMETER.YEAR, COMMENT_PARAMETER.MONTH, COMMENT_PARAMETER.DAY), new Date());
   return {
     emoji: getRandomArrayItem(EMOJI),
     text: getRandomArrayItem(TEXT),
     author: getRandomArrayItem(AUTHOR),
-    date: getRandomDate(new Date(1970, 0, 1), new Date()),
+    date: `${commentDate.toLocaleDateString()} ${commentDate.toLocaleTimeString()}`,
   };
 };
 
-const generateFilmComments = (count) => {
-  return new Array(count).fill(``).map(generateFilmComment);
-};
-
+/**
+ * Create new film object
+ * @return {object} film card
+ */
 const generateFilmCard = () => {
+  const filmDate = getRandomDate(new Date(FILM_START_DATE.YEAR, FILM_START_DATE.MONTH, FILM_START_DATE.DAY), new Date());
   return {
     title: getRandomArrayItem(FILM_TITLES),
     poster: getRandomArrayItem(FILM_POSTERS),
-    description: getRandomArrayElements(FILM_DESCRIPTIONS, 1, 5).join(` `),
-    comments: generateFilmComments(getRandomIntegerNumber(0, 20)),
-    rating: getRandomNumber(0, 10).toFixed(1),
-    year: getRandomIntegerNumber(1900, 2020),
+    description: getRandomArrayElements(FILM_DESCRIPTIONS, DESCRIPTION_LENGTH.MIN, DESCRIPTION_LENGTH.MAX).join(` `),
+    comments: generateArray(getRandomIntegerNumber(COMMENT_PARAMETER.MIN, COMMENT_PARAMETER.MAX), generateFilmComment),
+    rating: getRandomNumber(RATING_PARAMETER.MIN, RATING_PARAMETER.MAX).toFixed(RATING_PARAMETER.FIXED),
+    year: filmDate.getFullYear(),
     duration: {
-      hours: getRandomIntegerNumber(1, 3),
-      minutes: getRandomIntegerNumber(0, 60),
+      hours: getRandomIntegerNumber(DURATION_PARAMETERS.HOUR.MIN, DURATION_PARAMETERS.HOUR.MAX),
+      minutes: getRandomIntegerNumber(DURATION_PARAMETERS.MINUTE.MIN, DURATION_PARAMETERS.MINUTE.MAX),
     },
-    genres: getRandomArrayElements(FILM_GENRES, 1, 3),
+    genres: getRandomArrayElements(FILM_GENRES, GENRE_PARAMETER.MIN, GENRE_PARAMETER.MAX),
     isInFavorites: Boolean(getRandomIntegerNumber()),
     isInWatchlist: Boolean(getRandomIntegerNumber()),
     isInHistory: Boolean(getRandomIntegerNumber()),
     additional: {
       age: getRandomArrayItem(FILM_AGES),
       director: getRandomArrayItem(FILM_DIRECTORS),
-      writers: getRandomArrayElements(FILM_WRITERS, 1, 2).join(`, `),
-      actors: getRandomArrayElements(FILM_ACTORS, 2, 6).join(`, `),
-      releaseDate: `${getRandomIntegerNumber(1, 30)} ${getRandomArrayItem(MONTH_NAMES)}`,
+      writers: getRandomArrayElements(FILM_WRITERS, WRITER_PARAMETER.MIN, WRITER_PARAMETER.MAX).join(`, `),
+      actors: getRandomArrayElements(FILM_ACTORS, ACTOR_PARAMETER.MIN, ACTOR_PARAMETER.MAX).join(`, `),
+      releaseDate: `${filmDate.getDate()} ${MONTH_NAMES[filmDate.getMonth()]}`,
       country: getRandomArrayItem(FILM_COUNTRIES),
     }
   };
 };
 
-const generateFilmCards = (count) => {
-  return new Array(count).fill(``).map(generateFilmCard);
-};
-
-export {FILM_GENRES, generateFilmCards};
+export {FILM_GENRES, generateFilmCard};

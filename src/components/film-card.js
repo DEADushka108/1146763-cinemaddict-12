@@ -1,13 +1,9 @@
 export const createFilmCardTemplate = (film) => {
   const {title, poster, description, comments, rating, year, duration, genres, isInFavorites, isInWatchlist, isInHistory} = film;
 
-  const getCommentsLength = () => {
-    return comments ? comments.length : `0`;
-  };
+  const getCommentsLength = () => comments ? comments.length : 0;
 
-  const getActiveState = (isCkeckedParameter) => {
-    return isCkeckedParameter ? `film-card__controls-item--active` : ``;
-  };
+  const getActiveState = (isCkeckedParameter) => isCkeckedParameter ? `film-card__controls-item--active` : ``;
 
   return (
     `<article class="film-card">
