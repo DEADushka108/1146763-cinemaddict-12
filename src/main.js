@@ -8,7 +8,7 @@ import {createShowMoreBtnTemplate} from './components/show-more-btn';
 import {createDetailsTemplate} from './components/details';
 import {createMovieStatisticTemplate} from './components/movie-statistic';
 import {renderElement, createElement, generateArray} from './util';
-import {generateFilmCard} from './mock/films';
+import {generateFilmCard} from './mock/film-cards';
 import {generateFilters} from './mock/filters';
 
 const CardCount = {
