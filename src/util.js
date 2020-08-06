@@ -1,7 +1,3 @@
-const KEY_CODE = {
-  ESC: 27,
-};
-
 /**
   * Render element from template
   * @param {Element} container
@@ -59,10 +55,8 @@ const getRandomArrayItem = (array) => array[getRandomIntegerNumber(0, array.leng
 
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
-    let j = getRandomIntegerNumber(0, array.length);
-    let temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
 
   return array;
@@ -96,28 +90,11 @@ const getRandomDate = (start, end) => new Date(start.getTime() + Math.random() *
 /**
  * Generate new array
  * @param {number} count number of elements
- * @param {void} func function
+ * @param {function} func
  * @return {array}
  */
 const generateArray = (count, func) => {
   return new Array(count).fill(``).map(func);
-};
-
-/**
- * Close popup on mouse click and ESC button
- * @param {Element} closeBtn DOM element
- * @param {Element} popup DOM element which must be closed
- */
-const closePopup = (closeBtn, popup) => {
-  closeBtn.addEventListener(`click`, () => {
-    popup.remove();
-  });
-
-  document.addEventListener(`keydown`, (evt) => {
-    if (evt.keyCode === KEY_CODE.ESC) {
-      popup.remove();
-    }
-  });
 };
 
 export {
@@ -129,5 +106,4 @@ export {
   getRandomArrayElements,
   getRandomArrayItem,
   generateArray,
-  closePopup,
 };

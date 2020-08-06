@@ -7,7 +7,7 @@ import {
   generateArray,
 } from '../util';
 
-const MONTH_NAMES = {
+const MonthNames = {
   0: `January`,
   1: `Fabruary`,
   2: `March`,
@@ -22,7 +22,7 @@ const MONTH_NAMES = {
   11: `December`,
 };
 
-const FILM_TITLES = [
+const filmTitles = [
   `Knokin' on heaven doors`,
   `Fight club`,
   `Filth`,
@@ -62,7 +62,7 @@ const FILM_TITLES = [
   `Old Boy`,
 ];
 
-const FILM_DESCRIPTIONS = [
+const filmDescriptions = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
   `Cras aliquet varius magna, non porta ligula feugiat eget.`,
   `Fusce tristique felis at fermentum pharetra.`,
@@ -75,7 +75,7 @@ const FILM_DESCRIPTIONS = [
   `Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`,
 ];
 
-const FILM_POSTERS = [
+const filmPosters = [
   `made-for-each-other.png`,
   `popeye-meets-sinbad.png`,
   `sagebrush-trail.jpg`,
@@ -85,7 +85,7 @@ const FILM_POSTERS = [
   `the-man-with-the-golden-arm.jpg`,
 ];
 
-const FILM_GENRES = [
+const filmGenres = [
   `Horror`,
   `Action`,
   `Adventure`,
@@ -101,7 +101,7 @@ const FILM_GENRES = [
   `Space opera`,
 ];
 
-const FILM_DIRECTORS = [
+const directors = [
   `Steven Spielberg`,
   `Martin Scorsese`,
   `Alfred Hitchcock`,
@@ -117,7 +117,7 @@ const FILM_DIRECTORS = [
   `Park Chen-wook`,
 ];
 
-const FILM_WRITERS = [
+const writers = [
   `Anne Wigton`,
   `Heinz Herald`,
   `Richard Weil`,
@@ -128,7 +128,7 @@ const FILM_WRITERS = [
   `Quentin Tarantino`,
 ];
 
-const FILM_ACTORS = [
+const actors = [
   `Jack Nicholson`,
   `Tom Hardy`,
   `Joaquin Phoenix`,
@@ -144,7 +144,7 @@ const FILM_ACTORS = [
   `Andjelina Joly`
 ];
 
-const FILM_COUNTRIES = [
+const countries = [
   `USA`,
   `Canada`,
   `Russia`,
@@ -155,14 +155,14 @@ const FILM_COUNTRIES = [
   `Japan`,
 ];
 
-const EMOJI = [
+const emojis = [
   `smile`,
   `angry`,
   `puke`,
   `sleeping`,
 ];
 
-const AUTHOR = [
+const authors = [
   `Антон Логвинов`,
   `Алексей Навальный`,
   `Movie MAker`,
@@ -175,9 +175,12 @@ const AUTHOR = [
   `Magnolia_Fan`,
   `Kevin_Smith`,
   `Batman2000`,
+  `Александр Невский(Курицын)`,
+  `Arnie`,
+  `Imaguywithagun`,
 ];
 
-const TEXT = [
+const texts = [
   `10 из 10, Господи!`,
   `Зачем я потратил на это время???!`,
   `Актёры ужасные, режиссёрская работа отвратительная, саундтрек хуже некуда, сюжета нет. Однозначно рекомендую!`,
@@ -196,13 +199,13 @@ const TEXT = [
   `Фильм атстой! омерикосы снимать ни умеют, сморите лудше руское кино! `,
 ];
 
-const FILM_AGES = [`0+`, `6+`, `12+`, `16+`, `18+`];
+const filmAges = [`0+`, `6+`, `12+`, `16+`, `18+`];
 
-const DESCRIPTION_LENGTH = {
+const DescriptionLength = {
   MIN: 1,
   MAX: 5,
 };
-const COMMENT_PARAMETER = {
+const CommentParameter = {
   MIN: 0,
   MAX: 20,
   YEAR: 1970,
@@ -210,13 +213,13 @@ const COMMENT_PARAMETER = {
   DAY: 1,
 };
 
-const RATING_PARAMETER = {
+const RatingParameter = {
   MIN: 0,
   MAX: 10,
   FIXED: 1,
 };
 
-const DURATION_PARAMETERS = {
+const DurationParameter = {
   HOUR: {
     MIN: 1,
     MAX: 4,
@@ -227,22 +230,22 @@ const DURATION_PARAMETERS = {
   }
 };
 
-const GENRE_PARAMETER = {
+const GenreParameter = {
   MIN: 1,
   MAX: 3,
 };
 
-const WRITER_PARAMETER = {
+const WriterParameter = {
   MIN: 1,
   MAX: 3,
 };
 
-const ACTOR_PARAMETER = {
+const ActorParameter = {
   MIN: 2,
   MAX: 6
 };
 
-const FILM_START_DATE = {
+const FilmStartDate = {
   YEAR: 1900,
   MONTH: 0,
   DAY: 1,
@@ -253,11 +256,11 @@ const FILM_START_DATE = {
  * @return {object} new comment
  */
 const generateFilmComment = () => {
-  const commentDate = getRandomDate(new Date(COMMENT_PARAMETER.YEAR, COMMENT_PARAMETER.MONTH, COMMENT_PARAMETER.DAY), new Date());
+  const commentDate = getRandomDate(new Date(CommentParameter.YEAR, CommentParameter.MONTH, CommentParameter.DAY), new Date());
   return {
-    emoji: getRandomArrayItem(EMOJI),
-    text: getRandomArrayItem(TEXT),
-    author: getRandomArrayItem(AUTHOR),
+    emoji: getRandomArrayItem(emojis),
+    text: getRandomArrayItem(texts),
+    author: getRandomArrayItem(authors),
     date: `${commentDate.toLocaleDateString()} ${commentDate.toLocaleTimeString()}`,
   };
 };
@@ -267,31 +270,31 @@ const generateFilmComment = () => {
  * @return {object} film card
  */
 const generateFilmCard = () => {
-  const filmDate = getRandomDate(new Date(FILM_START_DATE.YEAR, FILM_START_DATE.MONTH, FILM_START_DATE.DAY), new Date());
+  const filmDate = getRandomDate(new Date(FilmStartDate.YEAR, FilmStartDate.MONTH, FilmStartDate.DAY), new Date());
   return {
-    title: getRandomArrayItem(FILM_TITLES),
-    poster: getRandomArrayItem(FILM_POSTERS),
-    description: getRandomArrayElements(FILM_DESCRIPTIONS, DESCRIPTION_LENGTH.MIN, DESCRIPTION_LENGTH.MAX).join(` `),
-    comments: generateArray(getRandomIntegerNumber(COMMENT_PARAMETER.MIN, COMMENT_PARAMETER.MAX), generateFilmComment),
-    rating: getRandomNumber(RATING_PARAMETER.MIN, RATING_PARAMETER.MAX).toFixed(RATING_PARAMETER.FIXED),
+    title: getRandomArrayItem(filmTitles),
+    poster: getRandomArrayItem(filmPosters),
+    description: getRandomArrayElements(filmDescriptions, DescriptionLength.MIN, DescriptionLength.MAX).join(` `),
+    comments: generateArray(getRandomIntegerNumber(CommentParameter.MIN, CommentParameter.MAX), generateFilmComment),
+    rating: getRandomNumber(RatingParameter.MIN, RatingParameter.MAX).toFixed(RatingParameter.FIXED),
     year: filmDate.getFullYear(),
     duration: {
-      hours: getRandomIntegerNumber(DURATION_PARAMETERS.HOUR.MIN, DURATION_PARAMETERS.HOUR.MAX),
-      minutes: getRandomIntegerNumber(DURATION_PARAMETERS.MINUTE.MIN, DURATION_PARAMETERS.MINUTE.MAX),
+      hours: getRandomIntegerNumber(DurationParameter.HOUR.MIN, DurationParameter.HOUR.MAX),
+      minutes: getRandomIntegerNumber(DurationParameter.MINUTE.MIN, DurationParameter.MINUTE.MAX),
     },
-    genres: getRandomArrayElements(FILM_GENRES, GENRE_PARAMETER.MIN, GENRE_PARAMETER.MAX),
+    genres: getRandomArrayElements(filmGenres, GenreParameter.MIN, GenreParameter.MAX),
     isInFavorites: Boolean(getRandomIntegerNumber()),
     isInWatchlist: Boolean(getRandomIntegerNumber()),
     isInHistory: Boolean(getRandomIntegerNumber()),
     additional: {
-      age: getRandomArrayItem(FILM_AGES),
-      director: getRandomArrayItem(FILM_DIRECTORS),
-      writers: getRandomArrayElements(FILM_WRITERS, WRITER_PARAMETER.MIN, WRITER_PARAMETER.MAX).join(`, `),
-      actors: getRandomArrayElements(FILM_ACTORS, ACTOR_PARAMETER.MIN, ACTOR_PARAMETER.MAX).join(`, `),
-      releaseDate: `${filmDate.getDate()} ${MONTH_NAMES[filmDate.getMonth()]}`,
-      country: getRandomArrayItem(FILM_COUNTRIES),
+      age: getRandomArrayItem(filmAges),
+      director: getRandomArrayItem(directors),
+      writers: getRandomArrayElements(writers, WriterParameter.MIN, WriterParameter.MAX),
+      actors: getRandomArrayElements(actors, ActorParameter.MIN, ActorParameter.MAX),
+      releaseDate: `${filmDate.getDate()} ${MonthNames[filmDate.getMonth()]}`,
+      country: getRandomArrayItem(countries),
     }
   };
 };
 
-export {FILM_GENRES, generateFilmCard};
+export {filmGenres, generateFilmCard};

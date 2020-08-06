@@ -1,12 +1,12 @@
-const FILTER = {
+const Filter = {
   ALL: `All movies`,
   WATCHLIST: `Watchlist`,
   HISTORY: `History`,
   FAVORITES: `Favorites`
 };
-const FILTER_ADDRESS = [`all`, `watchlist`, `history`, `favorites`];
+const filterAddresses = [`all`, `watchlist`, `history`, `favorites`];
 
-const filterValues = Object.values(FILTER);
+const filterValues = Object.values(Filter);
 
 /**
  * Calculate how much filter's name contains array
@@ -18,16 +18,16 @@ const calculateCount = (filterName, filmsArray) => {
   let count;
 
   switch (filterName) {
-    case FILTER.ALL:
+    case Filter.ALL:
       count = filmsArray.length;
       break;
-    case FILTER.WATCHLIST:
+    case Filter.WATCHLIST:
       count = filmsArray.filter((it) => it.isInWatchlist).length;
       break;
-    case FILTER.HISTORY:
+    case Filter.HISTORY:
       count = filmsArray.filter((it) => it.isInHistory).length;
       break;
-    case FILTER.FAVORITES:
+    case Filter.FAVORITES:
       count = filmsArray.filter((it) => it.isInFavorites).length;
       break;
 
@@ -47,7 +47,7 @@ const generateFilters = (filmsArray) => {
   return filterValues.map((it, i) => {
     return {
       name: it,
-      adress: FILTER_ADDRESS[i],
+      address: filterAddresses[i],
       count: calculateCount(filterValues[i], filmsArray),
     };
   });
