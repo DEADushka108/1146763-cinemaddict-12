@@ -1,4 +1,4 @@
-import {createUserProfileTemplate} from './components/user-profile';
+import UserProfileComponent from './components/user-profile';
 import {createMainMenuTemplate} from './components/main-menu';
 import {createSortTemplate} from './components/sort';
 import {createFilmsTemplate} from './components/films';
@@ -28,11 +28,11 @@ const footerElement = document.querySelector(`.footer`);
 
 const films = generateArray(CardCount.DEAFULT, generateFilmCard);
 let currentFilmsArray = films.slice(0, CardCount.ON_START);
-let filtersArray = generateFilters(films);
+let filters = generateFilters(films);
 let showCardCount = CardCount.ON_START;
 
-renderElement(headerElement, createUserProfileTemplate());
-renderElement(mainElement, createMainMenuTemplate(filtersArray));
+renderElement(headerElement, new UserProfileComponent(films).getTemplate());
+renderElement(mainElement, createMainMenuTemplate(filters));
 renderElement(mainElement, createSortTemplate());
 renderElement(mainElement, createFilmsTemplate());
 
