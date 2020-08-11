@@ -17,7 +17,7 @@ import {generateFilmCard} from './mock/film-cards';
 import {generateFilters} from './mock/filters';
 
 const CardCount = {
-  DEAFULT: 2,
+  DEAFULT: 21,
   ON_START: 5,
   STEP: 5,
   EXTRA: 2
