@@ -1,3 +1,8 @@
+const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`,
+};
+
 /**
   * Render element from template
   * @param {Element} container
@@ -18,6 +23,26 @@ const createElement = (template) => {
   let element = document.createElement(`div`);
   element.innerHTML = template;
   return element.firstChild;
+};
+
+
+/**
+  * Render element from element
+  * @param {Element} container
+  * @param {string} element
+  * @param {string} position
+  */
+const render = (container, element, position) => {
+
+  switch (position) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
 };
 
 /**
@@ -106,4 +131,6 @@ export {
   getRandomArrayElements,
   getRandomArrayItem,
   generateArray,
+  RenderPosition,
+  render,
 };

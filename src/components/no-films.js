@@ -1,15 +1,18 @@
 import {createElement} from '../util.js';
 
-const createMovieStatisticTemplate = (moviesNumber) => `<p>${moviesNumber} movies inside</p>`;
+const createNoFilmsTemplate = () => {
+  return (
+    `<h2 class="films-list__title">There are no movies in our database</h2>`
+  );
+};
 
-export default class MovieStatistic {
-  constructor(moviesNumber) {
-    this._moviesNumber = moviesNumber;
+export default class NoFilms {
+  constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createMovieStatisticTemplate(this._moviesNumber);
+    return createNoFilmsTemplate();
   }
 
   getElement() {
