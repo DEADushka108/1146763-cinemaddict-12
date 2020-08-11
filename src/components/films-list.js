@@ -1,20 +1,34 @@
-export const createFilmsListTemplate = (title, modifier = false) => {
+import {createElement} from '../util.js';
 
-  /**
-   * Get section's class
-   * @return {String} class
-   */
-  const getSectionClass = () => modifier ? `films-list--${modifier}` : `films-list`;
-
-  /**
-   * Get hidden block's class
-   * @return {String} class
-   */
-  const getHiddenClass = () => modifier ? `` : `visually-hidden`;
-
+const createFilmsListTemplate = () => {
   return (
-    `<section class="${getSectionClass()}">
-      <h2 class="films-list__title ${getHiddenClass()}">${title}</h2>
-      <div class="films-list__container"></div>`
+    `<section class="films-list">
+      <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
+      <div class="films-list__container">
+
+      </div>
+    </section class="films-list">`
   );
 };
+
+export default class FilmsList {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmsListTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

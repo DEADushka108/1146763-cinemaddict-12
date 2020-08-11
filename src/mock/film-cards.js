@@ -85,7 +85,7 @@ const filmPosters = [
   `the-man-with-the-golden-arm.jpg`,
 ];
 
-const filmGenres = [
+const FILM_GENRES = [
   `Horror`,
   `Action`,
   `Adventure`,
@@ -226,7 +226,7 @@ const DurationParameter = {
   },
   MINUTE: {
     MIN: 0,
-    MAX: 59,
+    MAX: 60,
   }
 };
 
@@ -282,7 +282,7 @@ const generateFilmCard = () => {
       hours: getRandomIntegerNumber(DurationParameter.HOUR.MIN, DurationParameter.HOUR.MAX),
       minutes: getRandomIntegerNumber(DurationParameter.MINUTE.MIN, DurationParameter.MINUTE.MAX),
     },
-    genres: getRandomArrayElements(filmGenres, GenreParameter.MIN, GenreParameter.MAX),
+    genres: getRandomArrayElements(FILM_GENRES, GenreParameter.MIN, GenreParameter.MAX),
     isInFavorites: Boolean(getRandomIntegerNumber()),
     isInWatchlist: Boolean(getRandomIntegerNumber()),
     isInHistory: Boolean(getRandomIntegerNumber()),
@@ -297,4 +297,4 @@ const generateFilmCard = () => {
   };
 };
 
-export {filmGenres, generateFilmCard};
+export {FILM_GENRES, generateFilmCard};

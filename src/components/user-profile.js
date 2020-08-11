@@ -1,3 +1,5 @@
+import {createElement} from '../util.js';
+
 const UserRating = {
   NOVICE: 10,
   MOVIE_BUFF: 20,
@@ -37,9 +39,22 @@ const createUserProfileTemplate = (films) => {
 export default class UserProfile {
   constructor(films) {
     this._films = films;
+    this._element = null;
   }
 
   getTemplate() {
     return createUserProfileTemplate(this._films);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
   }
 }
