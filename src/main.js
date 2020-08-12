@@ -12,9 +12,9 @@ import NoFilmsComponent from './components/no-films.js';
 import ShowMoreBtnComponent from './components/show-more-btn.js';
 import DetailsComponent from './components/details.js';
 import MovieStatisticComponent from './components/movie-statistic.js';
-import {render, RenderPosition, generateArray} from './util';
-import {generateFilmCard} from './mock/film-cards';
-import {generateFilters} from './mock/filters';
+import {render, RenderPosition, generateArray} from './util.js';
+import {generateFilmCard} from './mock/film-cards.js';
+import {generateFilters} from './mock/filters.js';
 
 const CardCount = {
   DEFAULT: 21,
@@ -86,6 +86,10 @@ const renderFilms = () => {
   const filmsElement = main.querySelector(`.films`);
 
   render(filmsElement, new LoadFilmsComponent().getElement(), RenderPosition.BEFOREEND);
+
+  /**
+   * render loading block
+   */
   render(filmsElement, new FilmsListComponent().getElement(), RenderPosition.BEFOREEND);
 
   const filmsList = filmsElement.querySelector(`.films-list`);
