@@ -17,7 +17,7 @@ import {generateFilmCard} from './mock/film-cards';
 import {generateFilters} from './mock/filters';
 
 const CardCount = {
-  DEAFULT: 21,
+  DEFAULT: 21,
   ON_START: 5,
   STEP: 5,
   EXTRA: 2
@@ -32,7 +32,7 @@ const header = document.querySelector(`.header`);
 const main = document.querySelector(`.main`);
 const footer = document.querySelector(`.footer`);
 
-const films = generateArray(CardCount.DEAFULT, generateFilmCard);
+const films = generateArray(CardCount.DEFAULT, generateFilmCard);
 let currentFilms = films.slice(0, CardCount.ON_START);
 let filters = generateFilters(films);
 let showCardCount = CardCount.ON_START;

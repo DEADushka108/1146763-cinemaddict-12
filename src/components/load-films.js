@@ -1,14 +1,12 @@
 import {createElement} from '../util.js';
 
-const createLoadFilmsTemplate = () => `<h2 class="films-list__title">Loading...</h2>`;
-
 export default class LoadFilms {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createLoadFilmsTemplate();
+    return `<h2 class="films-list__title">Loading...</h2>`;
   }
 
   getElement() {

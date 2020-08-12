@@ -42,6 +42,9 @@ const render = (container, element, position) => {
     case RenderPosition.BEFOREEND:
       container.append(element);
       break;
+
+    default:
+      throw new Error(`There are no this render position`);
   }
 };
 

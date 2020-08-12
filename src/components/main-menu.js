@@ -1,14 +1,12 @@
 import {createElement} from '../util.js';
 
 const createFilters = (filtersArray) => {
-  return filtersArray.map((filter) => {
-    const {address, name, count} = filter;
-
+  return filtersArray.map(({address, name, count}) => {
     /**
      * Check block's name
      * @return {Boolean}
      */
-    const isAllMovies = () => name === `All movies` ? true : false;
+    const isAllMovies = () => name === `All movies`;
 
     /**
      * Get block's active state
@@ -46,7 +44,7 @@ const createMainMenuTemplate = (filtersArray) => {
 export default class MainMenu {
   constructor(filters) {
     this._filters = filters;
-    this.element = null;
+    this._element = null;
   }
 
   getTemplate() {
