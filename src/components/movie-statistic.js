@@ -1,24 +1,12 @@
-import {createElement} from '../util.js';
+import AbstractComponent from './abstract-component.js';
 
-export default class MovieStatistic {
+export default class MovieStatistic extends AbstractComponent {
   constructor(moviesNumber) {
+    super();
     this._moviesNumber = moviesNumber;
-    this._element = null;
   }
 
   getTemplate() {
     return `<p>${this._moviesNumber} movies inside</p>`;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

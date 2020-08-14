@@ -1,24 +1,13 @@
-import {FILM_GENRES} from '../mock/film-cards.js';
-import {createElement} from '../util.js';
+import {FILM_GENRES} from '../const.js';
+import AbstractComponent from './abstract-component.js';
 
 const getStatisticInfo = (films) => {
   const filmsInHistory = films.filter((it) => it.isInHistory);
   let totalTime = 0;
   let genreRate = [];
 
-  // if (filmsInHistory.length > 0) {
-  //   for (let i = 0; i < FILM_GENRES.length; i++) {
-  //     const key = FILM_GENRES[i];
-  //     const object = {
-  //       [key]: filmsInHistory.reduce((sum, film) => sum.concat(film.genres), []).filter((genre) => genre === key).length
-  //     };
-  //     genreRate.push(object);
-  //   }
-  //   genreRate = genreRate.sort((a, b) => Object.values(b) - Object.values(a));
-  // }
-
   if (filmsInHistory.length > 0) {
-    const allFilmsGenresCombined = filmsInHistory.reduce((sum, {genres}) => sum.concat(genres), []); // Чтобы не делать на каждой итерации - сохраним в константу
+    const allFilmsGenresCombined = filmsInHistory.reduce((sum, {genres}) => sum.concat(genres), []);
 
     FILM_GENRES.forEach((genreFromList) => {
       genreRate.push({
@@ -26,7 +15,7 @@ const getStatisticInfo = (films) => {
       });
     });
 
-    genreRate.sort((a, b) => Object.values(b) - Object.values(a)); // результат сортировки присваивать не нужно, она изменяет исходный массив
+    genreRate.sort((a, b) => Object.values(b) - Object.values(a));
   }
 
   totalTime = filmsInHistory.reduce((total, {duration}) => {
@@ -89,25 +78,13 @@ const createUserStatisticTemplate = (films) => {
   );
 };
 
-export default class UserStatistic {
+export default class UserStatistic extends AbstractComponent {
   constructor(films) {
+    super();
     this._films = films;
-    this._element = null;
   }
 
   getTemplate() {
     return createUserStatisticTemplate(this._films);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
