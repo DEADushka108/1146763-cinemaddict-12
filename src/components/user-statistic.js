@@ -1,5 +1,5 @@
-import {FILM_GENRES} from '../mock/film-cards.js';
-import {createElement} from '../util.js';
+import {FILM_GENRES} from '../const.js';
+import AbstractComponent from './abstract-component.js';
 
 const getStatisticInfo = (films) => {
   const filmsInHistory = films.filter((it) => it.isInHistory);
@@ -7,19 +7,20 @@ const getStatisticInfo = (films) => {
   let genreRate = [];
 
   if (filmsInHistory.length > 0) {
-    for (let i = 0; i < FILM_GENRES.length; i++) {
-      const key = FILM_GENRES[i];
-      const object = {
-        [key]: filmsInHistory.reduce((sum, film) => sum.concat(film.genres), []).filter((genre) => genre === key).length
-      };
-      genreRate.push(object);
-    }
-    genreRate = genreRate.sort((a, b) => Object.values(b) - Object.values(a));
+    const allFilmsGenresCombined = filmsInHistory.reduce((sum, {genres}) => sum.concat(genres), []);
+
+    FILM_GENRES.forEach((genreFromList) => {
+      genreRate.push({
+        [genreFromList]: allFilmsGenresCombined.filter((genre) => genre === genreFromList).length
+      });
+    });
+
+    genreRate.sort((a, b) => Object.values(b) - Object.values(a));
   }
 
-  filmsInHistory.forEach((it) => {
-    totalTime += it.duration.hours * 60 + it.duration.minutes;
-  });
+  totalTime = filmsInHistory.reduce((total, {duration}) => {
+    return total + duration.hours * 60 + duration.minutes;
+  }, 0);
 
   return {
     watched: filmsInHistory.length,
@@ -32,8 +33,7 @@ const getStatisticInfo = (films) => {
 };
 
 const createUserStatisticTemplate = (films) => {
-  const statisticInfo = getStatisticInfo(films);
-  const {watched, duration, topGenre} = statisticInfo;
+  const {watched, duration, topGenre} = getStatisticInfo(films);
   return (
     `<section class="statistic">
     <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
@@ -78,25 +78,13 @@ const createUserStatisticTemplate = (films) => {
   );
 };
 
-export default class UserStatistic {
+export default class UserStatistic extends AbstractComponent {
   constructor(films) {
+    super();
     this._films = films;
-    this._element = null;
   }
 
   getTemplate() {
     return createUserStatisticTemplate(this._films);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

@@ -32,7 +32,7 @@ const calculateCount = (filterName, filmsArray) => {
       break;
 
     default:
-      count = -1;
+      throw new Error(`No matching filters`);
   }
 
   return count;

@@ -1,14 +1,12 @@
-import {createElement} from '../util.js';
+import AbstractComponent from './abstract-component.js';
 
 const createFilters = (filtersArray) => {
-  return filtersArray.map((filter) => {
-    const {address, name, count} = filter;
-
+  return filtersArray.map(({address, name, count}) => {
     /**
      * Check block's name
      * @return {Boolean}
      */
-    const isAllMovies = () => name === `All movies` ? true : false;
+    const isAllMovies = () => name === `All movies`;
 
     /**
      * Get block's active state
@@ -43,25 +41,13 @@ const createMainMenuTemplate = (filtersArray) => {
   );
 };
 
-export default class MainMenu {
+export default class MainMenu extends AbstractComponent {
   constructor(filters) {
+    super();
     this._filters = filters;
-    this.element = null;
   }
 
   getTemplate() {
     return createMainMenuTemplate(this._filters);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
