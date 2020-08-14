@@ -5,7 +5,8 @@ import {
   getRandomArrayElements,
   getRandomArrayItem,
   generateArray,
-} from '../util';
+} from '../utils/common.js';
+import {FILM_GENRES} from '../const.js';
 
 const MonthNames = {
   0: `January`,
@@ -83,22 +84,6 @@ const filmPosters = [
   `the-dance-of-life.jpg`,
   `the-great-flamarion.jpg`,
   `the-man-with-the-golden-arm.jpg`,
-];
-
-const FILM_GENRES = [
-  `Horror`,
-  `Action`,
-  `Adventure`,
-  `Musical`,
-  `Comedy`,
-  `Thriller`,
-  `Detective`,
-  `Anime`,
-  `Drama`,
-  `Melodrama`,
-  `Art house`,
-  `Fantasy`,
-  `Space opera`,
 ];
 
 const directors = [
