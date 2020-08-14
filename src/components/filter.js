@@ -8,7 +8,7 @@ const createFilterTemplate = (filtersArray) => {
      * Check block's name
      * @return {Boolean}
      */
-    const isAllMovies = () => name === `All movies` ? true : false;
+    const isAllMovies = () => name === `All movies`;
 
     /**
      * Get block's active state
