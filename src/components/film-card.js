@@ -3,9 +3,17 @@ import AbstractComponent from './abstract-component.js';
 const createFilmCardTemplate = (film) => {
   const {title, poster, description, comments, rating, year, duration, genres, isInFavorites, isInWatchlist, isInHistory} = film;
 
+  const DescriptionLenght = {
+    MAX: 140,
+    REQUIRE: 139,
+    MIN: 0,
+  };
+
   const getCommentsLength = () => comments ? comments.length : 0;
 
   const getActiveState = (isCkeckedParameter) => isCkeckedParameter ? `film-card__controls-item--active` : ``;
+
+  const getDescription = () => description.length > DescriptionLenght.MAX ? description.substring(DescriptionLenght.MIN, DescriptionLenght.REQUIRE) + `...` : description;
 
   return (
     `<article class="film-card">
@@ -17,7 +25,7 @@ const createFilmCardTemplate = (film) => {
         <span class="film-card__genre">${genres[0]}</span>
       </p>
       <img src="./images/posters/${poster}" alt="${title}" class="film-card__poster">
-      <p class="film-card__description">${description}</p>
+      <p class="film-card__description">${getDescription()}</p>
       <a class="film-card__comments">${getCommentsLength()} comments</a>
       <form class="film-card__controls">
         <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${getActiveState(isInWatchlist)}">Add to watchlist</button>
