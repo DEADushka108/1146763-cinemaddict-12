@@ -86,7 +86,7 @@ const filmPosters = [
   `the-man-with-the-golden-arm.jpg`,
 ];
 
-const directors = [
+const DIRECTORS = [
   `Steven Spielberg`,
   `Martin Scorsese`,
   `Alfred Hitchcock`,
@@ -102,7 +102,7 @@ const directors = [
   `Park Chen-wook`,
 ];
 
-const writers = [
+const WRITERS = [
   `Anne Wigton`,
   `Heinz Herald`,
   `Richard Weil`,
@@ -113,7 +113,7 @@ const writers = [
   `Quentin Tarantino`,
 ];
 
-const actors = [
+const ACTORS = [
   `Jack Nicholson`,
   `Tom Hardy`,
   `Joaquin Phoenix`,
@@ -129,7 +129,7 @@ const actors = [
   `Andjelina Joly`
 ];
 
-const countries = [
+const COUNTRIES = [
   `USA`,
   `Canada`,
   `Russia`,
@@ -140,17 +140,17 @@ const countries = [
   `Japan`,
 ];
 
-const emojis = [
+const EMOJIS = [
   `smile`,
   `angry`,
   `puke`,
   `sleeping`,
 ];
 
-const authors = [
+const AUTHORS = [
   `Антон Логвинов`,
   `Алексей Навальный`,
-  `Movie MAker`,
+  `Movie Maker`,
   `ItchyTritchyFingerNiggaz`,
   `MWA`,
   `Ilya_Nagibator2006`,
@@ -243,9 +243,9 @@ const FilmStartDate = {
 const generateFilmComment = () => {
   const commentDate = getRandomDate(new Date(CommentParameter.YEAR, CommentParameter.MONTH, CommentParameter.DAY), new Date());
   return {
-    emoji: getRandomArrayItem(emojis),
+    emoji: getRandomArrayItem(EMOJIS),
     text: getRandomArrayItem(texts),
-    author: getRandomArrayItem(authors),
+    author: getRandomArrayItem(AUTHORS),
     date: `${commentDate.toLocaleDateString()} ${commentDate.toLocaleTimeString()}`,
   };
 };
@@ -273,13 +273,13 @@ const generateFilmCard = () => {
     isInHistory: Boolean(getRandomIntegerNumber()),
     additional: {
       age: getRandomArrayItem(filmAges),
-      director: getRandomArrayItem(directors),
-      writers: getRandomArrayElements(writers, WriterParameter.MIN, WriterParameter.MAX),
-      actors: getRandomArrayElements(actors, ActorParameter.MIN, ActorParameter.MAX),
+      director: getRandomArrayItem(DIRECTORS),
+      writers: getRandomArrayElements(WRITERS, WriterParameter.MIN, WriterParameter.MAX),
+      actors: getRandomArrayElements(ACTORS, ActorParameter.MIN, ActorParameter.MAX),
       releaseDate: `${filmDate.getDate()} ${MonthNames[filmDate.getMonth()]}`,
-      country: getRandomArrayItem(countries),
+      country: getRandomArrayItem(COUNTRIES),
     }
   };
 };
 
-export {FILM_GENRES, generateFilmCard};
+export {generateFilmCard};
