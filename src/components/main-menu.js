@@ -18,7 +18,7 @@ const createFilters = (filtersArray) => {
      * Get count template
      * @return {string}
      */
-    const getCountTemplate = () => isAllMovies() ? `` : `<span class="main-navigation__item-count">${count}</span>`;
+    const getCountTemplate = () => isAllMovies() || (count > 5) ? `` : `<span class="main-navigation__item-count">${count}</span>`;
 
     return (
       `<a href="#${address}" class="main-navigation__item ${getActiveState()}">

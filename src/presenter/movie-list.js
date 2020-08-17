@@ -10,7 +10,7 @@ import NoFilmsComponent from '../components/no-films.js';
 import ShowMoreBtnComponent from '../components/show-more-btn.js';
 import DetailsComponent from '../components/details.js';
 import {render, RenderPosition, removeChild, appendChild, remove} from '../utils/render.js';
-import {getTopRatedFilms, getTopCommentedFilms, getSortedFilms} from '../utils/task.js';
+import {getSortedFilms} from '../utils/task.js';
 import {SortType, CardCount} from '../const.js';
 
 const KeyCode = {
@@ -123,7 +123,7 @@ export default class MovieList {
       /**
       * Render top rated films block
       */
-      const filmsSortedByRating = getTopRatedFilms(films).slice(0, CardCount.EXTRA);
+      const filmsSortedByRating = getSortedFilms(films, SortType.RATING, 0, CardCount.EXTRA);
 
       render(filmsElement, this._topRatedFilmsComponent, RenderPosition.BEFOREEND);
       const topRatedFilmsContainer = document.querySelector(`.films-list--extra .films-list__container`);
@@ -134,7 +134,7 @@ export default class MovieList {
       /**
       * render most commented films block
       */
-      const filmsSortedByComments = getTopCommentedFilms(films).slice(0, CardCount.EXTRA);
+      const filmsSortedByComments = getSortedFilms(films, SortType.COMMENTS, 0, CardCount.EXTRA);
 
       render(filmsElement, this._mostCommentedFilmsComponent, RenderPosition.BEFOREEND);
 
