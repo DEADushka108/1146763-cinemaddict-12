@@ -14,7 +14,7 @@ export const getSortedFilms = (films, filterType, from, to) => {
 
   switch (filterType) {
     case SortType.DATE:
-      sortedFilms = shownFilms.sort((a, b) => b.year - a.year);
+      sortedFilms = shownFilms.sort((a, b) => b.releaseDate - a.releaseDate);
       break;
     case SortType.RATING:
       sortedFilms = shownFilms.sort((a, b) => b.rating - a.rating);
@@ -34,19 +34,17 @@ export const getSortedFilms = (films, filterType, from, to) => {
 * @param {Array} array
 * @return {Array} sorted array
 */
-export const getTopRatedFilms = (array) => {
-  return array.slice()
-              .sort((a, b) => b.rating - a.rating);
-};
+// export const getTopRatedFilms = (array) => {
+//   return array.slice()
+//               .sort((a, b) => b.rating - a.rating);
+// };
 
 /**
 * Get sorted array by comments
 * @param {Array} array
 * @return {Array} sorted array
 */
-export const getTopCommentedFilms = (array) => {
-  return array.slice()
-              .sort((a, b) => b.comments.length - a.comments.length);
-};
-
-
+// export const getTopCommentedFilms = (array) => {
+//   return array.slice()
+//               .sort((a, b) => b.comments.length - a.comments.length);
+// };

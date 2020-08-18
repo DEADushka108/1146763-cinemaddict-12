@@ -8,20 +8,20 @@ import {
 } from '../utils/common.js';
 import {FILM_GENRES} from '../const.js';
 
-const MonthNames = {
-  0: `January`,
-  1: `Fabruary`,
-  2: `March`,
-  3: `April`,
-  4: `May`,
-  5: `June`,
-  6: `July`,
-  7: `August`,
-  8: `September`,
-  9: `October`,
-  10: `November`,
-  11: `December`,
-};
+// const MonthNames = {
+//   0: `January`,
+//   1: `Fabruary`,
+//   2: `March`,
+//   3: `April`,
+//   4: `May`,
+//   5: `June`,
+//   6: `July`,
+//   7: `August`,
+//   8: `September`,
+//   9: `October`,
+//   10: `November`,
+//   11: `December`,
+// };
 
 const filmTitles = [
   `Knokin' on heaven doors`,
@@ -246,7 +246,7 @@ const generateFilmComment = () => {
     emoji: getRandomArrayItem(EMOJIS),
     text: getRandomArrayItem(texts),
     author: getRandomArrayItem(AUTHORS),
-    date: `${commentDate.toLocaleDateString()} ${commentDate.toLocaleTimeString()}`,
+    date: commentDate,
   };
 };
 
@@ -262,7 +262,7 @@ const generateFilmCard = () => {
     description: getRandomArrayElements(filmDescriptions, DescriptionLength.MIN, DescriptionLength.MAX).join(` `),
     comments: generateArray(getRandomIntegerNumber(CommentParameter.MIN, CommentParameter.MAX), generateFilmComment),
     rating: getRandomNumber(RatingParameter.MIN, RatingParameter.MAX).toFixed(RatingParameter.FIXED),
-    year: filmDate.getFullYear(),
+    releaseDate: filmDate,
     duration: {
       hours: getRandomIntegerNumber(DurationParameter.HOUR.MIN, DurationParameter.HOUR.MAX),
       minutes: getRandomIntegerNumber(DurationParameter.MINUTE.MIN, DurationParameter.MINUTE.MAX),
@@ -276,7 +276,6 @@ const generateFilmCard = () => {
       director: getRandomArrayItem(DIRECTORS),
       writers: getRandomArrayElements(WRITERS, WriterParameter.MIN, WriterParameter.MAX),
       actors: getRandomArrayElements(ACTORS, ActorParameter.MIN, ActorParameter.MAX),
-      releaseDate: `${filmDate.getDate()} ${MonthNames[filmDate.getMonth()]}`,
       country: getRandomArrayItem(COUNTRIES),
     }
   };
