@@ -12,7 +12,7 @@ const createCommentsTemplate = (comments) => {
           <p class="film-details__comment-text">${comment.text}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.author}</span>
-            <span class="film-details__comment-day">${moment(comment.date).format(`L`)}</span>
+            <span class="film-details__comment-day">${moment(comment.date).format(`YYYY/MM/DD hh:mm`)}</span>
             <button class="film-details__comment-delete">Delete</button>
           </p>
         </div>
