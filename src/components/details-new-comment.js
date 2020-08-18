@@ -53,7 +53,7 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
     this._emoji = null;
     this._textarea = null;
 
-    this._subscribeOnEvents();
+    this._onEmojiChange();
   }
 
   reset() {
@@ -65,7 +65,7 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
   }
 
   restoreHandlers() {
-    this._subscribeOnEvents();
+    this._onEmojiChange();
   }
 
   rerender() {
@@ -81,7 +81,7 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
     this.restoreHandlers();
   }
 
-  _subscribeOnEvents() {
+  _onEmojiChange() {
 
     const emojiArray = this.getElement().querySelectorAll(`input`);
 
