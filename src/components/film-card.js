@@ -14,7 +14,7 @@ const createFilmCardTemplate = (film) => {
 
   const getActiveState = (isCkeckedParameter) => isCkeckedParameter ? `film-card__controls-item--active` : ``;
 
-  const getDescription = () => description.length > DescriptionLenght.MAX ? description.substring(DescriptionLenght.MIN, DescriptionLenght.REQUIRE) + `...` : description;
+  const getDescription = () => description.length > DescriptionLenght.MAX ? `${description.substring(DescriptionLenght.MIN, DescriptionLenght.REQUIRE)}...` : description;
 
   return (
     `<article class="film-card">

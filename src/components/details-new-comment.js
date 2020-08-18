@@ -1,11 +1,11 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
 
-const EmojiAddress = [
-  {SMILE: `smile`},
-  {SLEEPING: `sleeping`},
-  {PUKE: `puke`},
-  {ANGRY: `angry`},
-];
+const EmojiAddress = {
+  SMILE: `smile`,
+  SLEEPING: `sleeping`,
+  PUKE: `puke`,
+  ANGRY: `angry`,
+};
 
 const createEmojiImageTemplate = (emoji) => {
   return `<img src="images/emoji/${emoji}.png" width="55" height="55" alt="emoji-${emoji}">`;
@@ -87,8 +87,8 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
 
     for (let i = 0; i < emojiArray.length; i++) {
       emojiArray[i].addEventListener(`change`, () => {
-        this._emojiTemplate = createEmojiImageTemplate(Object.values(EmojiAddress[i]));
-        this._emoji = Object.values(EmojiAddress[i]);
+        this._emojiTemplate = createEmojiImageTemplate(Object.values(EmojiAddress)[i]);
+        this._emoji = Object.values(EmojiAddress)[i];
         this.rerender();
       });
     }
