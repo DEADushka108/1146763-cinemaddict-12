@@ -6,7 +6,7 @@ export default class AbstractSmart extends AbstractComponent {
   }
 
   restoreHandlers() {
-    throw new Error(`Abstract method not implemented: recoveryListeners`);
+    throw new Error(`Abstract method not implemented: restoreHandlers`);
   }
 
   rerender() {

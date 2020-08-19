@@ -12,7 +12,6 @@
   "devDependencies": {
     "eslint": "6.1.0",
     "eslint-config-htmlacademy": "0.5.2",
-    "moment-locales-webpack-plugin": "1.2.0",
     "webpack": "4.44.1",
     "webpack-cli": "3.3.12",
     "webpack-dev-server": "3.11.0"
@@ -21,6 +20,7 @@
     "node": "10"
   },
   "dependencies": {
-    "moment": "2.27.0"
+    "moment": "2.27.0",
+    "moment-locales-webpack-plugin": "1.2.0"
   }
 }
