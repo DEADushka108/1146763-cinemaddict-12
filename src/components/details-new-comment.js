@@ -1,11 +1,11 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
 
-const EmojiAddress = [
-  {SMILE: `smile`},
-  {SLEEPING: `sleeping`},
-  {PUKE: `puke`},
-  {ANGRY: `angry`},
-];
+const EmojiAddress = {
+  SMILE: `smile`,
+  SLEEPING: `sleeping`,
+  PUKE: `puke`,
+  ANGRY: `angry`,
+};
 
 const createEmojiImageTemplate = (emoji) => {
   return `<img src="images/emoji/${emoji}.png" width="55" height="55" alt="emoji-${emoji}">`;
@@ -53,7 +53,7 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
     this._emoji = null;
     this._textarea = null;
 
-    this._subscribeOnEvents();
+    this._chooseEmoji();
   }
 
   reset() {
@@ -65,30 +65,17 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
   }
 
   restoreHandlers() {
-    this._subscribeOnEvents();
+    this._chooseEmoji();
   }
 
-  rerender() {
-    const oldElement = this.getElement();
-    const parent = oldElement.parentElement;
-
-    this.removeElement();
-
-    const newElement = this.getElement();
-
-    parent.replaceChild(newElement, oldElement);
-
-    this.restoreHandlers();
-  }
-
-  _subscribeOnEvents() {
+  _chooseEmoji() {
 
     const emojiArray = this.getElement().querySelectorAll(`input`);
 
     for (let i = 0; i < emojiArray.length; i++) {
       emojiArray[i].addEventListener(`change`, () => {
-        this._emojiTemplate = createEmojiImageTemplate(Object.values(EmojiAddress[i]));
-        this._emoji = Object.values(EmojiAddress[i]);
+        this._emojiTemplate = createEmojiImageTemplate(Object.values(EmojiAddress)[i]);
+        this._emoji = Object.values(EmojiAddress)[i];
         this.rerender();
       });
     }

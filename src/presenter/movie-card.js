@@ -56,6 +56,7 @@ export default class MovieCard {
     const oldFilmCardComponent = this._filmCardComponent;
     const oldFilmDetailsComponent = this._filmDetailsComponent;
 
+    this._film = film;
     this._filmCardComponent = new FilmCardComponent(film);
     this._filmDetailsComponent = new FilmDetailsComponent(film);
     this._filmDetailsNewCommentComponent = new FilmDetailsNewCommentComponent(film);
@@ -68,48 +69,48 @@ export default class MovieCard {
     this._filmCardComponent.setAddToWatchlistHandler((evt) => {
       evt.preventDefault();
 
-      const oldFilm = film;
-      const newFilm = Object.assign({}, film, {isInWatchlist: !film.isInWatchlist});
+      const oldFilm = this._film;
+      const newFilm = Object.assign({}, this._film, {isInWatchlist: !this._film.isInWatchlist});
       this._onDataChange(this, oldFilm, newFilm);
     });
 
     this._filmCardComponent.setAlreadyWatchedHandler((evt) => {
       evt.preventDefault();
 
-      const oldFilm = film;
-      const newFilm = Object.assign({}, film, {isInHistory: !film.isInHistory});
+      const oldFilm = this._film;
+      const newFilm = Object.assign({}, this._film, {isInHistory: !this._film.isInHistory});
       this._onDataChange(this, oldFilm, newFilm);
     });
 
     this._filmCardComponent.setAddToFavoritesHandler((evt) => {
       evt.preventDefault();
 
-      const oldFilm = film;
-      const newFilm = Object.assign({}, film, {isInFavorites: !film.isInFavorites});
+      const oldFilm = this._film;
+      const newFilm = Object.assign({}, this._film, {isInFavorites: !this._film.isInFavorites});
       this._onDataChange(this, oldFilm, newFilm);
     });
 
     this._filmDetailsComponent.setAddToWatchlistHandler((evt) => {
       evt.preventDefault();
 
-      const oldFilm = film;
-      const newFilm = Object.assign({}, film, {isInWatchlist: !film.isInWatchlist});
+      const oldFilm = this._film;
+      const newFilm = Object.assign({}, this._film, {isInWatchlist: !this._film.isInWatchlist});
       this._onDataChange(this, oldFilm, newFilm);
     });
 
     this._filmDetailsComponent.setAlreadyWatchedHandler((evt) => {
       evt.preventDefault();
 
-      const oldFilm = film;
-      const newFilm = Object.assign({}, film, {isInHistory: !film.isInHistory});
+      const oldFilm = this._film;
+      const newFilm = Object.assign({}, this._film, {isInHistory: !this._film.isInHistory});
       this._onDataChange(this, oldFilm, newFilm);
     });
 
     this._filmDetailsComponent.setAddToFavoritesHandler((evt) => {
       evt.preventDefault();
 
-      const oldFilm = film;
-      const newFilm = Object.assign({}, film, {isInFavorites: !film.isInFavorites});
+      const oldFilm = this._film;
+      const newFilm = Object.assign({}, this._film, {isInFavorites: !this._film.isInFavorites});
       this._onDataChange(this, oldFilm, newFilm);
     });
 
