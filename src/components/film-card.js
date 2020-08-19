@@ -12,7 +12,7 @@ const createFilmCardTemplate = (film) => {
 
   const getCommentsLength = () => comments ? comments.length : 0;
 
-  const getActiveState = (isCkeckedParameter) => isCkeckedParameter ? `film-card__controls-item--active` : ``;
+  const getActiveState = (isCheckedParameter) => isCheckedParameter ? `film-card__controls-item--active` : ``;
 
   const getDescription = () => description.length > DescriptionLenght.MAX ? `${description.substring(DescriptionLenght.MIN, DescriptionLenght.REQUIRE)}...` : description;
 
@@ -22,7 +22,7 @@ const createFilmCardTemplate = (film) => {
       <p class="film-card__rating">${rating}</p>
       <p class="film-card__info">
         <span class="film-card__year">${moment(releaseDate).format(`YYYY`)}</span>
-        <span class="film-card__duration">${duration.hours}h ${duration.minutes}m</span>
+        <span class="film-card__duration">${Math.trunc(duration / 60)}h ${duration % 60}m</span>
         <span class="film-card__genre">${genres[0]}</span>
       </p>
       <img src="./images/posters/${poster}" alt="${title}" class="film-card__poster">

@@ -41,7 +41,7 @@ export default class Sort extends AbstractComponent {
 
       const sortList = evt.currentTarget;
       const sortElement = evt.target;
-      const sortElements = Array.from(sortList.querySelectorAll(`.sort__button`));
+      const sortElements = sortList.querySelectorAll(`.sort__button`);
       sortElements.forEach((element) => element.classList.remove(`sort__button--active`));
       sortElement.classList.add(`sort__button--active`);
 

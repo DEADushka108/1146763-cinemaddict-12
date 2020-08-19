@@ -83,7 +83,7 @@ const createDetailsTemplate = (film) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>
-                  <td class="film-details__cell">${duration.hours}h ${duration.minutes}m</td>
+                  <td class="film-details__cell">${Math.trunc(duration / 60)}h ${duration % 60}m</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Country</td>
@@ -143,20 +143,14 @@ export default class FilmDetails extends AbstractSmartComponent {
   }
 
   setAddToWatchlistHandler(callback) {
-    const input = this.getElement().querySelector(`input[name="watchlist"]`);
-
-    input.addEventListener(`change`, callback);
+    this.getElement().querySelector(`input[name="watchlist"]`).addEventListener(`change`, callback);
   }
 
   setAlreadyWatchedHandler(callback) {
-    const input = this.getElement().querySelector(`input[name="watched"]`);
-
-    input.addEventListener(`change`, callback);
+    this.getElement().querySelector(`input[name="watched"]`).addEventListener(`change`, callback);
   }
 
   setAddToFavoritesHandler(callback) {
-    const input = this.getElement().querySelector(`input[name="favorite"]`);
-
-    input.addEventListener(`change`, callback);
+    this.getElement().querySelector(`input[name="favorite"]`).addEventListener(`change`, callback);
   }
 }

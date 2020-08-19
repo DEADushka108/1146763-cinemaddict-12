@@ -205,14 +205,8 @@ const RatingParameter = {
 };
 
 const DurationParameter = {
-  HOUR: {
-    MIN: 1,
-    MAX: 4,
-  },
-  MINUTE: {
-    MIN: 0,
-    MAX: 60,
-  }
+  MIN: 80,
+  MAX: 240,
 };
 
 const GenreParameter = {
@@ -263,10 +257,7 @@ const generateFilmCard = () => {
     comments: generateArray(getRandomIntegerNumber(CommentParameter.MIN, CommentParameter.MAX), generateFilmComment),
     rating: getRandomNumber(RatingParameter.MIN, RatingParameter.MAX).toFixed(RatingParameter.FIXED),
     releaseDate: filmDate,
-    duration: {
-      hours: getRandomIntegerNumber(DurationParameter.HOUR.MIN, DurationParameter.HOUR.MAX),
-      minutes: getRandomIntegerNumber(DurationParameter.MINUTE.MIN, DurationParameter.MINUTE.MAX),
-    },
+    duration: getRandomIntegerNumber(DurationParameter.MIN, DurationParameter.MAX),
     genres: getRandomArrayElements(FILM_GENRES, GenreParameter.MIN, GenreParameter.MAX),
     isInFavorites: Boolean(getRandomIntegerNumber()),
     isInWatchlist: Boolean(getRandomIntegerNumber()),

@@ -57,9 +57,9 @@ export default class MovieCard {
     const oldFilmDetailsComponent = this._filmDetailsComponent;
 
     this._film = film;
-    this._filmCardComponent = new FilmCardComponent(film);
-    this._filmDetailsComponent = new FilmDetailsComponent(film);
-    this._filmDetailsNewCommentComponent = new FilmDetailsNewCommentComponent(film);
+    this._filmCardComponent = new FilmCardComponent(this._film);
+    this._filmDetailsComponent = new FilmDetailsComponent(this._film);
+    this._filmDetailsNewCommentComponent = new FilmDetailsNewCommentComponent(this._film);
 
     this._newCommentContainer = this._filmDetailsComponent.getElement().querySelector(`.form-details__bottom-container`);
 
@@ -68,50 +68,32 @@ export default class MovieCard {
 
     this._filmCardComponent.setAddToWatchlistHandler((evt) => {
       evt.preventDefault();
-
-      const oldFilm = this._film;
-      const newFilm = Object.assign({}, this._film, {isInWatchlist: !this._film.isInWatchlist});
-      this._onDataChange(this, oldFilm, newFilm);
+      this._updateFilm({isInWatchlist: !this._film.isInWatchlist});
     });
 
     this._filmCardComponent.setAlreadyWatchedHandler((evt) => {
       evt.preventDefault();
-
-      const oldFilm = this._film;
-      const newFilm = Object.assign({}, this._film, {isInHistory: !this._film.isInHistory});
-      this._onDataChange(this, oldFilm, newFilm);
+      this._updateFilm({isInHistory: !this._film.isInHistory});
     });
 
     this._filmCardComponent.setAddToFavoritesHandler((evt) => {
       evt.preventDefault();
-
-      const oldFilm = this._film;
-      const newFilm = Object.assign({}, this._film, {isInFavorites: !this._film.isInFavorites});
-      this._onDataChange(this, oldFilm, newFilm);
+      this._updateFilm({isInFavorites: !this._film.isInFavorites});
     });
 
     this._filmDetailsComponent.setAddToWatchlistHandler((evt) => {
       evt.preventDefault();
-
-      const oldFilm = this._film;
-      const newFilm = Object.assign({}, this._film, {isInWatchlist: !this._film.isInWatchlist});
-      this._onDataChange(this, oldFilm, newFilm);
+      this._updateFilm({isInWatchlist: !this._film.isInWatchlist});
     });
 
     this._filmDetailsComponent.setAlreadyWatchedHandler((evt) => {
       evt.preventDefault();
-
-      const oldFilm = this._film;
-      const newFilm = Object.assign({}, this._film, {isInHistory: !this._film.isInHistory});
-      this._onDataChange(this, oldFilm, newFilm);
+      this._updateFilm({isInHistory: !this._film.isInHistory});
     });
 
     this._filmDetailsComponent.setAddToFavoritesHandler((evt) => {
       evt.preventDefault();
-
-      const oldFilm = this._film;
-      const newFilm = Object.assign({}, this._film, {isInFavorites: !this._film.isInFavorites});
-      this._onDataChange(this, oldFilm, newFilm);
+      this._updateFilm({isInFavorites: !this._film.isInFavorites});
     });
 
     if (oldFilmCardComponent && oldFilmDetailsComponent) {
@@ -121,6 +103,14 @@ export default class MovieCard {
     } else {
       render(this._container, this._filmCardComponent, RenderPosition.BEFOREEND);
     }
+  }
+
+  _updateFilm(update) {
+
+    const oldFilm = this._film;
+    const newFilm = Object.assign({}, this._film, update);
+
+    this._onDataChange(this, oldFilm, newFilm);
   }
 
   _closePopup() {

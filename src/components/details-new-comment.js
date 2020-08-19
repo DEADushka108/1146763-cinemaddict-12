@@ -7,13 +7,22 @@ const EmojiAddress = {
   ANGRY: `angry`,
 };
 
+const createEmojiInputTemplate = (emojis, checkedEmoji) => {
+
+  return (emojis.map((emoji) =>
+    `<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emoji}" value="${emoji}" ${emoji === checkedEmoji ? `checked` : ``}>
+    <label class="film-details__emoji-label" for="emoji-${emoji}">
+      <img src="./images/emoji/${emoji}.png" width="30" height="30" alt="emoji">
+    </label>`
+  ).join(`\n`));
+};
+
 const createEmojiImageTemplate = (emoji) => {
   return `<img src="images/emoji/${emoji}.png" width="55" height="55" alt="emoji-${emoji}">`;
 };
 
 const createFilmDetailsCommentSectionTemplate = (comment, emojiTemplate, emoji) => {
 
-  const isCheckedEmoji = (checkedEmoji) => emoji === checkedEmoji ? `checked` : ``;
   const setImgTemplate = () => emojiTemplate ? emojiTemplate : ``;
 
   return (
@@ -24,22 +33,7 @@ const createFilmDetailsCommentSectionTemplate = (comment, emojiTemplate, emoji) 
           placeholder="Select reaction below and write comment here" name="comment">${comment ? comment : ``}</textarea>
         </label>
         <div class="film-details__emoji-list">
-          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile" ${isCheckedEmoji(EmojiAddress.SMILE)}>
-          <label class="film-details__emoji-label" for="emoji-smile">
-            <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
-          </label>
-          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping" ${isCheckedEmoji(EmojiAddress.SLEEPING)}>
-          <label class="film-details__emoji-label" for="emoji-sleeping">
-            <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
-          </label>
-          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke" ${isCheckedEmoji(EmojiAddress.PUKE)}>
-          <label class="film-details__emoji-label" for="emoji-puke">
-            <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
-          </label>
-          <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry" ${isCheckedEmoji(EmojiAddress.ANGRY)}>
-          <label class="film-details__emoji-label" for="emoji-angry">
-            <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
-          </label>
+        ${createEmojiInputTemplate(Object.values(EmojiAddress), emoji)}
         </div>
       </div>`
   );
@@ -72,18 +66,18 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
 
     const emojiArray = this.getElement().querySelectorAll(`input`);
 
-    for (let i = 0; i < emojiArray.length; i++) {
-      emojiArray[i].addEventListener(`change`, () => {
-        this._emojiTemplate = createEmojiImageTemplate(Object.values(EmojiAddress)[i]);
-        this._emoji = Object.values(EmojiAddress)[i];
+    emojiArray.forEach((emoji) => {
+      emoji.addEventListener(`change`, (evt) => {
+        this._emoji = evt.target.value;
+        this._emojiTemplate = createEmojiImageTemplate(this._emoji);
         this.rerender();
       });
-    }
-
-    const textarea = this.getElement().querySelector(`.film-details__comment-input`);
-    textarea.addEventListener(`input`, () => {
-      this._comment = textarea.value;
     });
+
+    this.getElement().querySelector(`.film-details__comment-input`)
+      .addEventListener(`input`, (evt) => {
+        this._comment = evt.target.value;
+      });
   }
 
   getTemplate() {
