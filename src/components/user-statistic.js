@@ -19,7 +19,7 @@ const getStatisticInfo = (films) => {
   }
 
   totalTime = filmsInHistory.reduce((total, {duration}) => {
-    return total + duration.hours * 60 + duration.minutes;
+    return total + duration;
   }, 0);
 
   return {

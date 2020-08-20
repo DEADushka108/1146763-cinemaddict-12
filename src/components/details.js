@@ -1,4 +1,5 @@
-import AbstractComponent from './abstract-component.js';
+import AbstractSmartComponent from './abstract-smart-component.js';
+import moment from 'moment';
 
 const createCommentsTemplate = (comments) => {
   return comments.map((comment) => {
@@ -11,7 +12,7 @@ const createCommentsTemplate = (comments) => {
           <p class="film-details__comment-text">${comment.text}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.author}</span>
-            <span class="film-details__comment-day">${comment.date}</span>
+            <span class="film-details__comment-day">${moment(comment.date).format(`YYYY/MM/DD hh:mm`)}</span>
             <button class="film-details__comment-delete">Delete</button>
           </p>
         </div>
@@ -25,8 +26,8 @@ const createGenresTemplate = (genres) => {
 };
 
 const createDetailsTemplate = (film) => {
-  const {title, poster, description, comments, rating, year, duration, genres} = film;
-  const {age, director, writers, actors, releaseDate, country} = film.additional;
+  const {title, poster, description, comments, rating, releaseDate, duration, genres, isInFavorites, isInWatchlist, isInHistory} = film;
+  const {age, director, writers, actors, country} = film.additional;
 
   const commentsTemplate = createCommentsTemplate(comments);
   const genresTemplate = createGenresTemplate(genres);
@@ -34,6 +35,8 @@ const createDetailsTemplate = (film) => {
   const getPluralOrSingularWordGenre = () => genres.length > 1 ? `Genres` : `Genre`;
 
   const getCommentsCount = () => comments ? comments.length : 0;
+
+  const getCheckedStatus = (isCheckedParameter) => isCheckedParameter ? `checked` : ``;
 
   return (
     `<section class="film-details">
@@ -76,11 +79,11 @@ const createDetailsTemplate = (film) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Release Date</td>
-                  <td class="film-details__cell">${releaseDate} ${year}</td>
+                  <td class="film-details__cell">${moment(releaseDate).format(`DD MMMM YYYY`)}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>
-                  <td class="film-details__cell">${duration.hours}h ${duration.minutes}m</td>
+                  <td class="film-details__cell">${Math.trunc(duration / 60)}h ${duration % 60}m</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Country</td>
@@ -100,13 +103,13 @@ const createDetailsTemplate = (film) => {
           </div>
 
           <section class="film-details__controls">
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${getCheckedStatus(isInWatchlist)}>
             <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${getCheckedStatus(isInHistory)}>
             <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${getCheckedStatus(isInFavorites)}>
             <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
           </section>
         </div>
@@ -118,36 +121,6 @@ const createDetailsTemplate = (film) => {
             <ul class="film-details__comments-list">
               ${commentsTemplate}
             </ul>
-
-            <div class="film-details__new-comment">
-              <div for="add-emoji" class="film-details__add-emoji-label"></div>
-
-              <label class="film-details__comment-label">
-                <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
-              </label>
-
-              <div class="film-details__emoji-list">
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile">
-                <label class="film-details__emoji-label" for="emoji-smile">
-                  <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
-                </label>
-
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping">
-                <label class="film-details__emoji-label" for="emoji-sleeping">
-                  <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
-                </label>
-
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke">
-                <label class="film-details__emoji-label" for="emoji-puke">
-                  <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
-                </label>
-
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry">
-                <label class="film-details__emoji-label" for="emoji-angry">
-                  <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
-                </label>
-              </div>
-            </div>
           </section>
         </div>
       </form>
@@ -155,7 +128,7 @@ const createDetailsTemplate = (film) => {
   );
 };
 
-export default class FilmDetails extends AbstractComponent {
+export default class FilmDetails extends AbstractSmartComponent {
   constructor(film) {
     super();
     this._film = film;
@@ -167,5 +140,17 @@ export default class FilmDetails extends AbstractComponent {
 
   setClickHandler(callback) {
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, callback);
+  }
+
+  setAddToWatchlistHandler(callback) {
+    this.getElement().querySelector(`input[name="watchlist"]`).addEventListener(`change`, callback);
+  }
+
+  setAlreadyWatchedHandler(callback) {
+    this.getElement().querySelector(`input[name="watched"]`).addEventListener(`change`, callback);
+  }
+
+  setAddToFavoritesHandler(callback) {
+    this.getElement().querySelector(`input[name="favorite"]`).addEventListener(`change`, callback);
   }
 }

@@ -70,6 +70,4 @@ export const getRandomDate = (start, end) => new Date(start.getTime() + Math.ran
  * @param {function} func
  * @return {array}
  */
-export const generateArray = (count, func) => {
-  return new Array(count).fill(``).map(func);
-};
+export const generateArray = (count, func) => new Array(count).fill(``).map(func);
