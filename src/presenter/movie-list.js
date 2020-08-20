@@ -82,6 +82,7 @@ export default class MovieListController {
     }
 
     this._sortComponent.setSortTypeHandler((sortType) => {
+      this._currentCardCount = CardCount.ON_START;
       const sortedFilms = getSortedFilms(films, sortType, 0, this._currentCardCount);
       containerElement.innerHTML = ` `;
 

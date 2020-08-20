@@ -45,7 +45,7 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
 
     this._emojiTemplate = null;
     this._emoji = null;
-    this._textarea = null;
+    this._comment = null;
 
     this._chooseEmoji();
   }
@@ -63,10 +63,7 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
   }
 
   _chooseEmoji() {
-
-    const emojiArray = this.getElement().querySelectorAll(`input`);
-
-    emojiArray.forEach((emoji) => {
+    this.getElement().querySelectorAll(`input`).forEach((emoji) => {
       emoji.addEventListener(`change`, (evt) => {
         this._emoji = evt.target.value;
         this._emojiTemplate = createEmojiImageTemplate(this._emoji);
