@@ -1,8 +1,9 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
 import moment from 'moment';
 
-const createFilmCardTemplate = (film) => {
-  const {title, poster, description, comments, rating, releaseDate, duration, genres, isInFavorites, isInWatchlist, isInHistory} = film;
+const createFilmCardTemplate = (film, filmComments) => {
+  const {title, poster, description, rating, releaseDate, duration, genres, isInFavorites, isInWatchlist, isInHistory} = film;
+  const {comments} = filmComments;
 
   const DescriptionLength = {
     MAX: 140,
@@ -38,13 +39,14 @@ const createFilmCardTemplate = (film) => {
 };
 
 export default class FilmCard extends AbstractSmartComponent {
-  constructor(film) {
+  constructor(film, comments) {
     super();
     this._film = film;
+    this._comments = comments;
   }
 
   getTemplate() {
-    return createFilmCardTemplate(this._film);
+    return createFilmCardTemplate(this._film, this._comments);
   }
 
   setClickHandler(callback) {

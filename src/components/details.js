@@ -25,9 +25,10 @@ const createGenresTemplate = (genres) => {
   return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(`\n`);
 };
 
-const createDetailsTemplate = (film) => {
-  const {title, poster, description, comments, rating, releaseDate, duration, genres, isInFavorites, isInWatchlist, isInHistory} = film;
+const createDetailsTemplate = (film, filmComments) => {
+  const {title, poster, description, rating, releaseDate, duration, genres, isInFavorites, isInWatchlist, isInHistory} = film;
   const {age, director, writers, actors, country} = film.additional;
+  const {comments} = filmComments;
 
   const commentsTemplate = createCommentsTemplate(comments);
   const genresTemplate = createGenresTemplate(genres);
@@ -129,9 +130,10 @@ const createDetailsTemplate = (film) => {
 };
 
 export default class FilmDetails extends AbstractSmartComponent {
-  constructor(film) {
+  constructor(film, comments) {
     super();
     this._film = film;
+    this._comments = comments;
   }
 
   getTemplate() {
@@ -152,5 +154,15 @@ export default class FilmDetails extends AbstractSmartComponent {
 
   setAddToFavoritesHandler(callback) {
     this.getElement().querySelector(`input[name="favorite"]`).addEventListener(`change`, callback);
+  }
+
+  setDeleteButtonHandlers(callback) {
+    const buttons = Array.from(this.getElement().querySelectorAll(`.film-details__comment-delete`));
+    buttons.forEach((button, index) => {
+      button.addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        callback(index);
+      });
+    });
   }
 }

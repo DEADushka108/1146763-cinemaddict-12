@@ -1,4 +1,4 @@
-import {SortType} from "../const.js";
+import {SortType, FilterType} from '../const.js';
 
 /**
  * Create sorted sliced araay
@@ -27,6 +27,26 @@ export const getSortedFilms = (films, filterType, from, to) => {
       break;
   }
   return sortedFilms.slice(from, to);
+};
+
+export const getFiltredFilms = (films, filterType) => {
+  switch (filterType) {
+    case FilterType.ALL: {
+      return films;
+    }
+    case FilterType.WATCHLIST: {
+      return films.filter((film) => film.isInWatchlist);
+    }
+    case FilterType.HISTORY: {
+      return films.filter((film) => film.isInHistory);
+    }
+    case FilterType.FAVORITES: {
+      return films.filter((film) => film.isInFavorites);
+    }
+    default: {
+      throw new Error(`There are no this filtertype`);
+    }
+  }
 };
 
 /**

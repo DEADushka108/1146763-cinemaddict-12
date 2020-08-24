@@ -1,6 +1,6 @@
 import UserProfileComponent from './components/user-profile.js';
 import UserStatisticComponent from './components/user-statistic.js';
-import MainMenuComponent from './components/main-menu.js';
+import MainMenuComponent from './components/filter.js';
 import MovieListComponent from './presenter/movie-list.js';
 import MovieStatisticComponent from './components/movie-statistic.js';
 import {render, RenderPosition} from './utils/render.js';

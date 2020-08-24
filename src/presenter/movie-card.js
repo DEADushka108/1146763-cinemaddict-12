@@ -1,6 +1,6 @@
 import FilmCardComponent from '../components/film-card.js';
 import FilmDetailsComponent from '../components/details.js';
-import {render, RenderPosition, removeChild, appendChild, replace} from '../utils/render.js';
+import {render, RenderPosition, removeChild, appendChild, replace, remove} from '../utils/render.js';
 import FilmDetailsNewCommentComponent from '../components/details-new-comment.js';
 
 const KeyCode = {
@@ -15,9 +15,11 @@ const Mode = {
 const body = document.querySelector(`body`);
 
 export default class MovieCard {
-  constructor(container, onDataChange, onViewChange) {
+  constructor(container, onDataChange, onViewChange, comments, onCommentsChange) {
     this._container = container;
+    this._comments = comments;
 
+    this._onCommentsChange = onCommentsChange;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._mode = Mode.CLOSED;
@@ -30,6 +32,13 @@ export default class MovieCard {
     this._closePopupOnClick = this._closePopupOnClick.bind(this);
     this._showPopupOnClick = this._showPopupOnClick.bind(this);
     this._closePopupOnEscPress = this._closePopupOnEscPress.bind(this);
+  }
+
+  destroy() {
+    remove(this._filmCardComponent);
+    remove(this._filmDetailsComponent);
+    remove(this._filmDetailsNewCommentComponent);
+    document.removeEventListener(`keydown`, this._closePopupOnEscPress);
   }
 
   _showPopupOnClick() {
@@ -52,12 +61,13 @@ export default class MovieCard {
     }
   }
 
-  render(film) {
+  render(film, comments) {
+    this._comments = comments;
     const oldFilmCardComponent = this._filmCardComponent;
     const oldFilmDetailsComponent = this._filmDetailsComponent;
 
-    this._filmCardComponent = new FilmCardComponent(film);
-    this._filmDetailsComponent = new FilmDetailsComponent(film);
+    this._filmCardComponent = new FilmCardComponent(film, this._comments);
+    this._filmDetailsComponent = new FilmDetailsComponent(film, this._comments);
     this._filmDetailsNewCommentComponent = new FilmDetailsNewCommentComponent(film);
 
     this._newCommentContainer = this._filmDetailsComponent.getElement().querySelector(`.form-details__bottom-container`);
@@ -93,6 +103,15 @@ export default class MovieCard {
     this._filmDetailsComponent.setAddToFavoritesHandler((evt) => {
       evt.preventDefault();
       this._updateFilm(film, {isInFavorites: !film.isInFavorites});
+    });
+
+    this._filmDetailsNewCommentComponent.setAddCommentHandler((comment) => {
+      if (this._mode === Mode.OPEN) {
+        
+      };
+    });
+
+    this._filmDetailsComponent.setDeleteButtonHandler((index) => {
     });
 
     if (oldFilmCardComponent && oldFilmDetailsComponent) {

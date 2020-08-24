@@ -1,4 +1,5 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
+import moment from 'moment';
 
 const EmojiAddress = {
   SMILE: `smile`,
@@ -79,5 +80,23 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
 
   getTemplate() {
     return createFilmDetailsCommentSectionTemplate(this._comment, this._emojiTemplate, this._emoji);
+  }
+
+  setAddCommentHandler(callback) {
+    document.addEventListener(`keydown`, (evt) => {
+      const isEnterAndCtrlPressed = evt.ctrlKey && evt.key === `Enter`;
+      const isEmojiChosen = this.getElement().querySelector(`.film-details__add-emoji-label img`) ? this.getElement().querySelector(`.film-details__add-emoji-label img`).dataset.emojiType : false;
+
+      if (isEnterAndCtrlPressed && isEmojiChosen && this._comment) {
+        const comment = {
+          emoji: this.getElement().querySelector(`.film-details__add-emoji-label img`).dataset.emojiType,
+          text: this._comment,
+          author: `User123`,
+          date: moment().format(`YYYY/MM/DD hh:mm`),
+        };
+        callback(comment);
+        this.reset();
+      }
+    });
   }
 }
