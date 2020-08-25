@@ -1,20 +1,20 @@
-import {formatDate} from '../utils/common.js';
 import AbstractComponent from './abstract-component.js';
 
 import {encode} from 'he';
+import moment from 'moment';
 
 const createCommentsMarkup = (comments) => {
   return comments.map((comment) => {
     return (
       `<li class="film-details__comment">
         <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-smile">
+          <img src="./images/emoji/${comment.emoji}.png" width="55" height="55" alt="emoji-smile">
         </span>
         <div>
           <p class="film-details__comment-text">${comment.text}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.author}</span>
-            <span class="film-details__comment-day">${formatDate(comment.date)}</span>
+            <span class="film-details__comment-day">${moment(comment.date).format(`YYYY/MM/DD HH:mm`)}</span>
             <button class="film-details__comment-delete" data-id="${comment.id}">Delete</button>
           </p>
         </div>

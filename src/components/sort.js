@@ -4,9 +4,9 @@ import {SortType} from '../const.js';
 const createSortTemplate = () => {
   return (
     `<ul class="sort">
-      <li><a href="#" data-sort-type="${SortType.DEFAULT}" class="sort__button sort__button--active"> Sort by default </a></li>
-      <li><a href="#" data-sort-type="${SortType.DATE}" class="sort__button"> Sort by date </a></li>
-      <li><a href="#" data-sort-type="${SortType.RATING}" class="sort__button"> Sort by rating </a></li>
+      <li><a href="#" id="${SortType.DEFAULT}" data-sort-type="${SortType.DEFAULT}" class="sort__button sort__button--active"> Sort by default </a></li>
+      <li><a href="#" id="${SortType.DATE}" data-sort-type="${SortType.DATE}" class="sort__button"> Sort by date </a></li>
+      <li><a href="#" id="${SortType.RATING}" data-sort-type="${SortType.RATING}" class="sort__button"> Sort by rating </a></li>
     </ul>`
   );
 };
@@ -39,8 +39,11 @@ export default class Sort extends AbstractComponent {
         return;
       }
 
-      this.getElement().querySelector(`[data-sort-type=${this._currentSortType}]`).classList.remove(`sort__button--active`);
-      this.getElement().querySelector(`[data-sort-type=${sortType}]`).classList.add(`sort__button--active`);
+      const sortList = evt.currentTarget;
+      const sortElement = evt.target;
+      const sortElements = sortList.querySelectorAll(`.sort__button`);
+      sortElements.forEach((element) => element.classList.remove(`sort__button--active`));
+      sortElement.classList.add(`sort__button--active`);
 
       this._currentSortType = sortType;
       handler(this._currentSortType);

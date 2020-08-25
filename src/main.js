@@ -10,6 +10,7 @@ import {render} from './utils/render.js';
 import {CardCount} from './const.js';
 
 const films = generateFilmsCard(CardCount.DEFAULT);
+console.log(films[0].comments);
 const filmsModel = new FilmsModel();
 filmsModel.setFilms(films);
 

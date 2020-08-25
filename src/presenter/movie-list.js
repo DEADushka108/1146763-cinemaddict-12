@@ -88,7 +88,7 @@ export default class MovieListPresenter {
 
   _sortHandler(sortType) {
     this._currentSortType = sortType;
-    this._mainFilmsListComponent.getElement().querySelector(`..films-list__container`).innerHTML = ``;
+    this._mainFilmsListComponent.getElement().querySelector(`.films-list__container`).innerHTML = ``;
 
     this._currentFilmsCount = CardCount.ON_START;
     this._currentFilms = getSortedFilms(this._filmsModel.getFilms(), sortType);
@@ -138,17 +138,17 @@ export default class MovieListPresenter {
   }
 
   _renderExtraFilmList() {
-    render(this._container.getElement(), this._topRateFilmsComponent);
+    render(this._container.getElement(), this._topRatedFilmsComponent);
     render(this._container.getElement(), this._mostCommentedFilmsComponent);
 
     this._currentTopRatedFilms = getSortedFilms(this._filmsModel.getAllFilms(), SortType.RATING).slice(0, CardCount.EXTRA);
 
-    const topRateControllers = renderFilms(this._topRateFilmsComponent.getElement().querySelector(`.films-list__container`), this._currentTopRatedFilms, this._dataChangeHandler);
+    const topRatedControllers = renderFilms(this._topRatedFilmsComponent.getElement().querySelector(`.films-list__container`), this._currentTopRatedFilms, this._dataChangeHandler);
 
     this._currentMostCommentedFilms = getSortedFilms(this._filmsModel.getAllFilms(), SortType.COMMENTS).slice(0, CardCount.EXTRA);
 
-    const mostCommentedControllers = renderFilms(this._mostCommentedFilmsComponent.getElement().querySelector(`.films-list__container`), this._mostCommentedToShow, this._dataChangeHandler);
+    const mostCommentedControllers = renderFilms(this._mostCommentedFilmsComponent.getElement().querySelector(`.films-list__container`), this._currentMostCommentedFilms, this._dataChangeHandler);
 
-    this._shownFilmsControllers = [...topRateControllers, ...mostCommentedControllers, ...this._shownFilmsControllers];
+    this._currentFilmsControllers = [...topRatedControllers, ...mostCommentedControllers, ...this._currentFilmsControllers];
   }
 }

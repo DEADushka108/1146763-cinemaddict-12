@@ -48,7 +48,7 @@ export default class FilterPresenter {
     this.render();
   }
 
-  _dataChangehandler() {
+  _dataChangeHandler() {
     this.render();
   }
 }

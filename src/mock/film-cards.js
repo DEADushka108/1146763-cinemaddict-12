@@ -237,6 +237,7 @@ const FilmStartDate = {
 const generateFilmComment = () => {
   const commentDate = getRandomDate(new Date(CommentParameter.YEAR, CommentParameter.MONTH, CommentParameter.DAY), new Date());
   return {
+    id: String(new Date() + Math.random()),
     emoji: getRandomArrayItem(EMOJIS),
     text: getRandomArrayItem(texts),
     author: getRandomArrayItem(AUTHORS),
@@ -270,7 +271,7 @@ const generateFilmCard = () => {
       isInWatchlist: Boolean(getRandomIntegerNumber()),
       isInHistory: Boolean(getRandomIntegerNumber()),
     },
-    watchingDate: getRandomDate(new Date() - 30, new Date()),
+    watchingDate: getRandomDate(new Date(2020, 0, 1), new Date()),
   };
 };
 
