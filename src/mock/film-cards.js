@@ -251,25 +251,29 @@ const generateFilmComment = () => {
 const generateFilmCard = () => {
   const filmDate = getRandomDate(new Date(FilmStartDate.YEAR, FilmStartDate.MONTH, FilmStartDate.DAY), new Date());
   return {
+    id: getRandomIntegerNumber(10000000, 99999999),
     title: getRandomArrayItem(filmTitles),
     poster: getRandomArrayItem(filmPosters),
     description: getRandomArrayElements(filmDescriptions, DescriptionLength.MIN, DescriptionLength.MAX).join(` `),
     comments: generateArray(getRandomIntegerNumber(CommentParameter.MIN, CommentParameter.MAX), generateFilmComment),
     rating: getRandomNumber(RatingParameter.MIN, RatingParameter.MAX).toFixed(RatingParameter.FIXED),
-    releaseDate: filmDate,
+    release: filmDate,
     duration: getRandomIntegerNumber(DurationParameter.MIN, DurationParameter.MAX),
     genres: getRandomArrayElements(FILM_GENRES, GenreParameter.MIN, GenreParameter.MAX),
-    isInFavorites: Boolean(getRandomIntegerNumber()),
-    isInWatchlist: Boolean(getRandomIntegerNumber()),
-    isInHistory: Boolean(getRandomIntegerNumber()),
-    additional: {
-      age: getRandomArrayItem(filmAges),
-      director: getRandomArrayItem(DIRECTORS),
-      writers: getRandomArrayElements(WRITERS, WriterParameter.MIN, WriterParameter.MAX),
-      actors: getRandomArrayElements(ACTORS, ActorParameter.MIN, ActorParameter.MAX),
-      country: getRandomArrayItem(COUNTRIES),
-    }
+    age: getRandomArrayItem(filmAges),
+    director: getRandomArrayItem(DIRECTORS),
+    writers: getRandomArrayElements(WRITERS, WriterParameter.MIN, WriterParameter.MAX),
+    actors: getRandomArrayElements(ACTORS, ActorParameter.MIN, ActorParameter.MAX),
+    country: getRandomArrayItem(COUNTRIES),
+    controls: {
+      isInFavorites: Boolean(getRandomIntegerNumber()),
+      isInWatchlist: Boolean(getRandomIntegerNumber()),
+      isInHistory: Boolean(getRandomIntegerNumber()),
+    },
+    watchingDate: getRandomDate(new Date() - 30, new Date()),
   };
 };
 
-export {generateFilmCard};
+export const generateFilmsCard = (count) => {
+  return generateArray(count, generateFilmCard);
+};

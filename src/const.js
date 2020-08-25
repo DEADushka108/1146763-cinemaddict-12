@@ -12,6 +12,18 @@ export const SortType = {
   COMMENTS: `Sort by comments`,
 };
 
+export const FilterType = {
+  ALL: `All movies`,
+  WATCHLIST: `Watchlist`,
+  HISTORY: `History`,
+  FAVORITES: `Favorites`,
+};
+
+export const MenuItem = {
+  FILMS: `films`,
+  STATS: `stats`,
+};
+
 export const FILM_GENRES = [
   `Horror`,
   `Action`,

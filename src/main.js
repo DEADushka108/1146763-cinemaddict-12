@@ -1,25 +1,48 @@
 import UserProfileComponent from './components/user-profile.js';
-import UserStatisticComponent from './components/user-statistic.js';
-import MainMenuComponent from './components/main-menu.js';
-import MovieListComponent from './presenter/movie-list.js';
-import MovieStatisticComponent from './components/movie-statistic.js';
-import {render, RenderPosition} from './utils/render.js';
-import {generateArray} from './utils/common.js';
-import {generateFilmCard} from './mock/film-cards.js';
-import {generateFilters} from './mock/filters.js';
+import SiteNavigationComponent from './components/site-navigation.js';
+import StatisticsComponent from './components/statistics.js';
+import BoardComponent from './components/board.js';
+import MovieListPresenter from './presenter/movie-list.js';
+import FilterPresenter from './presenter/movie-filter.js';
+import FilmsModel from './models/films.js';
+import {generateFilmsCard} from './mock/film-cards.js';
+import {render} from './utils/render.js';
 import {CardCount} from './const.js';
 
-const header = document.querySelector(`.header`);
-const main = document.querySelector(`.main`);
-const footer = document.querySelector(`.footer`);
+const films = generateFilmsCard(CardCount.DEFAULT);
+const filmsModel = new FilmsModel();
+filmsModel.setFilms(films);
 
-const films = generateArray(CardCount.DEFAULT, generateFilmCard);
-let filters = generateFilters(films);
+const siteHeaderElement = document.querySelector(`.header`);
+const siteMainElement = document.querySelector(`.main`);
 
-render(header, new UserProfileComponent(films), RenderPosition.BEFOREEND);
-render(main, new MainMenuComponent(filters), RenderPosition.BEFOREEND);
+render(siteHeaderElement, new UserProfileComponent(filmsModel));
+const siteNavigationComponent = new SiteNavigationComponent();
+render(siteMainElement, siteNavigationComponent);
 
-new MovieListComponent().render(films);
-render(footer, new MovieStatisticComponent(films.length), RenderPosition.BEFOREEND);
+const filterController = new FilterPresenter(siteNavigationComponent.getElement(), filmsModel);
+filterController.render();
 
-render(main, new UserStatisticComponent(films), RenderPosition.BEFOREEND);
+const boardComponent = new BoardComponent();
+const pageController = new MovieListPresenter(boardComponent, filmsModel);
+render(siteMainElement, boardComponent);
+pageController.render(films);
+
+const dateTo = new Date();
+const dateFrom = (() => {
+  return new Date(dateTo).setDate(dateTo.getDate() - 7);
+})();
+
+const statisticsComponent = new StatisticsComponent(filmsModel, dateFrom, dateTo);
+render(siteMainElement, statisticsComponent);
+statisticsComponent.hide();
+
+siteNavigationComponent.setClickHandler((isStatistics) => {
+  if (isStatistics) {
+    pageController.hide();
+    statisticsComponent.show();
+  } else {
+    statisticsComponent.hide();
+    pageController.show();
+  }
+});

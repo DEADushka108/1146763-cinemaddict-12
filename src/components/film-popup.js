@@ -1,40 +1,17 @@
-import AbstractSmartComponent from './abstract-smart-component.js';
+import AbstractComponent from './abstract-component.js';
 import moment from 'moment';
-
-const createCommentsTemplate = (comments) => {
-  return comments.map((comment) => {
-    return (
-      `<li class="film-details__comment">
-        <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${comment.emoji}.png" width="55" height="55" alt="emoji-smile">
-        </span>
-        <div>
-          <p class="film-details__comment-text">${comment.text}</p>
-          <p class="film-details__comment-info">
-            <span class="film-details__comment-author">${comment.author}</span>
-            <span class="film-details__comment-day">${moment(comment.date).format(`YYYY/MM/DD hh:mm`)}</span>
-            <button class="film-details__comment-delete">Delete</button>
-          </p>
-        </div>
-      </li>`
-    );
-  }).join(`\n`);
-};
 
 const createGenresTemplate = (genres) => {
   return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(`\n`);
 };
 
-const createDetailsTemplate = (film) => {
-  const {title, poster, description, comments, rating, releaseDate, duration, genres, isInFavorites, isInWatchlist, isInHistory} = film;
-  const {age, director, writers, actors, country} = film.additional;
+const createPopupTemplate = (film) => {
+  const {title, poster, description, rating, releaseDate, duration, genres, age, director, writers, actors, country} = film;
+  const {isInFavorites, isInWatchlist, isInHistory} = film.controls;
 
-  const commentsTemplate = createCommentsTemplate(comments);
   const genresTemplate = createGenresTemplate(genres);
 
   const getPluralOrSingularWordGenre = () => genres.length > 1 ? `Genres` : `Genre`;
-
-  const getCommentsCount = () => comments ? comments.length : 0;
 
   const getCheckedStatus = (isCheckedParameter) => isCheckedParameter ? `checked` : ``;
 
@@ -103,54 +80,50 @@ const createDetailsTemplate = (film) => {
           </div>
 
           <section class="film-details__controls">
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${getCheckedStatus(isInWatchlist)}>
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" data-control="isInWatchlist" ${getCheckedStatus(isInWatchlist)}>
             <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${getCheckedStatus(isInHistory)}>
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" data-control="isInHistory" ${getCheckedStatus(isInHistory)}>
             <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${getCheckedStatus(isInFavorites)}>
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" data-control="isInFavorites" ${getCheckedStatus(isInFavorites)}>
             <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
           </section>
         </div>
 
-        <div class="form-details__bottom-container">
-          <section class="film-details__comments-wrap">
-            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${getCommentsCount()}</span></h3>
-
-            <ul class="film-details__comments-list">
-              ${commentsTemplate}
-            </ul>
-          </section>
-        </div>
       </form>
     </section>`
   );
 };
 
-export default class FilmDetails extends AbstractSmartComponent {
+export default class FilmPopup extends AbstractComponent {
   constructor(film) {
     super();
     this._film = film;
+    this._currentControls = film.controls;
+
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return createDetailsTemplate(this._film);
+    return createPopupTemplate(this._film);
+  }
+
+  getControlsStatus() {
+    return this._currentControls;
   }
 
   setClickHandler(callback) {
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, callback);
   }
 
-  setAddToWatchlistHandler(callback) {
-    this.getElement().querySelector(`input[name="watchlist"]`).addEventListener(`change`, callback);
+  setCloseButtonClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
   }
 
-  setAlreadyWatchedHandler(callback) {
-    this.getElement().querySelector(`input[name="watched"]`).addEventListener(`change`, callback);
-  }
-
-  setAddToFavoritesHandler(callback) {
-    this.getElement().querySelector(`input[name="favorite"]`).addEventListener(`change`, callback);
+  _subscribeOnEvents() {
+    this.getElement().querySelector(`.film-details__controls`).addEventListener(`change`, (evt) => {
+      this._currentControls[evt.target.dataset.control] = !this._currentControls[evt.target.dataset.control];
+    });
   }
 }
