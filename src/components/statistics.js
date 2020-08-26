@@ -20,7 +20,6 @@ const renderChart = (statisticCtx, stats) => {
       }]
     },
     options: {
-      maintainAspectRatio: false,
       plugins: {
         datalabels: {
           font: {
