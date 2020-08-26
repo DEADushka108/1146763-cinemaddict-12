@@ -1,9 +1,7 @@
 import FilterComponent from '../components/filters.js';
 import {FilterType} from '../const.js';
-import {render, replace} from '../utils/render.js';
+import {render, replace, RenderPosition} from '../utils/render.js';
 import {getFiltredFilms} from '../utils/filters.js';
-
-const FILTERS = [`All movies`, `Watchlist`, `History`, `Favorites`];
 
 export default class FilterPresenter {
   constructor(container, filmsModel) {
@@ -22,10 +20,9 @@ export default class FilterPresenter {
   render() {
     const container = this._container;
     const allFilms = this._filmsModel.getAllFilms();
-    const filters = Object.values(FilterType).map((filterType, i) => {
+    const filters = Object.values(FilterType).map((filterType) => {
       return {
-        link: filterType,
-        name: FILTERS[i],
+        name: filterType,
         count: getFiltredFilms(allFilms, filterType).length,
         isChecked: filterType === this._activeFilterType,
       };
@@ -38,7 +35,7 @@ export default class FilterPresenter {
     if (oldComponent) {
       replace(this._filterComponent, oldComponent);
     } else {
-      render(container, this._filterComponent, `afterbegin`);
+      render(container, this._filterComponent, RenderPosition.AFTERBEGIN);
     }
   }
 

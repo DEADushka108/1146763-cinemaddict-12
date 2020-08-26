@@ -7,9 +7,9 @@ const createControlsTemplate = (options) => {
 
   return (
     `<form class="film-card__controls">
-      <button data-control="isInWatchlist" class="film-card__controls-item button film-card__controls-item--add-to-watchlist" ${getElementState(isInWatchlist)}>Add to watchlist</button>
-      <button data-control="isInHistory" class="film-card__controls-item button film-card__controls-item--mark-as-watched" ${getElementState(isInHistory)}>Mark as watched</button>
-      <button data-control="isInFavorites" class="film-card__controls-item button film-card__controls-item--favorite" ${getElementState(isInFavorites)}>Mark as favorite</button>
+      <button data-control="isInWatchlist" class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${getElementState(isInWatchlist)}">Add to watchlist</button>
+      <button data-control="isInHistory" class="film-card__controls-item button film-card__controls-item--mark-as-watched ${getElementState(isInHistory)}">Mark as watched</button>
+      <button data-control="isInFavorites" class="film-card__controls-item button film-card__controls-item--favorite ${getElementState(isInFavorites)}">Mark as favorite</button>
     </form>`
   );
 };

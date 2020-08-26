@@ -56,9 +56,9 @@ export default class CommentsPresenter {
     }
   }
 
-  _addComment(text, emotion) {
-    if (text && emotion) {
-      this._currentComments.push(createComment(text, emotion));
+  _addComment(text, emoji) {
+    if (text && emoji) {
+      this._currentComments.push(createComment(text, emoji));
       this.render();
 
       return;

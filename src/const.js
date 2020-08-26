@@ -1,5 +1,5 @@
 export const CardCount = {
-  DEFAULT: 21,
+  DEFAULT: 41,
   ON_START: 5,
   STEP: 5,
   EXTRA: 2
@@ -17,11 +17,6 @@ export const FilterType = {
   WATCHLIST: `Watchlist`,
   HISTORY: `History`,
   FAVORITES: `Favorites`,
-};
-
-export const MenuItem = {
-  FILMS: `films`,
-  STATS: `stats`,
 };
 
 export const FILM_GENRES = [

@@ -1,49 +1,45 @@
 import UserProfileComponent from './components/user-profile.js';
 import SiteNavigationComponent from './components/site-navigation.js';
 import StatisticsComponent from './components/statistics.js';
-import BoardComponent from './components/board.js';
 import MovieListPresenter from './presenter/movie-list.js';
 import FilterPresenter from './presenter/movie-filter.js';
 import FilmsModel from './models/films.js';
 import {generateFilmsCard} from './mock/film-cards.js';
 import {render} from './utils/render.js';
 import {CardCount} from './const.js';
+import MovieStatisticComponent from './components/movie-statistic.js';
 
 const films = generateFilmsCard(CardCount.DEFAULT);
-console.log(films[0].comments);
 const filmsModel = new FilmsModel();
 filmsModel.setFilms(films);
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
+const siteFooterElement = document.querySelector(`.footer`);
 
 render(siteHeaderElement, new UserProfileComponent(filmsModel));
+
 const siteNavigationComponent = new SiteNavigationComponent();
 render(siteMainElement, siteNavigationComponent);
 
-const filterController = new FilterPresenter(siteNavigationComponent.getElement(), filmsModel);
-filterController.render();
+const filterPresenter = new FilterPresenter(siteNavigationComponent.getElement(), filmsModel);
+filterPresenter.render();
 
-const boardComponent = new BoardComponent();
-const pageController = new MovieListPresenter(boardComponent, filmsModel);
-render(siteMainElement, boardComponent);
-pageController.render(films);
+const pagePresenter = new MovieListPresenter(siteMainElement, filmsModel);
+pagePresenter.render();
 
-const dateTo = new Date();
-const dateFrom = (() => {
-  return new Date(dateTo).setDate(dateTo.getDate() - 7);
-})();
+render(siteFooterElement, new MovieStatisticComponent(films.length));
 
-const statisticsComponent = new StatisticsComponent(filmsModel, dateFrom, dateTo);
+const statisticsComponent = new StatisticsComponent(filmsModel);
 render(siteMainElement, statisticsComponent);
 statisticsComponent.hide();
 
 siteNavigationComponent.setClickHandler((isStatistics) => {
   if (isStatistics) {
-    pageController.hide();
+    pagePresenter.destroy();
     statisticsComponent.show();
   } else {
     statisticsComponent.hide();
-    pageController.show();
+    pagePresenter.render();
   }
 });

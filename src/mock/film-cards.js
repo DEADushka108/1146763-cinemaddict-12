@@ -7,21 +7,7 @@ import {
   generateArray,
 } from '../utils/common.js';
 import {FILM_GENRES} from '../const.js';
-
-// const MonthNames = {
-//   0: `January`,
-//   1: `Fabruary`,
-//   2: `March`,
-//   3: `April`,
-//   4: `May`,
-//   5: `June`,
-//   6: `July`,
-//   7: `August`,
-//   8: `September`,
-//   9: `October`,
-//   10: `November`,
-//   11: `December`,
-// };
+import {nanoid} from 'nanoid';
 
 const filmTitles = [
   `Knokin' on heaven doors`,
@@ -237,7 +223,7 @@ const FilmStartDate = {
 const generateFilmComment = () => {
   const commentDate = getRandomDate(new Date(CommentParameter.YEAR, CommentParameter.MONTH, CommentParameter.DAY), new Date());
   return {
-    id: String(new Date() + Math.random()),
+    id: nanoid(6),
     emoji: getRandomArrayItem(EMOJIS),
     text: getRandomArrayItem(texts),
     author: getRandomArrayItem(AUTHORS),
@@ -252,7 +238,7 @@ const generateFilmComment = () => {
 const generateFilmCard = () => {
   const filmDate = getRandomDate(new Date(FilmStartDate.YEAR, FilmStartDate.MONTH, FilmStartDate.DAY), new Date());
   return {
-    id: getRandomIntegerNumber(10000000, 99999999),
+    id: nanoid(),
     title: getRandomArrayItem(filmTitles),
     poster: getRandomArrayItem(filmPosters),
     description: getRandomArrayElements(filmDescriptions, DescriptionLength.MIN, DescriptionLength.MAX).join(` `),
@@ -271,7 +257,7 @@ const generateFilmCard = () => {
       isInWatchlist: Boolean(getRandomIntegerNumber()),
       isInHistory: Boolean(getRandomIntegerNumber()),
     },
-    watchingDate: getRandomDate(new Date(2020, 0, 1), new Date()),
+    watchingDate: getRandomDate(new Date(2020, 7, 14), new Date()),
   };
 };
 

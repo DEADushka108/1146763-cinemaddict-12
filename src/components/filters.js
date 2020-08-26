@@ -1,8 +1,13 @@
 import AbstractComponent from './abstract-component.js';
 
+const MAX_FILTER_COUNT = 5;
+
 const createFiltersTemplate = (filters) => {
   return filters.map((filter, index) => {
-    return `<a href="${filter.link}" class="main-navigation__item ${filter.isChecked ? `main-navigation__item--active` : ``}">${filter.name} ${index > 0 ? `<span class="main-navigation__item-count">${filter.count}</span>` : ``}</a>`;
+    return `<a href="${filter.name}" 
+    class="main-navigation__item ${filter.isChecked ? `main-navigation__item--active` : ``}">
+    ${filter.name} ${(index > 0 && filter.count <= MAX_FILTER_COUNT) ? `<span class="main-navigation__item-count">${filter.count}</span>` : ``}
+    </a>`;
   }).join(`\n`);
 };
 

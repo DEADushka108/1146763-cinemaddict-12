@@ -5,10 +5,12 @@ import CardControlsComponent from '../components/card-controls.js';
 import {render, replace, remove} from '../utils/render.js';
 
 export default class MovieCardPresenter {
-  constructor(container, dataChangeHandler) {
+  constructor(container, dataChangeHandler, viewChangeHandler) {
     this._container = container;
     this._dataChangeHandler = dataChangeHandler;
+    this._viewChangeHandler = viewChangeHandler;
 
+    this._film = null;
     this._filmCardComponent = null;
     this._filmPopupComponent = null;
     this._cardControlsComponent = null;
@@ -30,6 +32,7 @@ export default class MovieCardPresenter {
 
     this._filmCardComponent = new FilmCardComponent(film);
     this._cardControlsComponent = new CardControlsComponent(film.controls);
+    this._filmPopupComponent = new FilmPopupComponent(film);
 
     this._filmCardComponent.setClickHandlers(this._showPopupHandler);
 
@@ -63,7 +66,7 @@ export default class MovieCardPresenter {
   }
 
   _showPopupHandler() {
-    this._filmPopupComponent = new FilmPopupComponent(this._film);
+    this._viewChangeHandler();
     render(document.body, this._filmPopupComponent);
     this._commentsPresenter = new CommentsPresenter(this._filmPopupComponent.getElement().querySelector(`form`), this._film.comments);
     this._commentsPresenter.render();
@@ -83,12 +86,20 @@ export default class MovieCardPresenter {
             {comments: this._commentsPresenter.getComments()}
         ));
     this._commentsPresenter.destroy();
+    this._deletePopup();
+  }
+
+  destroy() {
+    remove(this._filmCardComponent);
+  }
+
+  _deletePopup() {
     remove(this._filmPopupComponent);
     document.removeEventListener(`keydown`, this._escapeButtonHandler);
     document.body.classList.remove(`hide-overflow`);
   }
 
-  destroy() {
-    remove(this._filmCardComponent);
+  setDefaultView() {
+    this._deletePopup();
   }
 }

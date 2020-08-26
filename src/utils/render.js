@@ -5,16 +5,6 @@ export const RenderPosition = {
 };
 
 /**
-  * Render element from template
-  * @param {Element} container
-  * @param {string} template
-  * @param {string} position
-  */
-export const renderElement = (container, template, position = `beforeend`) => {
-  container.insertAdjacentHTML(position, template);
-};
-
-/**
   * Create element from template
   * @param {string} template
   *
@@ -56,15 +46,6 @@ export const render = (container, component, position = RenderPosition.BEFOREEND
 export const remove = (component) => {
   component.getElement().remove();
   component.removeElement();
-};
-
-export const removeChild = (childComponent) => {
-  const parent = childComponent.getElement().parentElement;
-  parent.removeChild(childComponent.getElement());
-};
-
-export const appendChild = (parent, childComponent) => {
-  parent.appendChild(childComponent.getElement());
 };
 
 export const replace = (newComponent, oldComponent) => {

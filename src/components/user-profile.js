@@ -48,6 +48,7 @@ export default class UserProfile extends AbstractComponent {
   getTemplate() {
     return createUserProfileTemplate(this._filmsModel.getWatchedFilms().length);
   }
+
   refreshTitle() {
     this._element.querySelector(`.profile__rating`).textContent = getUserTitle(this._filmsModel.getWatchedFilms().length);
   }

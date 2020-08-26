@@ -3,7 +3,6 @@ import {getUserTitle} from './user-profile.js';
 
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import moment from 'moment';
 
 const BAR_HEIGHT = 50;
 
@@ -147,15 +146,15 @@ const createTotalDurationMarkup = (films) => {
     return sum + film.duration;
   }, 0);
 
-  const hours = totalDuration >= 60 ? `${moment.duration(totalDuration, `minutes`).hours()} <span class="statistic__item-description">h</span>` : ``;
+  const hours = totalDuration >= 60 ? `${Math.trunc(totalDuration / 60)} <span class="statistic__item-description">h</span>` : ``;
 
-  const minutes = totalDuration > 0 ? `${moment.duration(totalDuration, `minutes`).minutes()} <span class="statistic__item-description">m</span>` : ``;
+  const minutes = (totalDuration % 60) > 0 ? `${totalDuration % 60} <span class="statistic__item-description">m</span>` : ``;
 
   return hours && minutes ? `${hours} ${minutes}` : null;
 };
 
 const createStatisticsTemplate = (films, activeFilter) => {
-  const userTitle = getUserTitle(films);
+  const userTitle = getUserTitle(films.length);
 
   const filteredFilms = getFilmsByTimeRange(films, activeFilter);
 
