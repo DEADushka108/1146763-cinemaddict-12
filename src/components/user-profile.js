@@ -1,6 +1,7 @@
 import AbstractComponent from "./abstract-component";
 
 const UserRating = {
+  NOT_TITLE: 0,
   NOVICE: 10,
   MOVIE_BUFF: 20,
 };
@@ -13,7 +14,7 @@ const UserTitles = {
 
 export const getUserTitle = (watchedFilms) => {
 
-  if (watchedFilms <= UserRating.NOVICE) {
+  if (watchedFilms > UserRating.NOT_TITLE && watchedFilms <= UserRating.NOVICE) {
     return UserTitles.NOVICE;
   } else if (watchedFilms > UserRating.NOVICE && watchedFilms <= UserRating.MOVIE_BUFF) {
     return UserTitles.FAN;

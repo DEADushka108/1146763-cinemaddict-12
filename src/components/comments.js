@@ -21,6 +21,8 @@ const createEmojiInputTemplate = (emojis) => {
 };
 
 const createCommentTemplates = (comments) => {
+  const setDateView = (date) => new Date().setMonth(new Date().getMonth() - 1) > date ? moment(date).format(`YYYY/MM/DD HH:mm`) : moment(date).fromNow();
+
   return comments.map(({emoji, text, author, date, id}) => {
     return (
       `<li class="film-details__comment">
@@ -31,7 +33,7 @@ const createCommentTemplates = (comments) => {
           <p class="film-details__comment-text">${he.encode(text)}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${author}</span>
-            <span class="film-details__comment-day">${moment(date).format(`YYYY/MM/DD HH:mm`)}</span>
+            <span class="film-details__comment-day">${setDateView(date)}</span>
             <button class="film-details__comment-delete" data-id="${id}">Delete</button>
           </p>
         </div>
