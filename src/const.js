@@ -1,5 +1,5 @@
 export const CardCount = {
-  DEFAULT: 21,
+  DEFAULT: 41,
   ON_START: 5,
   STEP: 5,
   EXTRA: 2
@@ -10,6 +10,13 @@ export const SortType = {
   DATE: `Sort by date`,
   RATING: `Sort by rating`,
   COMMENTS: `Sort by comments`,
+};
+
+export const FilterType = {
+  ALL: `All movies`,
+  WATCHLIST: `Watchlist`,
+  HISTORY: `History`,
+  FAVORITES: `Favorites`,
 };
 
 export const FILM_GENRES = [

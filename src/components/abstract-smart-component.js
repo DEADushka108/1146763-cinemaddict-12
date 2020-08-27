@@ -10,7 +10,7 @@ export default class AbstractSmart extends AbstractComponent {
   }
 
   rerender() {
-    let oldElement = this.getElement();
+    const oldElement = this.getElement();
     const parent = oldElement.parentElement;
 
     this.removeElement();
@@ -18,26 +18,7 @@ export default class AbstractSmart extends AbstractComponent {
     const newElement = this.getElement();
 
     parent.replaceChild(newElement, oldElement);
-    oldElement = null;
 
     this.restoreHandlers();
-  }
-
-  updateData(update, justDataUpdating) {
-    if (!update) {
-      return;
-    }
-
-    this._film = Object.assign(
-        {},
-        this._film,
-        update
-    );
-
-    if (justDataUpdating) {
-      return;
-    }
-
-    this.rerender();
   }
 }

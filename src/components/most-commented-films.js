@@ -10,7 +10,7 @@ const createMostCommentedFilmsListTemplate = () => {
   );
 };
 
-export default class MostCommentedFilms extends AbstractComponent {
+export default class MostCommented extends AbstractComponent {
   getTemplate() {
     return createMostCommentedFilmsListTemplate();
   }

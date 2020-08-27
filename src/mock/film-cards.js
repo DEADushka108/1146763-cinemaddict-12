@@ -7,21 +7,7 @@ import {
   generateArray,
 } from '../utils/common.js';
 import {FILM_GENRES} from '../const.js';
-
-// const MonthNames = {
-//   0: `January`,
-//   1: `Fabruary`,
-//   2: `March`,
-//   3: `April`,
-//   4: `May`,
-//   5: `June`,
-//   6: `July`,
-//   7: `August`,
-//   8: `September`,
-//   9: `October`,
-//   10: `November`,
-//   11: `December`,
-// };
+import {nanoid} from 'nanoid';
 
 const filmTitles = [
   `Knokin' on heaven doors`,
@@ -237,6 +223,7 @@ const FilmStartDate = {
 const generateFilmComment = () => {
   const commentDate = getRandomDate(new Date(CommentParameter.YEAR, CommentParameter.MONTH, CommentParameter.DAY), new Date());
   return {
+    id: nanoid(6),
     emoji: getRandomArrayItem(EMOJIS),
     text: getRandomArrayItem(texts),
     author: getRandomArrayItem(AUTHORS),
@@ -251,25 +238,27 @@ const generateFilmComment = () => {
 const generateFilmCard = () => {
   const filmDate = getRandomDate(new Date(FilmStartDate.YEAR, FilmStartDate.MONTH, FilmStartDate.DAY), new Date());
   return {
+    id: nanoid(),
     title: getRandomArrayItem(filmTitles),
     poster: getRandomArrayItem(filmPosters),
     description: getRandomArrayElements(filmDescriptions, DescriptionLength.MIN, DescriptionLength.MAX).join(` `),
     comments: generateArray(getRandomIntegerNumber(CommentParameter.MIN, CommentParameter.MAX), generateFilmComment),
     rating: getRandomNumber(RatingParameter.MIN, RatingParameter.MAX).toFixed(RatingParameter.FIXED),
-    releaseDate: filmDate,
+    release: filmDate,
     duration: getRandomIntegerNumber(DurationParameter.MIN, DurationParameter.MAX),
     genres: getRandomArrayElements(FILM_GENRES, GenreParameter.MIN, GenreParameter.MAX),
-    isInFavorites: Boolean(getRandomIntegerNumber()),
-    isInWatchlist: Boolean(getRandomIntegerNumber()),
-    isInHistory: Boolean(getRandomIntegerNumber()),
-    additional: {
-      age: getRandomArrayItem(filmAges),
-      director: getRandomArrayItem(DIRECTORS),
-      writers: getRandomArrayElements(WRITERS, WriterParameter.MIN, WriterParameter.MAX),
-      actors: getRandomArrayElements(ACTORS, ActorParameter.MIN, ActorParameter.MAX),
-      country: getRandomArrayItem(COUNTRIES),
-    }
+    age: getRandomArrayItem(filmAges),
+    director: getRandomArrayItem(DIRECTORS),
+    writers: getRandomArrayElements(WRITERS, WriterParameter.MIN, WriterParameter.MAX),
+    actors: getRandomArrayElements(ACTORS, ActorParameter.MIN, ActorParameter.MAX),
+    country: getRandomArrayItem(COUNTRIES),
+    controls: {
+      isInFavorites: Boolean(getRandomIntegerNumber()),
+      isInWatchlist: Boolean(getRandomIntegerNumber()),
+      isInHistory: Boolean(getRandomIntegerNumber()),
+    },
+    watchingDate: getRandomDate(new Date(2020, 7, 14), new Date()),
   };
 };
 
-export {generateFilmCard};
+export const generateFilmsCard = (count) => generateArray(count, generateFilmCard);

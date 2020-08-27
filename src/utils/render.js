@@ -1,16 +1,7 @@
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,
-};
-
-/**
-  * Render element from template
-  * @param {Element} container
-  * @param {string} template
-  * @param {string} position
-  */
-export const renderElement = (container, template, position = `beforeend`) => {
-  container.insertAdjacentHTML(position, template);
+  AFTEREND: `afterend`,
 };
 
 /**
@@ -29,10 +20,10 @@ export const createElement = (template) => {
 /**
   * Render element from component
   * @param {Element} container
-  * @param {string} component
+  * @param {SomeClass} component
   * @param {string} position
   */
-export const render = (container, component, position) => {
+export const render = (container, component, position = RenderPosition.BEFOREEND) => {
 
   switch (position) {
     case RenderPosition.AFTERBEGIN:
@@ -41,6 +32,10 @@ export const render = (container, component, position) => {
 
     case RenderPosition.BEFOREEND:
       container.append(component.getElement());
+      break;
+
+    case RenderPosition.AFTEREND:
+      container.after(component.getElement());
       break;
 
     default:
@@ -53,22 +48,14 @@ export const remove = (component) => {
   component.removeElement();
 };
 
-export const removeChild = (childComponent) => {
-  const parent = childComponent.getElement().parentElement;
-  parent.removeChild(childComponent.getElement());
-};
-
-export const appendChild = (parent, childComponent) => {
-  parent.appendChild(childComponent.getElement());
-};
-
 export const replace = (newComponent, oldComponent) => {
-  const parentElement = oldComponent.getElement().parentElement;
   const newElement = newComponent.getElement();
   const oldElement = oldComponent.getElement();
+  const parentElement = oldElement.parentElement;
 
-  const isExistElements = parentElement && newElement && oldElement;
-  if (isExistElements && parentElement.contains(oldElement)) {
+  const isExistElements = !!(newElement && oldElement && parentElement);
+
+  if (isExistElements) {
     parentElement.replaceChild(newElement, oldElement);
   }
 };

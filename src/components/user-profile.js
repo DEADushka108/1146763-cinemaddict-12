@@ -11,8 +11,7 @@ const UserTitles = {
   MOVIE_BUFF: `Movie Buff`,
 };
 
-const getUserTitle = (films) => {
-  const watchedFilms = films.filter((it) => it.isInHistory).length;
+export const getUserTitle = (watchedFilms) => {
 
   if (watchedFilms <= UserRating.NOVICE) {
     return UserTitles.NOVICE;
@@ -37,12 +36,20 @@ const createUserProfileTemplate = (films) => {
 };
 
 export default class UserProfile extends AbstractComponent {
-  constructor(films) {
+  constructor(filmsModel) {
     super();
-    this._films = films;
+
+    this._filmsModel = filmsModel;
+
+    this.refreshTitle = this.refreshTitle.bind(this);
+    this._filmsModel.setDataChangeHandler(this.refreshTitle);
   }
 
   getTemplate() {
-    return createUserProfileTemplate(this._films);
+    return createUserProfileTemplate(this._filmsModel.getWatchedFilms().length);
+  }
+
+  refreshTitle() {
+    this._element.querySelector(`.profile__rating`).textContent = getUserTitle(this._filmsModel.getWatchedFilms().length);
   }
 }
