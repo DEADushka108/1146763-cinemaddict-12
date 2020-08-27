@@ -69,14 +69,6 @@ export default class MovieListPresenter {
     this._removeFilms();
   }
 
-  show() {
-    this._boardComponent.getElement().show();
-  }
-
-  hide() {
-    this._boardComponent.getElement().hide();
-  }
-
   _renderShowMoreButton() {
     remove(this._showMoreButtonComponent);
     if (this._currentFilmsCount >= this._currentFilms.length) {
