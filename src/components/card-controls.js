@@ -1,7 +1,6 @@
 import AbstractComponent from './abstract-component.js';
 
-const createControlsTemplate = (options) => {
-  const {isInWatchlist, isInHistory, isInFavorites} = options;
+const createControlsTemplate = ({isInWatchlist, isInHistory, isInFavorites}) => {
 
   const getElementState = (isChecked) => isChecked ? `film-card__controls-item--active` : ``;
 

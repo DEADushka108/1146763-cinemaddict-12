@@ -32,7 +32,6 @@ export default class MovieCardPresenter {
 
     this._filmCardComponent = new FilmCardComponent(film);
     this._cardControlsComponent = new CardControlsComponent(film.controls);
-    this._filmPopupComponent = new FilmPopupComponent(film);
 
     this._filmCardComponent.setClickHandlers(this._showPopupHandler);
 
@@ -67,6 +66,7 @@ export default class MovieCardPresenter {
 
   _showPopupHandler() {
     this._viewChangeHandler();
+    this._filmPopupComponent = new FilmPopupComponent(this._film);
     render(document.body, this._filmPopupComponent);
     this._commentsPresenter = new CommentsPresenter(this._filmPopupComponent.getElement().querySelector(`form`), this._film.comments);
     this._commentsPresenter.render();
@@ -94,9 +94,11 @@ export default class MovieCardPresenter {
   }
 
   _deletePopup() {
-    remove(this._filmPopupComponent);
-    document.removeEventListener(`keydown`, this._escapeButtonHandler);
-    document.body.classList.remove(`hide-overflow`);
+    if (this._filmPopupComponent) {
+      remove(this._filmPopupComponent);
+      document.removeEventListener(`keydown`, this._escapeButtonHandler);
+      document.body.classList.remove(`hide-overflow`);
+    }
   }
 
   setDefaultView() {

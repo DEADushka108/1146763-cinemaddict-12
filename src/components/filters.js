@@ -4,7 +4,7 @@ const MAX_FILTER_COUNT = 5;
 
 const createFiltersTemplate = (filters) => {
   return filters.map((filter, index) => {
-    return `<a href="${filter.name}" 
+    return `<a href="${filter.name}" data-filter="${filter.name}"
     class="main-navigation__item ${filter.isChecked ? `main-navigation__item--active` : ``}">
     ${filter.name} ${(index > 0 && filter.count <= MAX_FILTER_COUNT) ? `<span class="main-navigation__item-count">${filter.count}</span>` : ``}
     </a>`;
@@ -37,12 +37,10 @@ export default class Filter extends AbstractComponent {
       if (evt.target.tagName === `A` || evt.target.parentElement.tagName === `A`) {
         evt.preventDefault();
 
-        const filterName = evt.target.tagName === `A` ? evt.target.getAttribute(`href`) : evt.target.parentElement.getAttribute(`href`);
+        const filterName = evt.target.tagName === `A` ? evt.target.dataset.filter : evt.target.parentElement.dataset.filter;
 
         handler(filterName);
       }
-
-      return;
     });
   }
 }

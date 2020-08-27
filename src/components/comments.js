@@ -21,18 +21,18 @@ const createEmojiInputTemplate = (emojis) => {
 };
 
 const createCommentTemplates = (comments) => {
-  return comments.map((comment) => {
+  return comments.map(({emoji, text, author, date, id}) => {
     return (
       `<li class="film-details__comment">
         <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${comment.emoji}.png" width="55" height="55" alt="emoji-smile">
+          <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-smile">
         </span>
         <div>
-          <p class="film-details__comment-text">${he.encode(comment.text)}</p>
+          <p class="film-details__comment-text">${he.encode(text)}</p>
           <p class="film-details__comment-info">
-            <span class="film-details__comment-author">${comment.author}</span>
-            <span class="film-details__comment-day">${moment(comment.date).format(`YYYY/MM/DD HH:mm`)}</span>
-            <button class="film-details__comment-delete" data-id="${comment.id}">Delete</button>
+            <span class="film-details__comment-author">${author}</span>
+            <span class="film-details__comment-day">${moment(date).format(`YYYY/MM/DD HH:mm`)}</span>
+            <button class="film-details__comment-delete" data-id="${id}">Delete</button>
           </p>
         </div>
       </li>`

@@ -22,8 +22,7 @@ render(siteHeaderElement, new UserProfileComponent(filmsModel));
 const siteNavigationComponent = new SiteNavigationComponent();
 render(siteMainElement, siteNavigationComponent);
 
-const filterPresenter = new FilterPresenter(siteNavigationComponent.getElement(), filmsModel);
-filterPresenter.render();
+new FilterPresenter(siteNavigationComponent.getElement(), filmsModel).render();
 
 const pagePresenter = new MovieListPresenter(siteMainElement, filmsModel);
 pagePresenter.render();

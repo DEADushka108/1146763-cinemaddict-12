@@ -261,6 +261,4 @@ const generateFilmCard = () => {
   };
 };
 
-export const generateFilmsCard = (count) => {
-  return generateArray(count, generateFilmCard);
-};
+export const generateFilmsCard = (count) => generateArray(count, generateFilmCard);

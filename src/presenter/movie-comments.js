@@ -60,8 +60,6 @@ export default class CommentsPresenter {
     if (text && emoji) {
       this._currentComments.push(createComment(text, emoji));
       this.render();
-
-      return;
     }
   }
 

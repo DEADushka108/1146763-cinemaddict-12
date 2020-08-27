@@ -20,7 +20,7 @@ export const createElement = (template) => {
 /**
   * Render element from component
   * @param {Element} container
-  * @param {string} component
+  * @param {SomeClass} component
   * @param {string} position
   */
 export const render = (container, component, position = RenderPosition.BEFOREEND) => {
