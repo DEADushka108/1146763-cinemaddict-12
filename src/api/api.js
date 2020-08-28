@@ -26,11 +26,11 @@ export default class Api {
     .then(Adapter.createFilms);
   }
 
-  updateFilm(id, data) {
+  updateFilm(id, film) {
     return this._sendRequest({
       url: `movies/${id}`,
       method: Method.PUT,
-      body: JSON.stringyfy(data.adaptToServer()),
+      body: JSON.stringify(film),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then(Api.toJSON)
@@ -60,7 +60,7 @@ export default class Api {
     });
   }
 
-  _sendRequest({url, method = Method.GET, body, headers = new Headers()}) {
+  _sendRequest({url, method = Method.GET, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);
 
     return fetch(`${this._endPoint}/${url}`, {method, body, headers})

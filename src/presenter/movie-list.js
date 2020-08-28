@@ -101,7 +101,7 @@ export default class MovieListPresenter {
   }
 
   _dataChangeHandler(oldData, newData) {
-    this._api.updateFilm(oldData.id, JSON.stringify(newData.adeptToServer()))
+    this._api.updateFilm(oldData.id, newData.adaptToServer())
       .then((film) => {
         this._filmsModel.updateFilm(oldData.id, film);
         this._updateFilms(false);

@@ -52,10 +52,10 @@ export default class Adapter {
         "description": this.description,
       },
       "user_details": {
-        "watchlist": this.isInWatchlist,
-        "already_watched": this.isInHistory,
+        "watchlist": this.controls.isInWatchlist,
+        "already_watched": this.controls.isInHistory,
         "watching_date": this.watchingDate,
-        "favorite": this.isInFavorites,
+        "favorite": this.controls.isInFavorites,
       }
     };
   }

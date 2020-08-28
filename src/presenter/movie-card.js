@@ -89,7 +89,7 @@ export default class MovieCardPresenter {
 
   _commentAddHandler(comment) {
     this._api.addComment(this._film.id, JSON.stringify(comment))
-      .then(this._api.toJSON)
+      .then((response) => response.json())
       .then((parsedRes) => {
         this._film.comments = parsedRes[`comments`];
         this.render(this._film);
