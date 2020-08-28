@@ -4,34 +4,38 @@ import StatisticsComponent from './components/statistics.js';
 import MovieListPresenter from './presenter/movie-list.js';
 import FilterPresenter from './presenter/movie-filter.js';
 import FilmsModel from './models/films.js';
-import {generateFilmsCard} from './mock/film-cards.js';
 import {render} from './utils/render.js';
-import {CardCount} from './const.js';
+import API from './api/api.js';
 import MovieStatisticComponent from './components/movie-statistic.js';
 
-const films = generateFilmsCard(CardCount.DEFAULT);
-const filmsModel = new FilmsModel();
-filmsModel.setFilms(films);
+const AUTHORIZATION = `Basic kjjhdsFIF45h`;
+const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict/`;
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
-render(siteHeaderElement, new UserProfileComponent(filmsModel));
+const filmsModel = new FilmsModel();
+
+const api = new API(END_POINT, AUTHORIZATION);
 
 const siteNavigationComponent = new SiteNavigationComponent();
+const pagePresenter = new MovieListPresenter(siteMainElement, filmsModel, api);
+
+
 render(siteMainElement, siteNavigationComponent);
-
-new FilterPresenter(siteNavigationComponent.getElement(), filmsModel).render();
-
-const pagePresenter = new MovieListPresenter(siteMainElement, filmsModel);
-pagePresenter.render();
-
-render(siteFooterElement, new MovieStatisticComponent(films.length));
-
 const statisticsComponent = new StatisticsComponent(filmsModel);
 render(siteMainElement, statisticsComponent);
 statisticsComponent.hide();
+
+api.getFilms()
+  .then((films) => {
+    filmsModel.setFilms(films);
+    render(siteHeaderElement, new UserProfileComponent(filmsModel));
+    new FilterPresenter(siteNavigationComponent.getElement(), filmsModel).render();
+    pagePresenter.render();
+    render(siteFooterElement, new MovieStatisticComponent(films.length));
+  });
 
 siteNavigationComponent.setClickHandler((isStatistics) => {
   if (isStatistics) {

@@ -1,13 +1,11 @@
 import AbstractComponent from './abstract-component.js';
 import {FilterType} from '../const.js';
 
-const MAX_FILTER_COUNT = 5;
-
 const createFiltersTemplate = (filters) => {
   return filters.map(({name, count, isChecked}) => {
     return `<a href="${name}" data-filter="${name}"
     class="main-navigation__item ${isChecked ? `main-navigation__item--active` : ``}">
-    ${name} ${(name === FilterType.ALL || count >= MAX_FILTER_COUNT) ? `` : `<span class="main-navigation__item-count">${count}</span>`}
+    ${name} ${name === FilterType.ALL ? `` : `<span class="main-navigation__item-count">${count}</span>`}
     </a>`;
   }).join(`\n`);
 };

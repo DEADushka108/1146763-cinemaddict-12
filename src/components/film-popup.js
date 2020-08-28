@@ -6,7 +6,7 @@ const createGenresTemplate = (genres) => {
 };
 
 const createPopupTemplate = (film) => {
-  const {title, poster, description, rating, releaseDate, duration, genres, age, director, writers, actors, country} = film;
+  const {title, poster, description, rating, releaseDate, duration, genres, age, director, writers, actors, country, altTitle} = film;
   const {isInFavorites, isInWatchlist, isInHistory} = film.controls;
 
   const genresTemplate = createGenresTemplate(genres);
@@ -24,7 +24,7 @@ const createPopupTemplate = (film) => {
           </div>
           <div class="film-details__info-wrap">
             <div class="film-details__poster">
-              <img class="film-details__poster-img" src="./images/posters/${poster}" alt="${title}">
+              <img class="film-details__poster-img" src="./${poster}" alt="${title}">
 
               <p class="film-details__age">${age}</p>
             </div>
@@ -33,7 +33,7 @@ const createPopupTemplate = (film) => {
               <div class="film-details__info-head">
                 <div class="film-details__title-wrap">
                   <h3 class="film-details__title">${title}</h3>
-                  <p class="film-details__title-original">Original: ${title}</p>
+                  <p class="film-details__title-original">Original: ${altTitle}</p>
                 </div>
 
                 <div class="film-details__rating">
@@ -100,17 +100,10 @@ export default class FilmPopup extends AbstractComponent {
   constructor(film) {
     super();
     this._film = film;
-    this._currentControls = film.controls;
-
-    this._subscribeOnEvents();
   }
 
   getTemplate() {
     return createPopupTemplate(this._film);
-  }
-
-  getControlsStatus() {
-    return this._currentControls;
   }
 
   setClickHandler(callback) {
@@ -121,9 +114,9 @@ export default class FilmPopup extends AbstractComponent {
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
   }
 
-  _subscribeOnEvents() {
+  setControlsHandler(handler) {
     this.getElement().querySelector(`.film-details__controls`).addEventListener(`change`, (evt) => {
-      this._currentControls[evt.target.dataset.control] = !this._currentControls[evt.target.dataset.control];
+      handler(evt.target.dataset.control);
     });
   }
 }

@@ -9,9 +9,9 @@ import {render, remove, RenderPosition} from '../utils/render.js';
 import {SortType, CardCount} from '../const.js';
 import {getSortedFilms} from '../utils/sort.js';
 
-const renderFilms = (container, films, dataChangeHandler, viewChangeHandler) => {
+const renderFilms = (container, films, dataChangeHandler, viewChangeHandler, api) => {
   return films.map((it) => {
-    const filmPresenter = new MovieCardPresenter(container, dataChangeHandler, viewChangeHandler);
+    const filmPresenter = new MovieCardPresenter(container, dataChangeHandler, viewChangeHandler, api);
     filmPresenter.render(it);
 
     return filmPresenter;
@@ -19,9 +19,10 @@ const renderFilms = (container, films, dataChangeHandler, viewChangeHandler) => 
 };
 
 export default class MovieListPresenter {
-  constructor(container, filmsModel) {
+  constructor(container, filmsModel, api) {
     this._container = container;
     this._filmsModel = filmsModel;
+    this._api = api;
 
     this._currentFilmsControllers = [];
     this._currentFilms = [];
@@ -79,7 +80,7 @@ export default class MovieListPresenter {
       evt.preventDefault();
       const prevFilmsCount = this._currentFilmsCount;
       this._currentFilmsCount += CardCount.STEP;
-      const newFilms = renderFilms(this._mainFilmsListComponent.getElement().querySelector(`.films-list__container`), this._currentFilms.slice(prevFilmsCount, this._currentFilmsCount), this._dataChangeHandler, this._viewChangeHandler);
+      const newFilms = renderFilms(this._mainFilmsListComponent.getElement().querySelector(`.films-list__container`), this._currentFilms.slice(prevFilmsCount, this._currentFilmsCount), this._dataChangeHandler, this._viewChangeHandler, this._api);
       this._currentFilmsControllers = [...this._currentFilmsControllers, ...newFilms];
 
       if (this._currentFilmsCount >= this._currentFilms.length) {
@@ -100,9 +101,11 @@ export default class MovieListPresenter {
   }
 
   _dataChangeHandler(oldData, newData) {
-    this._filmsModel.updateFilm(oldData.id, newData);
-
-    this._updateFilms(false);
+    this._api.updateFilm(oldData.id, JSON.stringify(newData.adeptToServer()))
+      .then((film) => {
+        this._filmsModel.updateFilm(oldData.id, film);
+        this._updateFilms(false);
+      });
   }
 
   _removeFilms() {
@@ -131,7 +134,7 @@ export default class MovieListPresenter {
   }
 
   _renderFilms(films) {
-    const newFilms = renderFilms(this._mainFilmsListComponent.getElement().querySelector(`.films-list__container`), films, this._dataChangeHandler, this._viewChangeHandler);
+    const newFilms = renderFilms(this._mainFilmsListComponent.getElement().querySelector(`.films-list__container`), films, this._dataChangeHandler, this._viewChangeHandler, this._api);
     this._currentFilmsControllers = [...this._currentFilmsControllers, ...newFilms];
   }
 
@@ -145,11 +148,11 @@ export default class MovieListPresenter {
 
     this._currentTopRatedFilms = getSortedFilms(this._filmsModel.getAllFilms(), SortType.RATING).slice(0, CardCount.EXTRA);
 
-    const topRatedControllers = renderFilms(this._topRatedFilmsComponent.getElement().querySelector(`.films-list__container`), this._currentTopRatedFilms, this._dataChangeHandler, this._viewChangeHandler);
+    const topRatedControllers = renderFilms(this._topRatedFilmsComponent.getElement().querySelector(`.films-list__container`), this._currentTopRatedFilms, this._dataChangeHandler, this._viewChangeHandler, this._api);
 
     this._currentMostCommentedFilms = getSortedFilms(this._filmsModel.getAllFilms(), SortType.COMMENTS).slice(0, CardCount.EXTRA);
 
-    const mostCommentedControllers = renderFilms(this._mostCommentedFilmsComponent.getElement().querySelector(`.films-list__container`), this._currentMostCommentedFilms, this._dataChangeHandler, this._viewChangeHandler);
+    const mostCommentedControllers = renderFilms(this._mostCommentedFilmsComponent.getElement().querySelector(`.films-list__container`), this._currentMostCommentedFilms, this._dataChangeHandler, this._viewChangeHandler, this._api);
 
     this._currentFilmsControllers = [...topRatedControllers, ...mostCommentedControllers, ...this._currentFilmsControllers];
   }
