@@ -49,4 +49,12 @@ export default class Sort extends AbstractComponent {
       callback(this._currentSortType);
     });
   }
+
+  setDefaultSortType() {
+    this._currentSortType = SortType.DEFAULT;
+    this._element.querySelectorAll(`a`).forEach((it) => {
+      it.classList.remove(`sort__button--active`);
+    });
+    this._element.querySelector(`a:first-child`).classList.add(`sort__button--active`);
+  }
 }

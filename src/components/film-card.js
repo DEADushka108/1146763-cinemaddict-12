@@ -25,7 +25,7 @@ const createFilmCardTemplate = (film) => {
         <span class="film-card__duration">${Math.trunc(duration / 60)}h ${duration % 60}m</span>
         <span class="film-card__genre">${genres[0]}</span>
       </p>
-      <img src="./images/posters/${poster}" alt="${title}" class="film-card__poster">
+      <img src="./${poster}" alt="${title}" class="film-card__poster">
       <p class="film-card__description">${getDescription()}</p>
       <a class="film-card__comments">${getCommentsLength()} comments</a>
       <form class="film-card__controls">
@@ -38,13 +38,14 @@ const createFilmCardTemplate = (film) => {
 };
 
 export default class FilmCard extends AbstractSmartComponent {
-  constructor(film) {
+  constructor(film, comments) {
     super();
     this._film = film;
+    this._comments = comments;
   }
 
   getTemplate() {
-    return createFilmCardTemplate(this._film);
+    return createFilmCardTemplate(this._film, this._comments);
   }
 
   setClickHandler(callback) {
