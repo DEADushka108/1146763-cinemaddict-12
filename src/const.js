@@ -1,8 +1,7 @@
-export const CardCount = {
-  DEFAULT: 21,
-  ON_START: 5,
-  STEP: 5,
-  EXTRA: 2
+export const UserTitles = {
+  NOVICE: `Novice`,
+  FAN: `Fan`,
+  MOVIE_BUFF: `Movie Buff`,
 };
 
 export const SortType = {
@@ -12,18 +11,20 @@ export const SortType = {
   COMMENTS: `Sort by comments`,
 };
 
-export const FILM_GENRES = [
-  `Horror`,
-  `Action`,
-  `Adventure`,
-  `Musical`,
-  `Comedy`,
-  `Thriller`,
-  `Detective`,
-  `Anime`,
-  `Drama`,
-  `Melodrama`,
-  `Art house`,
-  `Fantasy`,
-  `Space opera`,
-];
+export const FilterType = {
+  ALL: `All movies`,
+  WATCHLIST: `Watchlist`,
+  HISTORY: `History`,
+  FAVORITES: `Favorites`,
+};
+
+export const TimePeriod = {
+  ALL_TIME: `all-time`,
+  TODAY: `today`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`,
+};
+
+export const BODY = document.querySelector(`body`);
+export const MAIN = document.querySelector(`.main`);
