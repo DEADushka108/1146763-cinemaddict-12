@@ -200,28 +200,29 @@ export default class PagePresenter {
 
   _onCommentsChange(filmPresenter, oldData, newData, film) {
     if (oldData === null) {
-      this._api.addComment(film.id, newData)
+      this._api.addComment(film.id, JSON.stringify(newData))
+        .then((res) => res.json())
         .then((response) => {
           const isSuccess = this._commentsModel.setComments(response.comments);
-          if (isSuccess) {
-            filmPresenter.resetTextarea();
-            filmPresenter.renderCommentsSection();
-          }
-        })
-        .catch(() => {
-          filmPresenter.shakeTextarea();
-        });
-    } else if (newData === null) {
-      this._api.deleteСomment(oldData.id)
-        .then(() => {
-          const isSuccess = this._commentsModel.removeComment(oldData.id);
           if (isSuccess) {
             filmPresenter.resetTextarea();
             filmPresenter.renderComments();
           }
         })
         .catch(() => {
-          filmPresenter.shakeComment(oldData.id);
+          filmPresenter.shakeTextarea();
+        });
+    } else if (newData === null) {
+      this._api.deleteСomment(JSON.stringify(oldData.id))
+        .then((res) => res.json())
+        .then(() => {
+          const isSuccess = this._commentsModel.removeComment(oldData);
+          if (isSuccess) {
+            filmPresenter.renderComments();
+          }
+        })
+        .catch(() => {
+          filmPresenter.shakeComment(oldData);
         });
     }
   }

@@ -44,11 +44,14 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
   constructor() {
     super();
 
+    this._callback = null;
+
     this._emojiTemplate = null;
     this._emoji = null;
     this._comment = null;
 
     this._subscribeOnEvents();
+    this.newCommentSubmitHandler = this.newCommentSubmitHandler.bind(this);
   }
 
   reset() {
@@ -105,28 +108,17 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
   }
 
   newCommentSubmitHandler(evt) {
-
-    const textarea = this.getElement().querySelector(`.film-details__comment-input`);
     const isCtrlAndEnterPressed = evt.ctrlKey && evt.key === `Enter`;
 
-    const isEmojiChosen = this.getElement().querySelector(`.film-details__add-emoji-label img`) ? this.getElement().querySelector(`.film-details__add-emoji-label img`).dataset.emojiType : false;
-
-    const isTextWritten = textarea.value;
-
-    if (isCtrlAndEnterPressed && isEmojiChosen && isTextWritten) {
-      textarea.disabled = true;
+    if (isCtrlAndEnterPressed && this._comment && this._emoji) {
+      this.getElement().querySelector(`.film-details__comment-input`).disabled = true;
 
       const comment = {
-        'emotion': this.getElement().querySelector(`.film-details__add-emoji-label img`).dataset.emojiType,
-        'comment': textarea.value,
+        'emotion': this._emoji,
+        'comment': this._comment,
         'date': new Date(),
       };
-    } else {
-      textarea.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
-
-      setTimeout(() => {
-        textarea.style.animation = ``;
-      }, SHAKE_ANIMATION_TIMEOUT);
+      this._callback(comment);
     }
   }
 }

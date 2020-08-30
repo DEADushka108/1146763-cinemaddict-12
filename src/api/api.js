@@ -56,7 +56,8 @@ export default class Api {
   deleteComment(id) {
     return this._sendRequest({
       url: `comments/${id}`,
-      method: Method.DELETE
+      method: Method.DELETE,
+      headers: new Headers({'Content-Type': `application/json`}),
     });
   }
 
