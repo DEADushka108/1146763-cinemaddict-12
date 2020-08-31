@@ -49,7 +49,7 @@ const renderFilms = (filmsListContainer, films, onDataChange, onViewChange, onCo
     filmPresenter.render(film);
 
     return filmPresenter;
-  })
+  });
 };
 
 export default class PagePresenter {
@@ -99,15 +99,16 @@ export default class PagePresenter {
 
     render(siteMainElement, this._sortComponent);
     render(siteMainElement, this._filmsComponent);
-    render(document.querySelector(`.films`), this._filmsListComponent);
+    render(this._filmsComponent.getElement(), this._filmsListComponent);
 
     this._filmsList = document.querySelector(`.films-list`);
-    render(this._filmsList, this._filmsListContainerComponent);
+    render(this._filmsListComponent.getElement(), this._filmsListContainerComponent);
 
     this._filmsListContainer = document.querySelector(`.films-list__container`);
 
     if (this._films.length === 0) {
       render(this._filmsListContainer, this._noFilmsComponent);
+      document.querySelector(`.films-list:first-child`).remove();
       return;
     }
 
@@ -122,13 +123,8 @@ export default class PagePresenter {
       render(this._filmsListContainer, this._noFilmsComponent);
       return;
     }
-    if (document.querySelector(`.films-list__title:first-child`)) {
-      document.querySelector(`.films-list__title:first-child`).remove();
-    }
-
     const newFilms = renderFilms(this._filmsListContainer, films, this._onDataChange, this._onViewChange, this._onCommentsChange, this._api, this._commentsModel);
     this._currentFilmPresenters = this._currentFilmPresenters.concat(newFilms);
-    this._currentCardsCount = this._currentFilmPresenters.length;
   }
 
   renderUserTitle(films) {
@@ -158,7 +154,7 @@ export default class PagePresenter {
       return;
     }
 
-    render(this._filmsList, this._showMoreButtonComponent);
+    render(this._filmsListComponent.getElement(), this._showMoreButtonComponent);
     this._showMoreButtonComponent.setClickHandler(this._onShowMoreButtonClick);
   }
 
@@ -169,7 +165,7 @@ export default class PagePresenter {
     this._currentCardsCount += CardCount.STEP;
 
     const sortedFilms = getSortedFilms(films, this._sortComponent.getSortType(), previouseCardCount, this._currentCardsCount);
-    this._renderFilms(sortedFilms, this._comments);
+    this._renderFilms(sortedFilms);
 
     if (this._currentCardsCount >= films.length) {
       remove(this._showMoreButtonComponent);
@@ -177,12 +173,13 @@ export default class PagePresenter {
   }
 
   _onSortTypeChange(sortType) {
-    this._currentCardsCount = this._currentFilmPresenters.length;
+    this._currentCardsCount = CardCount.ON_START;
     const sortedFilms = getSortedFilms(this._filmsModel.getFilms(), sortType, 0, CardCount.ON_START);
 
     this._removeFilms();
     this._renderFilms(sortedFilms);
     this._renderShowMoreButton();
+    this._renderExtraFilmList();
   }
 
   _onDataChange(filmPresenter, oldData, newData) {
@@ -190,7 +187,6 @@ export default class PagePresenter {
     this._api.updateFilm(oldData.id, newData)
       .then((film) => {
         const isSuccess = this._filmsModel.updateFilms(oldData.id, film);
-
         if (isSuccess) {
           filmPresenter.rerender(film);
           this.renderUserTitle(this._filmsModel.getAllFilms());
@@ -213,12 +209,12 @@ export default class PagePresenter {
           filmPresenter.shakeTextarea();
         });
     } else if (newData === null) {
-      this._api.deleteСomment(JSON.stringify(oldData.id))
-        .then((res) => res.json())
+      this._api.deleteСomment(oldData.id)
         .then(() => {
           const isSuccess = this._commentsModel.removeComment(oldData);
           if (isSuccess) {
             filmPresenter.renderComments();
+            this._filmsModel.updateFilms(oldData.id, film);
           }
         })
         .catch(() => {
@@ -248,13 +244,15 @@ export default class PagePresenter {
   }
 
   showPreloader() {
-    render(siteMainElement, this._sortComponent);
     render(siteMainElement, this._filmsComponent);
-    render(document.querySelector(`.films`), this._filmsLoadComponent);
+    render(this._filmsComponent.getElement(), this._filmsLoadComponent);
   }
 
   removePreloader() {
     this._filmsLoadComponent.removeElement();
+    if (document.querySelector(`.films-list:first-child`)) {
+      document.querySelector(`.films-list:first-child`).remove();
+    }
   }
 
   _renderExtraFilmList() {

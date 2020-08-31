@@ -29,7 +29,7 @@ export default class Films {
   }
 
   updateFilms(id, film) {
-    const index = this._films.findIndex((film) => film.id === id);
+    const index = this._films.findIndex((it) => it.id === id);
 
     if (index === -1) {
       return false;

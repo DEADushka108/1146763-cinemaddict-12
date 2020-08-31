@@ -1,5 +1,4 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
-import {SHAKE_ANIMATION_TIMEOUT} from '../presenter/movie-card.js';
 
 const EmojiAddress = {
   SMILE: `smile`,

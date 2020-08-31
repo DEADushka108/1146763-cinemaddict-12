@@ -20,7 +20,6 @@ const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
 const renderPage = () => {
-  pagePresenter.removePreloader();
   pagePresenter.render();
   render(siteFooterElement, new FooterStatisticComponent(filmsModel));
 };
@@ -65,6 +64,7 @@ menuComponent.setOnChange((menuItem) => {
 api.getFilms()
   .then((films) => {
     filmsModel.setFilms(films);
+    pagePresenter.removePreloader();
     pagePresenter.renderUserTitle(films);
     renderPage();
   })

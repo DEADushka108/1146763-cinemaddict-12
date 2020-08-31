@@ -2,18 +2,19 @@ import AbstractSmartComponent from "./abstract-smart-component.js";
 import moment from 'moment';
 import he from 'he';
 
-const createCommentsTemplate = (comments) => {
-  return comments.map((comment) => {
+const createCommentsTemplate = (allComments) => {
+  return allComments.map(({emotion, comment, date, author}) => {
+    const setDateView = (commentDate) => new Date().setMonth(new Date().getMonth() - 1) > commentDate ? moment(commentDate).format(`YYYY/MM/DD HH:mm`) : moment(commentDate).fromNow();
     return (
       `<li class="film-details__comment">
         <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-${comment.emotion}">
+          <img src="./images/emoji/${emotion}.png" width="55" height="55" alt="emoji-${emotion}">
         </span>
         <div>
-          <p class="film-details__comment-text">${he.encode(comment.comment)}</p>
+          <p class="film-details__comment-text">${he.encode(comment)}</p>
           <p class="film-details__comment-info">
-            <span class="film-details__comment-author">${comment.author}</span>
-            <span class="film-details__comment-day">${moment(comment.date).format(`YYYY/MM/DD hh:mm`)}</span>
+            <span class="film-details__comment-author">${author}</span>
+            <span class="film-details__comment-day">${setDateView(date)}</span>
             <button class="film-details__comment-delete">Delete</button>
           </p>
         </div>
