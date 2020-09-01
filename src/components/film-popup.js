@@ -5,24 +5,13 @@ const createGenresTemplate = (genres) => {
   return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(`\n`);
 };
 
-<<<<<<< HEAD:src/components/film-details.js
 const createFilmDetailsTemplate = (film) => {
   const {title, altTitle, poster, description, rating, releaseDate, duration, genres, age, director, writers, actors, country} = film;
-=======
-const createPopupTemplate = (film) => {
-  const {title, poster, description, rating, releaseDate, duration, genres, age, director, writers, actors, country} = film;
-  const {isInFavorites, isInWatchlist, isInHistory} = film.controls;
->>>>>>> 617a01152fa37880ea8a3df2c74c81863c650611:src/components/film-popup.js
 
   const genresTemplate = createGenresTemplate(genres);
 
   const getPluralOrSingularWordGenre = () => genres.length > 1 ? `Genres` : `Genre`;
 
-<<<<<<< HEAD:src/components/film-details.js
-=======
-  const getCheckedStatus = (isCheckedParameter) => isCheckedParameter ? `checked` : ``;
-
->>>>>>> 617a01152fa37880ea8a3df2c74c81863c650611:src/components/film-popup.js
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
@@ -86,27 +75,11 @@ const createPopupTemplate = (film) => {
               </p>
             </div>
           </div>
-<<<<<<< HEAD:src/components/film-details.js
         </div>
 
         <div class="form-details__bottom-container">
 
         </div>
-=======
-
-          <section class="film-details__controls">
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" data-control="isInWatchlist" ${getCheckedStatus(isInWatchlist)}>
-            <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" data-control="isInHistory" ${getCheckedStatus(isInHistory)}>
-            <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" data-control="isInFavorites" ${getCheckedStatus(isInFavorites)}>
-            <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
-          </section>
-        </div>
-
->>>>>>> 617a01152fa37880ea8a3df2c74c81863c650611:src/components/film-popup.js
       </form>
     </section>`
   );
@@ -123,31 +96,10 @@ export default class FilmPopup extends AbstractComponent {
   }
 
   getTemplate() {
-<<<<<<< HEAD:src/components/film-details.js
     return createFilmDetailsTemplate(this._film, this._comments);
-=======
-    return createPopupTemplate(this._film);
->>>>>>> 617a01152fa37880ea8a3df2c74c81863c650611:src/components/film-popup.js
   }
 
   getControlsStatus() {
     return this._currentControls;
   }
-<<<<<<< HEAD:src/components/film-details.js
-=======
-
-  setClickHandler(callback) {
-    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, callback);
-  }
-
-  setCloseButtonClickHandler(handler) {
-    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
-  }
-
-  _subscribeOnEvents() {
-    this.getElement().querySelector(`.film-details__controls`).addEventListener(`change`, (evt) => {
-      this._currentControls[evt.target.dataset.control] = !this._currentControls[evt.target.dataset.control];
-    });
-  }
->>>>>>> 617a01152fa37880ea8a3df2c74c81863c650611:src/components/film-popup.js
 }

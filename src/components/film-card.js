@@ -1,4 +1,4 @@
-import AbstractComponent from './abstract-component.js';
+import AbstractSmartComponent from './abstract-smart-component.js';
 import moment from 'moment';
 
 const createFilmCardTemplate = (film) => {

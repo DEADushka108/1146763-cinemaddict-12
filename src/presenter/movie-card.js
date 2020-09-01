@@ -1,5 +1,4 @@
 import FilmCardComponent from '../components/film-card.js';
-<<<<<<< HEAD
 import FilmDetailsComponent from '../components/film-details.js';
 import FilmDetailsCommentsComponent from '../components/film-details-comments.js';
 import FilmDetailsControlsComponent from '../components/film-details-controls.js';
@@ -11,26 +10,7 @@ import {BODY} from '../const.js';
 export const SHAKE_ANIMATION_TIMEOUT = 600;
 
 const ESC_KEYCODE = 27;
-=======
-import FilmPopupComponent from '../components/film-popup.js';
-import CommentsPresenter from '../presenter/movie-comments.js';
-import CardControlsComponent from '../components/card-controls.js';
-import {render, replace, remove} from '../utils/render.js';
 
-export default class MovieCardPresenter {
-  constructor(container, dataChangeHandler, viewChangeHandler) {
-    this._container = container;
-    this._dataChangeHandler = dataChangeHandler;
-    this._viewChangeHandler = viewChangeHandler;
->>>>>>> 617a01152fa37880ea8a3df2c74c81863c650611
-
-    this._film = null;
-    this._filmCardComponent = null;
-    this._filmPopupComponent = null;
-    this._cardControlsComponent = null;
-    this._commentsPresenter = null;
-
-<<<<<<< HEAD
 export default class FilmPresenter {
   constructor(film, container, onDataChange, onViewChange, onCommentsChange, api, commentsModel) {
     this._film = film;
@@ -237,79 +217,6 @@ export default class FilmPresenter {
 
       appendChild(this._filmDetailsComponent.getElement().querySelector(`.film-details__comments-wrap`), this._filmDetailsNewCommentComponent);
     });
-=======
-    this._oldPopupComponent = null;
-
-    this._closePopupHandler = this._closePopupHandler.bind(this);
-    this._showPopupHandler = this._showPopupHandler.bind(this);
-    this._escapeButtonHandler = this._escapeButtonHandler.bind(this);
-    this._changeData = this._changeData.bind(this);
-  }
-
-  render(film) {
-    this._film = film;
-
-    const oldCardControlsComponent = this._cardControlsComponent;
-    const oldFilmPopupComponent = this._filmPopupComponent;
-
-    this._filmCardComponent = new FilmCardComponent(film);
-    this._cardControlsComponent = new CardControlsComponent(film.controls);
-
-    this._filmCardComponent.setClickHandlers(this._showPopupHandler);
-
-    this._cardControlsComponent.setControlsClickHandler(this._changeData);
-
-    if (oldCardControlsComponent && oldFilmPopupComponent) {
-      replace(this._cardControlsComponent, oldCardControlsComponent);
-      return;
-    }
-
-    render(this._container, this._filmCardComponent);
-    render(this._filmCardComponent.getElement(), this._cardControlsComponent);
-  }
-
-  _escapeButtonHandler(evt) {
-    if (evt.key === `Esc` || evt.key === `Escape`) {
-      this._closePopupHandler();
-    }
-  }
-
-  _changeData(field) {
-    const changedData = Object.assign({},
-        this._film.controls,
-        {[field]: !this._film.controls[field]});
-
-    this._dataChangeHandler(this._film,
-        Object.assign({},
-            this._film,
-            {controls: changedData}
-        ));
-  }
-
-  _showPopupHandler() {
-    this._viewChangeHandler();
-    this._filmPopupComponent = new FilmPopupComponent(this._film);
-    render(document.body, this._filmPopupComponent);
-    this._commentsPresenter = new CommentsPresenter(this._filmPopupComponent.getElement().querySelector(`form`), this._film.comments);
-    this._commentsPresenter.render();
-
-    this._filmPopupComponent.setCloseButtonClickHandler(this._closePopupHandler);
-
-    document.body.classList.add(`hide-overflow`);
-
-    document.addEventListener(`keydown`, this._escapeButtonHandler);
-  }
-
-  _closePopupHandler() {
-    this._dataChangeHandler(this._film,
-        Object.assign({},
-            this._film,
-            this._filmPopupComponent.getControlsStatus(),
-            {comments: this._commentsPresenter.getComments()}
-        ));
-    this._commentsPresenter.destroy();
-    this._deletePopup();
->>>>>>> 617a01152fa37880ea8a3df2c74c81863c650611
   }
 
   destroy() {
@@ -324,7 +231,6 @@ export default class FilmPresenter {
     }
   }
 
-<<<<<<< HEAD
   shakeTextarea() {
     const textarea = this._filmDetailsNewCommentComponent.getElement().querySelector(`.film-details__comment-input`);
     textarea.disabled = false;
@@ -350,9 +256,5 @@ export default class FilmPresenter {
 
   resetTextarea() {
     this._filmDetailsNewCommentComponent.reset();
-=======
-  setDefaultView() {
-    this._deletePopup();
->>>>>>> 617a01152fa37880ea8a3df2c74c81863c650611
   }
 }
