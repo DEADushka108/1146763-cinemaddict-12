@@ -50,7 +50,9 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
     this._comment = null;
 
     this._subscribeOnEvents = this._subscribeOnEvents.bind(this);
+    this._inputChangeHandler = this._inputChangeHandler.bind(this);
     this._newCommentSubmitHandler = this._newCommentSubmitHandler.bind(this);
+    this._subscribeOnEvents();
   }
 
   reset() {
@@ -119,6 +121,7 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
         'comment': this._comment,
         'date': new Date(),
       };
+
       this._callback(comment);
     }
   }
