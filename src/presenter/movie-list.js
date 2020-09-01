@@ -11,6 +11,8 @@ import {render, remove} from '../utils/render.js';
 import {SortType} from '../const.js';
 import FilmPresenter from '../presenter/movie-card.js';
 import FilmsLoadComponent from '../components/film-load.js';
+import {getUserTitle} from '../utils/utils.js';
+import {getSortedFilms} from '../utils/sort.js';
 
 const CardCount = {
   DEFAULT: 41,
@@ -19,29 +21,7 @@ const CardCount = {
   EXTRA: 2
 };
 
-const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = document.querySelector(`.header`);
-
-const getSortedFilms = (films, sortType, from, to) => {
-  let sortedFilms = [];
-  const shownFilms = films.slice();
-
-  switch (sortType) {
-    case SortType.DATE:
-      sortedFilms = shownFilms.sort((a, b) => b.releaseDate - a.releaseDate);
-      break;
-    case SortType.RATING:
-      sortedFilms = shownFilms.sort((a, b) => b.rating - a.rating);
-      break;
-    case SortType.DEFAULT:
-      sortedFilms = shownFilms;
-      break;
-    case SortType.COMMENTS:
-      sortedFilms = shownFilms.sort((a, b) => b.comments.length - a.comments.length);
-      break;
-  }
-  return sortedFilms.slice(from, to);
-};
 
 const renderFilms = (filmsListContainer, films, onDataChange, onViewChange, onCommentsChange, api, commentsModel) => {
   return films.map((film) => {
@@ -53,7 +33,8 @@ const renderFilms = (filmsListContainer, films, onDataChange, onViewChange, onCo
 };
 
 export default class PagePresenter {
-  constructor(filmsModel, commentsModel, api) {
+  constructor(container, filmsModel, commentsModel, api) {
+    this._container = container;
     this._filmsModel = filmsModel;
     this._commentsModel = commentsModel;
     this._api = api;
@@ -97,11 +78,10 @@ export default class PagePresenter {
 
     const currentFilms = this._films.slice(0, this._currentCardsCount);
 
-    render(siteMainElement, this._sortComponent);
-    render(siteMainElement, this._filmsComponent);
+    render(this._container, this._sortComponent);
+    render(this._container, this._filmsComponent);
     render(this._filmsComponent.getElement(), this._filmsListComponent);
 
-    this._filmsList = document.querySelector(`.films-list`);
     render(this._filmsListComponent.getElement(), this._filmsListContainerComponent);
 
     this._filmsListContainer = document.querySelector(`.films-list__container`);
@@ -127,11 +107,11 @@ export default class PagePresenter {
     this._currentFilmPresenters = this._currentFilmPresenters.concat(newFilms);
   }
 
-  renderUserTitle(films) {
+  renderUserTitle() {
     if (this._userTitleComponent) {
       remove(this._userTitleComponent);
     }
-    this._userTitleComponent = new UserTitleComponent(films);
+    this._userTitleComponent = new UserTitleComponent(getUserTitle(this._filmsModel.getWatchedFilms().length));
     render(siteHeaderElement, this._userTitleComponent);
   }
 
@@ -159,12 +139,12 @@ export default class PagePresenter {
   }
 
   _onShowMoreButtonClick() {
-    const previouseCardCount = this._currentCardsCount;
+    const previousCardCount = this._currentCardsCount;
     const films = this._filmsModel.getFilms();
 
     this._currentCardsCount += CardCount.STEP;
 
-    const sortedFilms = getSortedFilms(films, this._sortComponent.getSortType(), previouseCardCount, this._currentCardsCount);
+    const sortedFilms = getSortedFilms(films, this._sortComponent.getSortType(), previousCardCount, this._currentCardsCount);
     this._renderFilms(sortedFilms);
 
     if (this._currentCardsCount >= films.length) {
@@ -244,7 +224,7 @@ export default class PagePresenter {
   }
 
   showPreloader() {
-    render(siteMainElement, this._filmsComponent);
+    render(this._container, this._filmsComponent);
     render(this._filmsComponent.getElement(), this._filmsLoadComponent);
   }
 

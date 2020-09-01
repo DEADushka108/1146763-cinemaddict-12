@@ -1,8 +1,6 @@
-import {getUserTitle} from '../utils/utils.js';
 import AbstractComponent from './abstract-component.js';
 
-const createUserTitleTemplate = (films) => {
-  const title = getUserTitle(films);
+const createUserTitleTemplate = (title) => {
 
   return (
     `<section class="header__profile profile">
@@ -13,13 +11,13 @@ const createUserTitleTemplate = (films) => {
 };
 
 export default class UserTitle extends AbstractComponent {
-  constructor(films) {
+  constructor(title) {
     super();
 
-    this._films = films;
+    this._title = title;
   }
 
   getTemplate() {
-    return createUserTitleTemplate(this._films);
+    return createUserTitleTemplate(this._title);
   }
 }

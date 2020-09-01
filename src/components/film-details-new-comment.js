@@ -49,8 +49,8 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
     this._emoji = null;
     this._comment = null;
 
-    this._subscribeOnEvents();
-    this.newCommentSubmitHandler = this.newCommentSubmitHandler.bind(this);
+    this._subscribeOnEvents = this._subscribeOnEvents.bind(this);
+    this._newCommentSubmitHandler = this._newCommentSubmitHandler.bind(this);
   }
 
   reset() {
@@ -78,13 +78,15 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
     this.restoreHandlers();
   }
 
+  _inputChangeHandler(evt) {
+    this._emoji = evt.target.value;
+    this._emojiTemplate = createEmojiImageTemplate(this._emoji);
+    this.rerender();
+  }
+
   _subscribeOnEvents() {
     this.getElement().querySelectorAll(`input`).forEach((emoji) => {
-      emoji.addEventListener(`change`, (evt) => {
-        this._emoji = evt.target.value;
-        this._emojiTemplate = createEmojiImageTemplate(this._emoji);
-        this.rerender();
-      });
+      emoji.addEventListener(`change`, this._inputChangeHandler);
     });
 
     this.getElement().querySelector(`.film-details__comment-input`)
@@ -99,14 +101,14 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
 
   setAddCommentHandler(callback) {
     this._callback = callback;
-    document.addEventListener(`keydown`, this.newCommentSubmitHandler);
+    document.addEventListener(`keydown`, this._newCommentSubmitHandler);
   }
 
   removeCommentHandler() {
-    document.removeEventListener(`keydown`, this.newCommentSubmitHandler);
+    document.removeEventListener(`keydown`, this._newCommentSubmitHandler);
   }
 
-  newCommentSubmitHandler(evt) {
+  _newCommentSubmitHandler(evt) {
     const isCtrlAndEnterPressed = evt.ctrlKey && evt.key === `Enter`;
 
     if (isCtrlAndEnterPressed && this._comment && this._emoji) {

@@ -1,7 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
 
-const createFilmDetailsTemplate = (film) => {
-  const {isInWatchlist, isInHistory, isInFavorites} = film;
+const createFilmDetailsTemplate = ({isInWatchlist, isInHistory, isInFavorites}) => {
 
   const getCheckedState = (isChecked) => isChecked ? `checked` : ``;
 
@@ -27,7 +26,7 @@ export default class FilmDetailsControls extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createFilmDetailsTemplate(this._film, this._comments);
+    return createFilmDetailsTemplate(this._film);
   }
 
   setAddToWatchlistHandler(callback) {

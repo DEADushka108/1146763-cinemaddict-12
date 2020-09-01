@@ -1,5 +1,5 @@
 import {FilterType} from '../const.js';
-import {getFiltredFilms} from '../utils/filter.js';
+import {getFilteredFilms} from '../utils/filter.js';
 
 
 export default class Films {
@@ -12,11 +12,11 @@ export default class Films {
   }
 
   getFilms() {
-    return getFiltredFilms(this._films, this._activeFilterType);
+    return getFilteredFilms(this._films, this._activeFilterType);
   }
 
   getWatchedFilms() {
-    return getFiltredFilms(this._films, FilterType.HISTORY);
+    return getFilteredFilms(this._films, FilterType.HISTORY);
   }
 
   getAllFilms() {

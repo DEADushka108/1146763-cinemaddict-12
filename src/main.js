@@ -21,7 +21,7 @@ const siteFooterElement = document.querySelector(`.footer`);
 
 const renderPage = () => {
   pagePresenter.render();
-  render(siteFooterElement, new FooterStatisticComponent(filmsModel));
+  render(siteFooterElement, new FooterStatisticComponent(filmsModel.getAllFilms().length));
 };
 
 const api = new API(END_POINT, AUTHORIZATION);
@@ -29,24 +29,22 @@ const api = new API(END_POINT, AUTHORIZATION);
 const filmsModel = new FilmsModel();
 const commentsModel = new CommentsModel();
 
-
 const menuComponent = new MenuComponent();
 render(siteMainElement, menuComponent);
 
 const mainNavigation = siteMainElement.querySelector(`.main-navigation`);
 
-const filterPresenter = new FilterPresenter(mainNavigation, filmsModel);
-filterPresenter.render();
+new FilterPresenter(mainNavigation, filmsModel).render();
 
 const statisticsComponent = new StatisticComponent(filmsModel);
 statisticsComponent.hide();
 render(siteMainElement, statisticsComponent);
 
-const pagePresenter = new PagePresenter(filmsModel, commentsModel, api);
+const pagePresenter = new PagePresenter(siteMainElement, filmsModel, commentsModel, api);
 pagePresenter.showPreloader();
 
 
-menuComponent.setOnChange((menuItem) => {
+menuComponent.setOnChangeHandler((menuItem) => {
 
   switch (menuItem) {
     case MenuItem.FILMS:
@@ -65,7 +63,7 @@ api.getFilms()
   .then((films) => {
     filmsModel.setFilms(films);
     pagePresenter.removePreloader();
-    pagePresenter.renderUserTitle(films);
+    pagePresenter.renderUserTitle();
     renderPage();
   })
   .catch(() => {

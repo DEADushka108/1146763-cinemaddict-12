@@ -26,10 +26,6 @@ export default class Comments {
     return true;
   }
 
-  setDataChangeHandlers(handler) {
-    this._dataChangeHandler.push(handler);
-  }
-
   _callHandlers(handlers) {
     handlers.forEach((handler) => handler());
   }

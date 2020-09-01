@@ -1,5 +1,4 @@
 import {UserTitles} from '../const.js';
-import {getWatchedFilms} from './filter.js';
 
 const FilmsNumber = {
   NOVICE: 1,
@@ -7,8 +6,7 @@ const FilmsNumber = {
   MOVIE_BUFF: 20,
 };
 
-export const getUserTitle = (films) => {
-  const watchedFilms = getWatchedFilms(films).length;
+export const getUserTitle = (watchedFilms) => {
 
   if (watchedFilms >= FilmsNumber.NOVICE && watchedFilms <= FilmsNumber.FAN) {
     return UserTitles.NOVICE;

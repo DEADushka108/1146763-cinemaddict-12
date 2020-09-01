@@ -1,6 +1,6 @@
 import FilterComponent from '../components/filter.js';
 import {RenderPosition, render, replace} from '../utils/render.js';
-import {getFiltredFilms} from '../utils/filter.js';
+import {getFilteredFilms} from '../utils/filter.js';
 import {FilterType} from '../const.js';
 
 export default class FilterPresenter {
@@ -18,26 +18,25 @@ export default class FilterPresenter {
   }
 
   render() {
-    const container = this._container;
-    const allFilms = this._filmsModel.getAllFilms();
-    const filters = Object.values(FilterType).map((filterType) => {
-
-      return {
-        name: filterType,
-        count: getFiltredFilms(allFilms, filterType).length,
-        address: filterType.replace(/\s+/g, ``).trim().toLowerCase(),
-        checked: filterType === this._activeFilterType,
-      };
-    });
     const oldComponent = this._filterComponent;
-    this._filterComponent = new FilterComponent(filters);
+    this._filterComponent = new FilterComponent(this._createFilters());
     this._filterComponent.setFilterChangeHandler(this._onFilterChange);
 
     if (oldComponent) {
       replace(this._filterComponent, oldComponent);
     } else {
-      render(container, this._filterComponent, RenderPosition.AFTERBEGIN);
+      render(this._container, this._filterComponent, RenderPosition.AFTERBEGIN);
     }
+  }
+
+  _createFilters() {
+    return Object.values(FilterType).map((filterType) => ({
+      name: filterType,
+      count: getFilteredFilms(this._filmsModel.getAllFilms(), filterType).length,
+      address: filterType.replace(/\s+/g, ``).trim().toLowerCase(),
+      isChecked: filterType === this._activeFilterType,
+    })
+    );
   }
 
   _onFilterChange(filterType) {

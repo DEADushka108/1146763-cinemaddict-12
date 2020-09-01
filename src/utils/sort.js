@@ -28,23 +28,3 @@ export const getSortedFilms = (films, filterType, from, to) => {
   }
   return sortedFilms.slice(from, to);
 };
-
-/**
-* Get sorted array by rating
-* @param {Array} array
-* @return {Array} sorted array
-*/
-// export const getTopRatedFilms = (array) => {
-//   return array.slice()
-//               .sort((a, b) => b.rating - a.rating);
-// };
-
-/**
-* Get sorted array by comments
-* @param {Array} array
-* @return {Array} sorted array
-*/
-// export const getTopCommentedFilms = (array) => {
-//   return array.slice()
-//               .sort((a, b) => b.comments.length - a.comments.length);
-// };

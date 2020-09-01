@@ -15,6 +15,9 @@ export default class Sort extends AbstractComponent {
   constructor() {
     super();
     this._currentSortType = SortType.DEFAULT;
+
+    this._resetActiveClass = this._resetActiveClass.bind(this);
+    this._setActiveClass = this._setActiveClass.bind(this);
   }
 
   getTemplate() {
@@ -39,11 +42,8 @@ export default class Sort extends AbstractComponent {
         return;
       }
 
-      const sortList = evt.currentTarget;
-      const sortElement = evt.target;
-      const sortElements = sortList.querySelectorAll(`.sort__button`);
-      sortElements.forEach((element) => element.classList.remove(`sort__button--active`));
-      sortElement.classList.add(`sort__button--active`);
+      this._resetActiveClass();
+      this._setActiveClass(evt.target);
 
       this._currentSortType = sortType;
       callback(this._currentSortType);
@@ -52,9 +52,17 @@ export default class Sort extends AbstractComponent {
 
   setDefaultSortType() {
     this._currentSortType = SortType.DEFAULT;
-    this._element.querySelectorAll(`a`).forEach((it) => {
-      it.classList.remove(`sort__button--active`);
-    });
-    this._element.querySelector(`a:first-child`).classList.add(`sort__button--active`);
+    this._resetActiveClass();
+    this._setActiveClass(this._element.querySelector(`a:first-child`));
+  }
+
+  _resetActiveClass() {
+    this._element
+      .querySelectorAll(`.sort__button`)
+      .forEach((it) => it.classList.remove(`sort__button--active`));
+  }
+
+  _setActiveClass(element) {
+    element.classList.add(`sort__button--active`);
   }
 }

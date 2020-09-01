@@ -4,13 +4,12 @@ import {MenuItem} from '../main.js';
 import {NAVIGATION_ACTIVE} from './menu.js';
 
 const createFiltersTemplate = (filters) => {
-  return filters.map((filter) => {
-    const {address, name, count, checked} = filter;
+  return filters.map(({address, name, count, isChecked}) => {
     return (
       `<a href="#${address}"
-         id="${MenuItem.FILMS}"
+         data-section="${MenuItem.FILMS}"
          data-filter-type="${name}"
-         class="main-navigation__item${checked ? ` ${NAVIGATION_ACTIVE}` : ``}">
+         class="main-navigation__item${isChecked ? ` ${NAVIGATION_ACTIVE}` : ``}">
          ${name}
          ${name === FilterType.ALL ? `` : `<span  class="main-navigation__item-count">${count}</span>`}
       </a>`
@@ -30,7 +29,6 @@ export default class Filter extends AbstractComponent {
   constructor(filters) {
     super();
     this._filters = filters;
-    this._currenFilterType = FilterType.ALL;
   }
 
   getTemplate() {

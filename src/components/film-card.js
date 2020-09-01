@@ -49,9 +49,9 @@ export default class FilmCard extends AbstractSmartComponent {
   }
 
   setClickHandler(callback) {
-    this.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, callback);
-    this.getElement().querySelector(`.film-card__title`).addEventListener(`click`, callback);
-    this.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, callback);
+    this.getElement()
+      .querySelectorAll(`.film-card__poster, .film-card__title, .film-card__comments`)
+      .forEach((element) => element.addEventListener(`click`, callback));
   }
 
   setAddToWatchlistHandler(callback) {

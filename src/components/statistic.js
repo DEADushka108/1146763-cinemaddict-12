@@ -153,7 +153,7 @@ const createTotalDurationMarkup = (films) => {
 };
 
 const createStatisticsTemplate = (films, activeFilter) => {
-  const userTitle = getUserTitle(films);
+  const userTitle = getUserTitle(films.length);
 
   const filteredFilms = getFilmsByTimeRange(films, activeFilter);
 

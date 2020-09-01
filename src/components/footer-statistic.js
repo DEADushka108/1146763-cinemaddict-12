@@ -1,12 +1,12 @@
 import AbstractComponent from "./abstract-component";
 
 export default class FooterStatistic extends AbstractComponent {
-  constructor(filmsModel) {
+  constructor(filmsNumber) {
     super();
-    this._filmsModel = filmsModel;
+    this._filmsNumber = filmsNumber;
   }
 
   getTemplate() {
-    return `<p>${this._filmsModel.getAllFilms().length} movies inside</p>`;
+    return `<p>${this._filmsNumber} movies inside</p>`;
   }
 }
