@@ -59,16 +59,4 @@ export default class FilmDetailsComments extends AbstractSmartComponent {
       callback(evt.target.dataset.id);
     });
   }
-
-  // setDeleteButtonHandler(callback) {
-  //   const deleteButtons = this.getElement().querySelectorAll(`.film-details__comment-delete`);
-  //   deleteButtons.forEach((button, index) => {
-  //     button.addEventListener(`click`, (evt) => {
-  //       evt.preventDefault();
-  //       evt.target.disabled = true;
-  //       evt.target.textContent = `Deleting...`;
-  //       callback(index);
-  //     });
-  //   });
-  // }
 }
