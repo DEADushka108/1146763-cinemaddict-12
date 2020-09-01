@@ -110,6 +110,12 @@ export default class FilmPresenter {
       const newFilm = Adapter.clone(film);
       newFilm.isInHistory = !newFilm.isInHistory;
 
+      if (newFilm.isInHistory) {
+        newFilm.watchingDate = new Date();
+      } else {
+        newFilm.watchingDate = null;
+      }
+
       this._onDataChange(this, film, newFilm);
     });
 
@@ -168,6 +174,13 @@ export default class FilmPresenter {
 
       const newFilm = Adapter.clone(film);
       newFilm.isInHistory = !newFilm.isInHistory;
+
+      if (newFilm.isInHistory) {
+        newFilm.watchingDate = new Date();
+      } else {
+        newFilm.watchingDate = null;
+      }
+
       this._onDataChange(this, film, newFilm);
     });
 
