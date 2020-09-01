@@ -84,7 +84,7 @@ export default class PagePresenter {
 
     render(this._filmsListComponent.getElement(), this._filmsListContainerComponent);
 
-    this._filmsListContainer = document.querySelector(`.films-list__container`);
+    this._filmsListContainer = this._filmsListContainerComponent.getElement();
 
     if (this._films.length === 0) {
       render(this._filmsListContainer, this._noFilmsComponent);
@@ -236,8 +236,8 @@ export default class PagePresenter {
   }
 
   _renderExtraFilmList() {
-    render(document.querySelector(`.films`), this._topRatedFilmsComponent);
-    render(document.querySelector(`.films`), this._mostCommentedFilmsComponent);
+    render(this._filmsComponent.getElement(), this._topRatedFilmsComponent);
+    render(this._filmsComponent.getElement(), this._mostCommentedFilmsComponent);
 
     this._currentTopRatedFilms = getSortedFilms(this._filmsModel.getAllFilms(), SortType.RATING, 0, CardCount.EXTRA);
 
