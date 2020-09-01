@@ -221,14 +221,6 @@ export default class PagePresenter {
           filmPresenter.shakeComment(oldData);
         });
     }
-
-    this._currentFilms = getSortedFilms(this._filmsModel.getFilms().slice(), this._currentSortType);
-
-    this._renderMainFilmList();
-
-    this._renderShowMoreButton();
-
-    this._renderExtraFilmList();
   }
 
   _onViewChange() {

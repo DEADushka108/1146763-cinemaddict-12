@@ -1,4 +1,4 @@
-import AbstractComponent from './abstract-component.js';
+import AbstractSmartComponent from './abstract-smart-component.js';
 import moment from 'moment';
 
 const createGenresTemplate = (genres) => {
@@ -85,21 +85,18 @@ const createFilmDetailsTemplate = (film) => {
   );
 };
 
-export default class FilmPopup extends AbstractComponent {
+export default class FilmDetails extends AbstractSmartComponent {
   constructor(film) {
     super();
 
     this._film = film;
-    this._currentControls = film.controls;
-
-    this._subscribeOnEvents();
   }
 
   getTemplate() {
     return createFilmDetailsTemplate(this._film, this._comments);
   }
 
-  getControlsStatus() {
-    return this._currentControls;
+  setClickHandler(callback) {
+    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, callback);
   }
 }

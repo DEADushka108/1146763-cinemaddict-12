@@ -11,6 +11,11 @@ export const SHAKE_ANIMATION_TIMEOUT = 600;
 
 const ESC_KEYCODE = 27;
 
+const Mode = {
+  CLOSED: `closed`,
+  OPEN: `open`,
+};
+
 export default class FilmPresenter {
   constructor(film, container, onDataChange, onViewChange, onCommentsChange, api, commentsModel) {
     this._film = film;
@@ -219,15 +224,9 @@ export default class FilmPresenter {
     });
   }
 
-  destroy() {
-    remove(this._filmCardComponent);
-  }
-
-  _deletePopup() {
-    if (this._filmPopupComponent) {
-      remove(this._filmPopupComponent);
-      document.removeEventListener(`keydown`, this._escapeButtonHandler);
-      document.body.classList.remove(`hide-overflow`);
+  setDefaultView() {
+    if (this._mode !== Mode.CLOSED) {
+      this._closePopup();
     }
   }
 
