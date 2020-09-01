@@ -216,8 +216,8 @@ export default class FilmPresenter {
 
       appendChild(this._filmDetailsComponent.getElement().querySelector(`.form-details__bottom-container`), this._filmDetailsCommentsComponent);
 
-      this._filmDetailsCommentsComponent.setDeleteButtonHandler((index) => {
-        this._onCommentsChange(this, this._comments[index], null, this._film);
+      this._filmDetailsCommentsComponent.setDeleteButtonHandler((commentId) => {
+        this._onCommentsChange(this, commentId, null, this._film);
       });
 
       appendChild(this._filmDetailsComponent.getElement().querySelector(`.film-details__comments-wrap`), this._filmDetailsNewCommentComponent);

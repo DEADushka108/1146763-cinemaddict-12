@@ -209,12 +209,12 @@ export default class PagePresenter {
           filmPresenter.shakeTextarea();
         });
     } else if (newData === null) {
-      this._api.deleteСomment(oldData.id)
+      this._api.deleteComment(oldData)
         .then(() => {
           const isSuccess = this._commentsModel.removeComment(oldData);
           if (isSuccess) {
             filmPresenter.renderComments();
-            this._filmsModel.updateFilms(oldData.id, film);
+            this._filmsModel.updateFilms(oldData, film);
           }
         })
         .catch(() => {

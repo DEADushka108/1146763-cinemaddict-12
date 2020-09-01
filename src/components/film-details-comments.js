@@ -3,7 +3,7 @@ import moment from 'moment';
 import he from 'he';
 
 const createCommentsTemplate = (allComments) => {
-  return allComments.map(({emotion, comment, date, author}) => {
+  return allComments.map(({emotion, comment, date, author, id}) => {
     const setDateView = (commentDate) => new Date().setMonth(new Date().getMonth() - 1) > commentDate ? moment(commentDate).format(`YYYY/MM/DD HH:mm`) : moment(commentDate).fromNow();
     return (
       `<li class="film-details__comment">
@@ -15,7 +15,7 @@ const createCommentsTemplate = (allComments) => {
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${author}</span>
             <span class="film-details__comment-day">${setDateView(date)}</span>
-            <button class="film-details__comment-delete">Delete</button>
+            <button data-id="${id}" class="film-details__comment-delete">Delete</button>
           </p>
         </div>
       </li>`
@@ -48,14 +48,27 @@ export default class FilmDetailsComments extends AbstractSmartComponent {
   }
 
   setDeleteButtonHandler(callback) {
-    const deleteButtons = this.getElement().querySelectorAll(`.film-details__comment-delete`);
-    deleteButtons.forEach((button, index) => {
-      button.addEventListener(`click`, (evt) => {
-        evt.preventDefault();
-        evt.target.disabled = true;
-        evt.target.textContent = `Deleting...`;
-        callback(index);
-      });
+    this.getElement().addEventListener(`click`, (evt) => {
+      if (evt.target.tagName !== `BUTTON`) {
+        return;
+      }
+
+      evt.preventDefault();
+      evt.target.disabled = true;
+      evt.target.textContent = `Deleting...`;
+      callback(evt.target.dataset.id);
     });
   }
+
+  // setDeleteButtonHandler(callback) {
+  //   const deleteButtons = this.getElement().querySelectorAll(`.film-details__comment-delete`);
+  //   deleteButtons.forEach((button, index) => {
+  //     button.addEventListener(`click`, (evt) => {
+  //       evt.preventDefault();
+  //       evt.target.disabled = true;
+  //       evt.target.textContent = `Deleting...`;
+  //       callback(index);
+  //     });
+  //   });
+  // }
 }
