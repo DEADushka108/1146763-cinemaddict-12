@@ -51,7 +51,6 @@ export default class PagePresenter {
     this._mostCommentedFilmsComponent = new MostCommentedFilmsComponent();
     this._topRatedFilmsComponent = new TopRatedFilmsListComponent();
 
-    this._onCommentsChange = this._onCommentsChange.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
@@ -88,7 +87,7 @@ export default class PagePresenter {
 
   _renderFilmPresenters(films, container) {
     return films.map((film) => {
-      const filmPresenter = new FilmPresenter(film, container, this._onDataChange, this._onViewChange, this._onCommentsChange, this._api, this._commentsModel);
+      const filmPresenter = new FilmPresenter(film, container, this._onDataChange, this._onViewChange, this._api, this._commentsModel);
       filmPresenter.render(film);
       this._currentFilmPresenters.push(filmPresenter);
     });
@@ -166,31 +165,6 @@ export default class PagePresenter {
         filmPresenter.rerender(film);
         this.renderUserTitle(this._filmsModel.getAllFilms());
       });
-  }
-
-  _onCommentsChange(filmPresenter, oldData, newData, film) {
-    if (oldData === null) {
-      this._api.addComment(film.id, JSON.stringify(newData))
-        .then((res) => res.json())
-        .then((response) => {
-          this._commentsModel.setComments(response.comments);
-          filmPresenter.resetTextarea();
-          filmPresenter.renderComments();
-        })
-        .catch(() => {
-          filmPresenter.shakeTextarea();
-        });
-    } else if (newData === null) {
-      this._api.deleteComment(oldData)
-        .then(() => {
-          this._commentsModel.removeComment(oldData);
-          filmPresenter.renderComments();
-          this._filmsModel.updateFilms(oldData, film);
-        })
-        .catch(() => {
-          filmPresenter.shakeComment(oldData);
-        });
-    }
   }
 
   _onViewChange() {

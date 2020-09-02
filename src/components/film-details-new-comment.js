@@ -1,4 +1,5 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
+import {SHAKE_ANIMATION_TIMEOUT} from '../const.js';
 
 const EmojiAddress = {
   SMILE: `smile`,
@@ -52,6 +53,7 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
     this._inputChangeHandler = this._inputChangeHandler.bind(this);
     this._subscribeOnEvents = this._subscribeOnEvents.bind(this);
     this._newCommentSubmitHandler = this._newCommentSubmitHandler.bind(this);
+    // this._shakeBlock = this.shakeBlock.bind(this);
 
     this._subscribeOnEvents();
   }
@@ -123,6 +125,19 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
         'date': new Date(),
       };
       this._callback(comment);
+    } else {
+      this.shakeBlock();
     }
+  }
+
+  shakeBlock() {
+    const textarea = this.getElement().querySelector(`.film-details__comment-input`);
+    textarea.disabled = false;
+    textarea.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+
+    setTimeout(() => {
+      textarea.style.animation = ``;
+
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 }

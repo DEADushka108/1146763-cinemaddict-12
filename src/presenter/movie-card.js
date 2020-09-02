@@ -5,9 +5,6 @@ import FilmDetailsControlsComponent from '../components/film-details-controls.js
 import FilmDetailsNewCommentComponent from '../components/film-details-new-comment.js';
 import Adapter from '../models/adapter.js';
 import {render, removeChild, appendChild, replace, remove} from '../utils/render.js';
-import {BODY} from '../const.js';
-
-export const SHAKE_ANIMATION_TIMEOUT = 600;
 
 const ESC_KEYCODE = 27;
 
@@ -23,10 +20,9 @@ const Field = {
 };
 
 export default class FilmPresenter {
-  constructor(film, container, onDataChange, onViewChange, onCommentsChange, api, commentsModel) {
+  constructor(film, container, onDataChange, onViewChange, api, commentsModel) {
     this._film = film;
     this._container = container;
-    this._onCommentsChange = onCommentsChange;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._api = api;
@@ -66,17 +62,26 @@ export default class FilmPresenter {
 
   _showPopupOnClick() {
     this._onViewChange();
-    this.renderComments();
+    this._renderComments();
 
     document.addEventListener(`keydown`, this._сlosePopupOnEscPress);
 
     this._filmDetailsNewCommentComponent.setAddCommentHandler((comment) => {
       if (this._mode === Mode.OPEN) {
-        this._onCommentsChange(this, null, comment, this._film);
+        this._api.addComment(this._film.id, JSON.stringify(comment))
+        .then((res) => res.json())
+        .then((response) => {
+          this._commentsModel.setComments(response.comments);
+          this._resetTextarea();
+          this._renderComments();
+        })
+        .catch(() => {
+          this._filmDetailsNewCommentComponent.shakeBlock();
+        });
       }
     });
 
-    appendChild(BODY, this._filmDetailsComponent);
+    appendChild(document.body, this._filmDetailsComponent);
     this._mode = Mode.OPEN;
   }
 
@@ -176,7 +181,7 @@ export default class FilmPresenter {
     this._renderFilmDetailsControls(film);
   }
 
-  renderComments() {
+  _renderComments() {
     if (this._filmDetailsCommentsComponent) {
       remove(this._filmDetailsCommentsComponent);
     }
@@ -190,7 +195,17 @@ export default class FilmPresenter {
       appendChild(this._filmDetailsComponent.getElement().querySelector(`.form-details__bottom-container`), this._filmDetailsCommentsComponent);
 
       this._filmDetailsCommentsComponent.setDeleteButtonHandler((commentId) => {
-        this._onCommentsChange(this, commentId, null, this._film);
+        if (this._mode === Mode.OPEN) {
+          this._api.deleteComment(commentId)
+          .then(() => {
+            this._commentsModel.removeComment(commentId);
+            this._renderComments();
+            this._filmsModel.updateFilms(commentId, this._film);
+          })
+          .catch(() => {
+            this._filmDetailsCommentsComponent.shakeComment(commentId);
+          });
+        }
       });
 
       appendChild(this._filmDetailsComponent.getElement().querySelector(`.film-details__comments-wrap`), this._filmDetailsNewCommentComponent);
@@ -203,30 +218,7 @@ export default class FilmPresenter {
     }
   }
 
-  shakeTextarea() {
-    const textarea = this._filmDetailsNewCommentComponent.getElement().querySelector(`.film-details__comment-input`);
-    textarea.disabled = false;
-    textarea.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
-
-    setTimeout(() => {
-      textarea.style.animation = ``;
-
-    }, SHAKE_ANIMATION_TIMEOUT);
-  }
-
-  shakeComment(commentId) {
-    const index = this._comments.findIndex((comment) => comment.id === commentId);
-    const comment = this._filmDetailsCommentsComponent.getElement().querySelectorAll(`.film-details__comment`)[index];
-    comment.disabled = false;
-    comment.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
-
-    setTimeout(() => {
-      comment.style.animation = ``;
-
-    }, SHAKE_ANIMATION_TIMEOUT);
-  }
-
-  resetTextarea() {
+  _resetTextarea() {
     this._filmDetailsNewCommentComponent.reset();
   }
 

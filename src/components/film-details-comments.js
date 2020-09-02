@@ -1,4 +1,5 @@
-import AbstractSmartComponent from "./abstract-smart-component.js";
+import AbstractSmartComponent from './abstract-smart-component.js';
+import {SHAKE_ANIMATION_TIMEOUT} from '../const.js';
 import moment from 'moment';
 import he from 'he';
 
@@ -52,11 +53,22 @@ export default class FilmDetailsComments extends AbstractSmartComponent {
       if (evt.target.tagName !== `BUTTON`) {
         return;
       }
-
       evt.preventDefault();
       evt.target.disabled = true;
       evt.target.textContent = `Deleting...`;
       callback(evt.target.dataset.id);
     });
+  }
+
+  shakeComment(commentId) {
+    const index = this._comments.findIndex((comment) => comment.id === commentId);
+    const comment = this._filmDetailsCommentsComponent.getElement().querySelectorAll(`.film-details__comment`)[index];
+    comment.disabled = false;
+    comment.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+
+    setTimeout(() => {
+      comment.style.animation = ``;
+
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 }
