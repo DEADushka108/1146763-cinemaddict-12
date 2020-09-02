@@ -14,7 +14,7 @@ export default class FilterPresenter {
     this._onDataChange = this._onDataChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
 
-    this._filmsModel.setDataChangeHandler(this._onDataChange);
+    this._filmsModel.setDataChangeHandlers(this._onDataChange);
   }
 
   render() {

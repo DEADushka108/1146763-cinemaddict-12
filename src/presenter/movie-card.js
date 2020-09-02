@@ -16,6 +16,12 @@ const Mode = {
   OPEN: `open`,
 };
 
+const Field = {
+  HISTORY: `isInHistory`,
+  FAVORITE: `isInFavorites`,
+  WATCHLIST: `isInWatchlist`,
+};
+
 export default class FilmPresenter {
   constructor(film, container, onDataChange, onViewChange, onCommentsChange, api, commentsModel) {
     this._film = film;
@@ -39,6 +45,7 @@ export default class FilmPresenter {
     this._сlosePopupOnEscPress = this._сlosePopupOnEscPress.bind(this);
     this._showPopupOnClick = this._showPopupOnClick.bind(this);
     this._closePopupOnClick = this._closePopupOnClick.bind(this);
+    this._changeData = this._changeData.bind(this);
   }
 
   destroy() {
@@ -97,35 +104,17 @@ export default class FilmPresenter {
 
     this._filmCardComponent.setAddToWatchlistHandler((evt) => {
       evt.preventDefault();
-
-      const newFilm = Adapter.clone(film);
-      newFilm.isInWatchlist = !newFilm.isInWatchlist;
-
-      this._onDataChange(this, film, newFilm);
+      this._changeData(film, Field.WATCHLIST);
     });
 
     this._filmCardComponent.setAlreadyWatchedHandler((evt) => {
       evt.preventDefault();
-
-      const newFilm = Adapter.clone(film);
-      newFilm.isInHistory = !newFilm.isInHistory;
-
-      if (newFilm.isInHistory) {
-        newFilm.watchingDate = new Date();
-      } else {
-        newFilm.watchingDate = null;
-      }
-
-      this._onDataChange(this, film, newFilm);
+      this._changeData(film, Field.HISTORY);
     });
 
     this._filmCardComponent.setAddToFavoritesHandler((evt) => {
       evt.preventDefault();
-
-      const newFilm = Adapter.clone(film);
-      newFilm.isInFavorites = !newFilm.isInFavorites;
-
-      this._onDataChange(this, film, newFilm);
+      this._changeData(film, Field.FAVORITE);
     });
 
 
@@ -162,34 +151,18 @@ export default class FilmPresenter {
     render(this._filmDetailsComponent.getElement().querySelector(`.form-details__top-container`), this._filmDetailsControlsComponent);
 
     this._filmDetailsControlsComponent.setAddToWatchlistHandler((evt) => {
-      evt.target.checked = !evt.target.checked ? evt.target.value : false;
-
-      const newFilm = Adapter.clone(film);
-      newFilm.isInWatchlist = !newFilm.isInWatchlist;
-      this._onDataChange(this, film, newFilm);
+      evt.preventDefault();
+      this._changeData(film, Field.WATCHLIST);
     });
 
     this._filmDetailsControlsComponent.setAlreadyWatchedHandler((evt) => {
-      evt.target.checked = !evt.target.checked ? evt.target.value : false;
-
-      const newFilm = Adapter.clone(film);
-      newFilm.isInHistory = !newFilm.isInHistory;
-
-      if (newFilm.isInHistory) {
-        newFilm.watchingDate = new Date();
-      } else {
-        newFilm.watchingDate = null;
-      }
-
-      this._onDataChange(this, film, newFilm);
+      evt.preventDefault();
+      this._changeData(film, Field.HISTORY);
     });
 
     this._filmDetailsControlsComponent.setAddToFavoritesHandler((evt) => {
-      evt.target.checked = !evt.target.checked ? evt.target.value : false;
-
-      const newFilm = Adapter.clone(film);
-      newFilm.isInFavorites = !newFilm.isInFavorites;
-      this._onDataChange(this, film, newFilm);
+      evt.preventDefault();
+      this._changeData(film, Field.FAVORITE);
     });
   }
 
@@ -255,5 +228,18 @@ export default class FilmPresenter {
 
   resetTextarea() {
     this._filmDetailsNewCommentComponent.reset();
+  }
+
+  _changeData(film, field) {
+    const newFilm = Adapter.clone(film);
+    newFilm[field] = !newFilm[field];
+
+    if (newFilm[field] === Field.HISTORY) {
+      newFilm.watchingDate = new Date();
+    } else {
+      newFilm.watchingDate = null;
+    }
+
+    this._onDataChange(this, film, newFilm);
   }
 }

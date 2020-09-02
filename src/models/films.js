@@ -45,7 +45,7 @@ export default class Films {
     this._callHandlers(this._filterChangeHandlers);
   }
 
-  setDataChangeHandler(handler) {
+  setDataChangeHandlers(handler) {
     this._dataChangeHandlers.push(handler);
   }
 
