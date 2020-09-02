@@ -153,7 +153,8 @@ export default class FilmPresenter {
       remove(this._filmDetailsControlsComponent);
     }
 
-    this._filmDetailsControlsComponent = new FilmDetailsControlsComponent(film);
+    const {isInWatchlist, isInHistory, isInFavorites} = film;
+    this._filmDetailsControlsComponent = new FilmDetailsControlsComponent({isInWatchlist, isInHistory, isInFavorites});
     render(this._filmDetailsComponent.getElement().querySelector(`.form-details__top-container`), this._filmDetailsControlsComponent);
 
     this._filmDetailsControlsComponent.setAddToWatchlistHandler((evt) => {

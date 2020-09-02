@@ -19,14 +19,14 @@ const createFilmDetailsTemplate = ({isInWatchlist, isInHistory, isInFavorites}) 
 };
 
 export default class FilmDetailsControls extends AbstractSmartComponent {
-  constructor(film) {
+  constructor(controls) {
     super();
 
-    this._film = film;
+    this._controls = controls;
   }
 
   getTemplate() {
-    return createFilmDetailsTemplate(this._film);
+    return createFilmDetailsTemplate(this._controls);
   }
 
   setAddToWatchlistHandler(callback) {
