@@ -29,6 +29,7 @@ const api = new API(END_POINT, AUTHORIZATION);
 const filmsModel = new FilmsModel();
 const commentsModel = new CommentsModel();
 
+
 const menuComponent = new MenuComponent();
 render(siteMainElement, menuComponent);
 
@@ -63,7 +64,7 @@ api.getFilms()
   .then((films) => {
     filmsModel.setFilms(films);
     pagePresenter.removePreloader();
-    pagePresenter.renderUserTitle();
+    pagePresenter.renderUserTitle(filmsModel.getWatchedFilms().length);
     renderPage();
   })
   .catch(() => {

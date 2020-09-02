@@ -4,10 +4,11 @@ import {MenuItem} from '../main.js';
 export const NAVIGATION_ACTIVE = `main-navigation__item--active`;
 
 export default class Menu extends AbstractComponent {
+
   getTemplate() {
     return (
       `<nav class="main-navigation">
-        <a href="#stats" data-section="${MenuItem.STATS}" class="main-navigation__additional">Stats</a>
+        <a href="#stats" data-id="${MenuItem.STATS}" class="main-navigation__additional">Stats</a>
       </nav>`
     );
   }
@@ -19,13 +20,13 @@ export default class Menu extends AbstractComponent {
         return;
       }
 
-      if (evt.target.dataset.section === MenuItem.STATS) {
+      if (evt.target.dataset.id === MenuItem.STATS) {
         document.querySelectorAll(`.main-navigation__item`).forEach((it) => {
           it.classList.remove(NAVIGATION_ACTIVE);
         });
       }
 
-      callback(evt.target.dataset.section);
+      callback(evt.target.dataset.id);
       evt.target.classList.add(NAVIGATION_ACTIVE);
     });
   }

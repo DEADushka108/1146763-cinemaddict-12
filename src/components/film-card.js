@@ -4,7 +4,7 @@ import moment from 'moment';
 const createFilmCardTemplate = (film) => {
   const {title, poster, description, comments, rating, releaseDate, duration, genres, isInFavorites, isInWatchlist, isInHistory} = film;
 
-  const DescriptionLenght = {
+  const DescriptionLength = {
     MAX: 140,
     REQUIRE: 139,
     MIN: 0,
@@ -14,7 +14,7 @@ const createFilmCardTemplate = (film) => {
 
   const getActiveState = (isCheckedParameter) => isCheckedParameter ? `film-card__controls-item--active` : ``;
 
-  const getDescription = () => description.length > DescriptionLenght.MAX ? `${description.substring(DescriptionLenght.MIN, DescriptionLenght.REQUIRE)}...` : description;
+  const getDescription = () => description.length > DescriptionLength.MAX ? `${description.substring(DescriptionLength.MIN, DescriptionLength.REQUIRE)}...` : description;
 
   return (
     `<article class="film-card">
@@ -38,14 +38,13 @@ const createFilmCardTemplate = (film) => {
 };
 
 export default class FilmCard extends AbstractSmartComponent {
-  constructor(film, comments) {
+  constructor(film) {
     super();
     this._film = film;
-    this._comments = comments;
   }
 
   getTemplate() {
-    return createFilmCardTemplate(this._film, this._comments);
+    return createFilmCardTemplate(this._film);
   }
 
   setClickHandler(callback) {

@@ -7,7 +7,7 @@ const createFiltersTemplate = (filters) => {
   return filters.map(({address, name, count, isChecked}) => {
     return (
       `<a href="#${address}"
-         data-section="${MenuItem.FILMS}"
+         data-id="${MenuItem.FILMS}"
          data-filter-type="${name}"
          class="main-navigation__item${isChecked ? ` ${NAVIGATION_ACTIVE}` : ``}">
          ${name}
