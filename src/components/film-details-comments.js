@@ -62,7 +62,7 @@ export default class FilmDetailsComments extends AbstractSmartComponent {
 
   shakeComment(commentId) {
     const index = this._comments.findIndex((comment) => comment.id === commentId);
-    const comment = this._filmDetailsCommentsComponent.getElement().querySelectorAll(`.film-details__comment`)[index];
+    const comment = this.getElement().querySelectorAll(`.film-details__comment`)[index];
     comment.disabled = false;
     comment.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
 

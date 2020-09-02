@@ -53,7 +53,6 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
     this._inputChangeHandler = this._inputChangeHandler.bind(this);
     this._subscribeOnEvents = this._subscribeOnEvents.bind(this);
     this._newCommentSubmitHandler = this._newCommentSubmitHandler.bind(this);
-    // this._shakeBlock = this.shakeBlock.bind(this);
 
     this._subscribeOnEvents();
   }
@@ -125,7 +124,7 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
         'date': new Date(),
       };
       this._callback(comment);
-    } else {
+    } else if (isCtrlAndEnterPressed && (this._comment || this._emoji)) {
       this.shakeBlock();
     }
   }
