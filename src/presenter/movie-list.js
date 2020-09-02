@@ -36,7 +36,6 @@ export default class PagePresenter {
     this._currentTopRatedFilms = [];
     this._currentMostCommentedFilms = [];
 
-    this._userTitleComponent = null;
     this._filmsLoadComponent = new FilmsLoadComponent();
     this._sortComponent = new SortComponent(SortType.DEFAULT);
     this._filmsComponent = new FilmsComponent();
@@ -151,7 +150,6 @@ export default class PagePresenter {
       .then((film) => {
         this._filmsModel.updateFilms(oldData.id, film);
         filmPresenter.rerender(film);
-        this.renderUserTitle(this._filmsModel.getAllFilms());
       });
   }
 
