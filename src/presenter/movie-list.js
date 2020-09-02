@@ -31,7 +31,6 @@ export default class PagePresenter {
     this._filmsListContainer = null;
 
     this._films = [];
-    this._comments = [];
     this._currentTopRatedFilms = [];
     this._currentMostCommentedFilms = [];
 
