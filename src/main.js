@@ -2,11 +2,13 @@ import API from './api/api.js';
 import CommentsModel from './models/comments.js';
 import FilterPresenter from './presenter/filter.js';
 import FooterStatisticComponent from './components/footer-statistic.js';
+import UserTitleComponent from './components/user-title.js';
 import MenuComponent from './components/menu.js';
 import FilmsModel from './models/films.js';
 import PagePresenter from './presenter/movie-list.js';
 import StatisticComponent from './components/statistic.js';
 import {render} from './utils/render.js';
+import {getUserTitle} from './utils/utils.js';
 
 const AUTHORIZATION = `Basic dfnjsadjnfasdjfn`;
 const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
@@ -16,6 +18,7 @@ export const MenuItem = {
   STATS: `stats`,
 };
 
+const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
@@ -64,7 +67,7 @@ api.getFilms()
   .then((films) => {
     filmsModel.setFilms(films);
     pagePresenter.removePreloader();
-    pagePresenter.renderUserTitle(filmsModel.getWatchedFilms().length);
+    render(siteHeaderElement, new UserTitleComponent(getUserTitle(filmsModel.getWatchedFilms().length)));
     renderPage();
   })
   .catch(() => {

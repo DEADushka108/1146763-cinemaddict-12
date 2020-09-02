@@ -6,13 +6,11 @@ import FilmsListContainerComponent from '../components/film-list-container.js';
 import MostCommentedFilmsComponent from '../components/most-commented.js';
 import TopRatedFilmsListComponent from '../components/top-rated.js';
 import NoFilmsComponent from '../components/no-films.js';
-import UserTitleComponent from '../components/user-title.js';
 import {render, remove} from '../utils/render.js';
 import {SortType} from '../const.js';
 import {getSortedFilms} from '../utils/sort.js';
 import FilmPresenter from '../presenter/movie-card.js';
 import FilmsLoadComponent from '../components/film-load.js';
-import {getUserTitle} from '../utils/utils.js';
 
 const CardCount = {
   DEFAULT: 41,
@@ -20,8 +18,6 @@ const CardCount = {
   STEP: 5,
   EXTRA: 2
 };
-
-const siteHeaderElement = document.querySelector(`.header`);
 
 export default class PagePresenter {
   constructor(container, filmsModel, commentsModel, api) {
@@ -100,14 +96,6 @@ export default class PagePresenter {
       return;
     }
     this._renderFilmPresenters(films, container);
-  }
-
-  renderUserTitle(filmsNumber) {
-    if (this._userTitleComponent) {
-      remove(this._userTitleComponent);
-    }
-    this._userTitleComponent = new UserTitleComponent(getUserTitle(filmsNumber));
-    render(siteHeaderElement, this._userTitleComponent);
   }
 
   _removeFilms() {
