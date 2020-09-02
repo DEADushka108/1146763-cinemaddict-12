@@ -3,6 +3,7 @@ import FilmDetailsComponent from '../components/film-details.js';
 import FilmDetailsCommentsComponent from '../components/film-details-comments.js';
 import FilmDetailsControlsComponent from '../components/film-details-controls.js';
 import FilmDetailsNewCommentComponent from '../components/film-details-new-comment.js';
+import CommentsModel from '../models/comments.js';
 import Adapter from '../models/adapter.js';
 import {render, removeChild, appendChild, replace, remove} from '../utils/render.js';
 
@@ -20,13 +21,12 @@ const Field = {
 };
 
 export default class FilmPresenter {
-  constructor(film, container, onDataChange, onViewChange, api, commentsModel) {
+  constructor(film, container, onDataChange, onViewChange, api) {
     this._film = film;
     this._container = container;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._api = api;
-    this._commentsModel = commentsModel;
 
     this._comments = null;
     this._mode = Mode.CLOSED;
@@ -37,8 +37,9 @@ export default class FilmPresenter {
     this._filmDetailsCommentsComponent = null;
     this._filmDetailsNewCommentComponent = new FilmDetailsNewCommentComponent();
     this._newCommentContainer = null;
+    this._commentsModel = new CommentsModel();
 
-    this._сlosePopupOnEscPress = this._сlosePopupOnEscPress.bind(this);
+    this._closePopupOnEscPress = this._closePopupOnEscPress.bind(this);
     this._showPopupOnClick = this._showPopupOnClick.bind(this);
     this._closePopupOnClick = this._closePopupOnClick.bind(this);
     this._changeData = this._changeData.bind(this);
@@ -49,10 +50,10 @@ export default class FilmPresenter {
     remove(this._filmDetailsComponent);
     remove(this._filmDetailsNewCommentComponent);
 
-    document.removeEventListener(`keydown`, this._сlosePopupOnEscPress);
+    document.removeEventListener(`keydown`, this._closePopupOnEscPress);
   }
 
-  _сlosePopupOnEscPress(evt) {
+  _closePopupOnEscPress(evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       this._onViewChange();
 
@@ -64,7 +65,7 @@ export default class FilmPresenter {
     this._onViewChange();
     this._renderComments();
 
-    document.addEventListener(`keydown`, this._сlosePopupOnEscPress);
+    document.addEventListener(`keydown`, this._closePopupOnEscPress);
 
     this._filmDetailsNewCommentComponent.setAddCommentHandler((comment) => {
       if (this._mode === Mode.OPEN) {
@@ -94,7 +95,7 @@ export default class FilmPresenter {
     this._filmDetailsNewCommentComponent.reset();
     removeChild(this._filmDetailsCommentsComponent);
     removeChild(this._filmDetailsComponent);
-    document.removeEventListener(`keydown`, this._сlosePopupOnEscPressHandler);
+    document.removeEventListener(`keydown`, this._closePopupOnEscPress);
     this._filmDetailsNewCommentComponent.removeCommentHandler();
     this._mode = Mode.CLOSED;
     this._onDataChange(this, this._film, Adapter.clone(this._film));

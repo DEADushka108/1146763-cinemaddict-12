@@ -20,10 +20,9 @@ const CardCount = {
 };
 
 export default class PagePresenter {
-  constructor(container, filmsModel, commentsModel, api) {
+  constructor(container, filmsModel, api) {
     this._container = container;
     this._filmsModel = filmsModel;
-    this._commentsModel = commentsModel;
     this._api = api;
 
     this._currentFilmPresenters = [];
@@ -82,7 +81,7 @@ export default class PagePresenter {
 
   _renderFilmPresenters(films, container) {
     return films.map((film) => {
-      const filmPresenter = new FilmPresenter(film, container, this._onDataChange, this._onViewChange, this._api, this._commentsModel);
+      const filmPresenter = new FilmPresenter(film, container, this._onDataChange, this._onViewChange, this._api);
       filmPresenter.render(film);
       this._currentFilmPresenters.push(filmPresenter);
     });

@@ -1,5 +1,4 @@
 import API from './api/api.js';
-import CommentsModel from './models/comments.js';
 import FilterPresenter from './presenter/filter.js';
 import FooterStatisticComponent from './components/footer-statistic.js';
 import UserTitleComponent from './components/user-title.js';
@@ -30,8 +29,6 @@ const renderPage = () => {
 const api = new API(END_POINT, AUTHORIZATION);
 
 const filmsModel = new FilmsModel();
-const commentsModel = new CommentsModel();
-
 
 const menuComponent = new MenuComponent();
 render(siteMainElement, menuComponent);
@@ -44,7 +41,7 @@ const statisticsComponent = new StatisticComponent(filmsModel);
 statisticsComponent.hide();
 render(siteMainElement, statisticsComponent);
 
-const pagePresenter = new PagePresenter(siteMainElement, filmsModel, commentsModel, api);
+const pagePresenter = new PagePresenter(siteMainElement, filmsModel, api);
 pagePresenter.showPreloader();
 
 
