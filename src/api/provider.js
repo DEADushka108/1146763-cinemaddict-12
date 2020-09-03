@@ -1,9 +1,9 @@
 import Adapter from '../models/adapter.js';
 
-// const getSyncedFilms = (items) => {
-//   return items.filter(({success}) => success)
-//     .map(({payload}) => payload.film);
-// };
+const getSyncedFilms = (items) => {
+  return items.filter(({success}) => success)
+    .map(({payload}) => payload.film);
+};
 
 const createStoreStructure = (items) => {
   return items.reduce((acc, current) => {
@@ -76,8 +76,7 @@ export default class Provider {
 
       return this._api.sync(storeFilms)
         .then((response) => {
-          // const createdFilms = getSyncedFilms(response.created);
-          const updatedFilms = response.updated;
+          const updatedFilms = getSyncedFilms(response.updated);
           const items = createStoreStructure(updatedFilms);
           this._store.setItems(items);
         });
