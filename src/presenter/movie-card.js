@@ -202,7 +202,6 @@ export default class FilmPresenter {
           .then(() => {
             this._commentsModel.removeComment(commentId);
             this._renderComments();
-            this._filmsModel.updateFilms(commentId, this._film);
           })
           .catch(() => {
             this._filmDetailsCommentsComponent.shakeComment(commentId);
@@ -228,10 +227,12 @@ export default class FilmPresenter {
     const newFilm = Adapter.clone(film);
     newFilm[field] = !newFilm[field];
 
-    if (newFilm[field] === Field.HISTORY) {
-      newFilm.watchingDate = new Date();
-    } else {
-      newFilm.watchingDate = null;
+    if (field === Field.HISTORY) {
+      if (newFilm[field]) {
+        newFilm.watchingDate = new Date();
+      } else {
+        newFilm.watchingDate = null;
+      }
     }
 
     this._onDataChange(this, film, newFilm);

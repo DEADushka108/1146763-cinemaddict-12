@@ -1,13 +1,13 @@
+import Observer from '../utils/observer.js';
 import {FilterType} from '../const.js';
 import {getFilteredFilms} from '../utils/filter.js';
 
 
-export default class Films {
+export default class Films extends Observer {
   constructor() {
+    super();
     this._films = [];
     this._activeFilterType = FilterType.ALL;
-
-    this._dataChangeHandlers = [];
     this._filterChangeHandlers = [];
   }
 
@@ -45,15 +45,7 @@ export default class Films {
     this._callHandlers(this._filterChangeHandlers);
   }
 
-  setDataChangeHandlers(handler) {
-    this._dataChangeHandlers.push(handler);
-  }
-
-  setFilterChangeHandler(handler) {
+  setFilterChangeHandlers(handler) {
     this._filterChangeHandlers.push(handler);
-  }
-
-  _callHandlers(handlers) {
-    handlers.forEach((handler) => handler());
   }
 }

@@ -25,6 +25,3 @@ export const TimePeriod = {
   MONTH: `month`,
   YEAR: `year`,
 };
-
-export const SHAKE_ANIMATION_TIMEOUT = 600;
-export const MAIN = document.querySelector(`.main`);

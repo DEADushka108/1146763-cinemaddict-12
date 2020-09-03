@@ -1,5 +1,6 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
 import {getUserTitle} from '../utils/utils.js';
+import {TimePeriod} from '../const.js';
 
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -70,23 +71,23 @@ const getTimeRange = (filter) => {
   let dateFrom = new Date();
 
   switch (filter) {
-    case `all-time`:
+    case TimePeriod.ALL_TIME:
       dateFrom = null;
       break;
 
-    case `today`:
+    case TimePeriod.TODAY:
       dateFrom.setDate(dateTo.getDate() - 1);
       break;
 
-    case `week`:
+    case TimePeriod.WEEK:
       dateFrom.setDate(dateTo.getDate() - 7);
       break;
 
-    case `month`:
+    case TimePeriod.MONTH:
       dateFrom.setMonth(dateTo.getMonth() - 1);
       break;
 
-    case `year`:
+    case TimePeriod.YEAR:
       dateFrom.setFullYear(dateTo.getFullYear() - 1);
       break;
   }
@@ -215,7 +216,7 @@ export default class Statistics extends AbstractSmartComponent {
 
     this._filmsModel = filmsModel;
 
-    this._activeFilter = `all-time`;
+    this._activeFilter = TimePeriod.ALL_TIME;
 
     this._filmsChart = null;
     this._statisticCtx = null;
@@ -231,7 +232,7 @@ export default class Statistics extends AbstractSmartComponent {
   show() {
     super.show();
 
-    this._activeFilter = `all-time`;
+    this._activeFilter = TimePeriod.ALL_TIME;
 
     this.rerender();
   }

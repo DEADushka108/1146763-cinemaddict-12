@@ -1,7 +1,10 @@
-export default class Comments {
+import Observer from '../utils/observer.js';
+
+export default class Comments extends Observer {
   constructor() {
+    super();
+
     this._comments = [];
-    this._dataChangeHandlers = [];
   }
 
   getComments() {
@@ -22,13 +25,5 @@ export default class Comments {
 
     this._comments = [].concat(this._comments.slice(0, index), this._comments.slice(index + 1));
     this._callHandlers(this._dataChangeHandlers);
-  }
-
-  setDataChangeHandlers(handler) {
-    this._dataChangeHandler.push(handler);
-  }
-
-  _callHandlers(handlers) {
-    handlers.forEach((handler) => handler());
   }
 }
