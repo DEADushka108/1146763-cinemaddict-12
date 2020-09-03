@@ -43,6 +43,7 @@ export default class FilmPresenter {
     this._showPopupOnClick = this._showPopupOnClick.bind(this);
     this._closePopupOnClick = this._closePopupOnClick.bind(this);
     this._changeData = this._changeData.bind(this);
+    this._deleteComment = this._deleteComment.bind(this);
   }
 
   destroy() {
@@ -196,21 +197,21 @@ export default class FilmPresenter {
 
       appendChild(this._filmDetailsComponent.getElement().querySelector(`.form-details__bottom-container`), this._filmDetailsCommentsComponent);
 
-      this._filmDetailsCommentsComponent.setDeleteButtonHandler((commentId) => {
-        if (this._mode === Mode.OPEN) {
-          this._api.deleteComment(commentId)
-          .then(() => {
-            this._commentsModel.removeComment(commentId);
-            this._renderComments();
-          })
-          .catch(() => {
-            this._filmDetailsCommentsComponent.shakeComment(commentId);
-          });
-        }
-      });
+      this._filmDetailsCommentsComponent.setDeleteButtonHandler(this._deleteComment);
 
       appendChild(this._filmDetailsComponent.getElement().querySelector(`.film-details__comments-wrap`), this._filmDetailsNewCommentComponent);
     });
+  }
+
+  _deleteComment(commentId) {
+    this._api.deleteComment(commentId)
+        .then(() => {
+          this._commentsModel.removeComment(commentId);
+          this._renderComments();
+        })
+        .catch(() => {
+          this._filmDetailsCommentsComponent.shakeComment(commentId);
+        });
   }
 
   setDefaultView() {
