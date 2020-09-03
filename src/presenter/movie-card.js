@@ -44,6 +44,7 @@ export default class FilmPresenter {
     this._closePopupOnClick = this._closePopupOnClick.bind(this);
     this._changeData = this._changeData.bind(this);
     this._deleteComment = this._deleteComment.bind(this);
+    this._addComment = this._addComment.bind(this);
   }
 
   destroy() {
@@ -68,20 +69,7 @@ export default class FilmPresenter {
 
     document.addEventListener(`keydown`, this._closePopupOnEscPress);
 
-    this._filmDetailsNewCommentComponent.setAddCommentHandler((comment) => {
-      if (this._mode === Mode.OPEN) {
-        this._api.addComment(this._film.id, JSON.stringify(comment))
-        .then((res) => res.json())
-        .then((response) => {
-          this._commentsModel.setComments(response.comments);
-          this._resetTextarea();
-          this._renderComments();
-        })
-        .catch(() => {
-          this._filmDetailsNewCommentComponent.shakeBlock();
-        });
-      }
-    });
+    this._filmDetailsNewCommentComponent.setAddCommentHandler(this._addComment);
 
     appendChild(document.body, this._filmDetailsComponent);
     this._mode = Mode.OPEN;
@@ -201,6 +189,21 @@ export default class FilmPresenter {
 
       appendChild(this._filmDetailsComponent.getElement().querySelector(`.film-details__comments-wrap`), this._filmDetailsNewCommentComponent);
     });
+  }
+
+  _addComment(comment) {
+    if (this._mode === Mode.OPEN) {
+      this._api.addComment(this._film.id, JSON.stringify(comment))
+      .then((res) => res.json())
+      .then((response) => {
+        this._commentsModel.setComments(response.comments);
+        this._resetTextarea();
+        this._renderComments();
+      })
+      .catch(() => {
+        this._filmDetailsNewCommentComponent.shakeBlock();
+      });
+    }
   }
 
   _deleteComment(commentId) {
