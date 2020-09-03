@@ -68,5 +68,6 @@ api.getFilms()
     renderPage();
   })
   .catch(() => {
+    pagePresenter.removePreloader();
     renderPage();
   });

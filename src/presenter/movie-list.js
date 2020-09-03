@@ -59,15 +59,15 @@ export default class PagePresenter {
     this._films = this._filmsModel.getAllFilms();
     render(this._container, this._sortComponent);
     render(this._container, this._filmsComponent);
-    render(this._filmsComponent.getElement(), this._filmsListComponent);
-    render(this._filmsListComponent.getElement(), this._filmsListContainerComponent);
-    this._filmsListContainer = this._filmsListContainerComponent.getElement();
 
     if (this._films.length === 0) {
-      render(this._filmsListContainer, this._noFilmsComponent);
+      render(this._filmsComponent.getElement(), this._noFilmsComponent);
       return;
     }
 
+    render(this._filmsComponent.getElement(), this._filmsListComponent);
+    render(this._filmsListComponent.getElement(), this._filmsListContainerComponent);
+    this._filmsListContainer = this._filmsListContainerComponent.getElement();
     this._renderFilms(this._films.slice(0, this._currentCardsCount), this._filmsListContainer);
     this._renderShowMoreButton();
     this._renderExtraFilmList();
