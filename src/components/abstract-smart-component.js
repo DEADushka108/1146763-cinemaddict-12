@@ -1,6 +1,6 @@
 import AbstractComponent from './abstract-component.js';
 
-export default class AbstractSmart extends AbstractComponent {
+export default class AbstractSmartComponent extends AbstractComponent {
   constructor() {
     super();
   }

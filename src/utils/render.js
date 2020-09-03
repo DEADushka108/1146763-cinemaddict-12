@@ -1,31 +1,17 @@
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`,
-  AFTEREND: `afterend`,
+  BEFOREEND: `beforeend`
 };
 
-/**
-  * Create element from template
-  * @param {string} template
-  *
-  * @return {Node}
-  */
-export const createElement = (template) => {
-  let element = document.createElement(`div`);
-  element.innerHTML = template;
-  return element.firstChild;
-};
-
-
-/**
-  * Render element from component
-  * @param {Element} container
-  * @param {SomeClass} component
-  * @param {string} position
-  */
-export const render = (container, component, position = RenderPosition.BEFOREEND) => {
-
-  switch (position) {
+export const render = (container, component, place = RenderPosition.BEFOREEND) => {
+  switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(component.getElement());
       break;
@@ -33,13 +19,6 @@ export const render = (container, component, position = RenderPosition.BEFOREEND
     case RenderPosition.BEFOREEND:
       container.append(component.getElement());
       break;
-
-    case RenderPosition.AFTEREND:
-      container.after(component.getElement());
-      break;
-
-    default:
-      throw new Error(`There are no this render position`);
   }
 };
 
@@ -48,14 +27,22 @@ export const remove = (component) => {
   component.removeElement();
 };
 
+export const removeChild = (childComponent) => {
+  const parent = childComponent.getElement().parentElement;
+  parent.removeChild(childComponent.getElement());
+};
+
+export const appendChild = (place, childComponent) => {
+  place.appendChild(childComponent.getElement());
+};
+
 export const replace = (newComponent, oldComponent) => {
-  const newElement = newComponent.getElement();
-  const oldElement = oldComponent.getElement();
-  const parentElement = oldElement.parentElement;
+  const parentElement = oldComponent.getElement().parentElement;
+  const newChildElement = newComponent.getElement();
+  const oldChildElement = oldComponent.getElement();
 
-  const isExistElements = !!(newElement && oldElement && parentElement);
-
-  if (isExistElements) {
-    parentElement.replaceChild(newElement, oldElement);
+  const isExistElements = !!(parentElement && newChildElement && oldChildElement);
+  if (isExistElements && parentElement.contains(oldChildElement)) {
+    parentElement.replaceChild(newChildElement, oldChildElement);
   }
 };

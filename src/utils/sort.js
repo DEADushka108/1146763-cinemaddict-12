@@ -3,16 +3,18 @@ import {SortType} from "../const.js";
 /**
  * Create sorted sliced araay
  * @param {Array} films
- * @param {String} sortType
+ * @param {String} filterType
+ * @param {Number} from
+ * @param {Number} to
  * @return {Array}
  */
-export const getSortedFilms = (films, sortType) => {
+export const getSortedFilms = (films, filterType, from, to) => {
   let sortedFilms = [];
   const shownFilms = films.slice();
 
-  switch (sortType) {
+  switch (filterType) {
     case SortType.DATE:
-      sortedFilms = shownFilms.sort((a, b) => b.release - a.release);
+      sortedFilms = shownFilms.sort((a, b) => b.releaseDate - a.releaseDate);
       break;
     case SortType.RATING:
       sortedFilms = shownFilms.sort((a, b) => b.rating - a.rating);
@@ -24,5 +26,5 @@ export const getSortedFilms = (films, sortType) => {
       sortedFilms = shownFilms.sort((a, b) => b.comments.length - a.comments.length);
       break;
   }
-  return sortedFilms;
+  return sortedFilms.slice(from, to);
 };

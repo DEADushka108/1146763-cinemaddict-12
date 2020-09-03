@@ -1,12 +1,12 @@
 import {FilterType} from "../const.js";
 
-export const getWatchlistFilms = (films) => films.filter((film) => film.controls.isInWatchlist);
+const getWatchlistFilms = (films) => films.filter((film) => film.isInWatchlist);
 
-export const getWatchedFilms = (films) => films.filter((film) => film.controls.isInHistory);
+const getFavoriteFilms = (films) => films.filter((film) => film.isInFavorites);
 
-export const getFavoriteFilms = (films) => films.filter((film) => film.controls.isInFavorites);
+export const getWatchedFilms = (films) => films.filter((film) => film.isInHistory);
 
-export const getFiltredFilms = (films, filterType) => {
+export const getFilteredFilms = (films, filterType) => {
   let filteredFilms = [];
 
   switch (filterType) {

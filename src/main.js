@@ -1,44 +1,72 @@
-import UserProfileComponent from './components/user-profile.js';
-import SiteNavigationComponent from './components/site-navigation.js';
-import StatisticsComponent from './components/statistics.js';
-import MovieListPresenter from './presenter/movie-list.js';
-import FilterPresenter from './presenter/movie-filter.js';
+import API from './api/api.js';
+import FilterPresenter from './presenter/filter.js';
+import FooterStatisticComponent from './components/footer-statistic.js';
+import UserTitleComponent from './components/user-title.js';
+import MenuComponent from './components/menu.js';
 import FilmsModel from './models/films.js';
-import {generateFilmsCard} from './mock/film-cards.js';
+import PagePresenter from './presenter/movie-list.js';
+import StatisticComponent from './components/statistic.js';
 import {render} from './utils/render.js';
-import {CardCount} from './const.js';
-import MovieStatisticComponent from './components/movie-statistic.js';
+import {getUserTitle} from './utils/utils.js';
 
-const films = generateFilmsCard(CardCount.DEFAULT);
-const filmsModel = new FilmsModel();
-filmsModel.setFilms(films);
+const AUTHORIZATION = `Basic dfnjsadjnfasdjfn`;
+const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
+
+export const MenuItem = {
+  FILMS: `films`,
+  STATS: `stats`,
+};
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
-render(siteHeaderElement, new UserProfileComponent(filmsModel));
+const renderPage = () => {
+  pagePresenter.render();
+  render(siteFooterElement, new FooterStatisticComponent(filmsModel.getAllFilms().length));
+};
 
-const siteNavigationComponent = new SiteNavigationComponent();
-render(siteMainElement, siteNavigationComponent);
+const api = new API(END_POINT, AUTHORIZATION);
 
-new FilterPresenter(siteNavigationComponent.getElement(), filmsModel).render();
+const filmsModel = new FilmsModel();
 
-const pagePresenter = new MovieListPresenter(siteMainElement, filmsModel);
-pagePresenter.render();
+const menuComponent = new MenuComponent();
+render(siteMainElement, menuComponent);
 
-render(siteFooterElement, new MovieStatisticComponent(films.length));
+const mainNavigation = siteMainElement.querySelector(`.main-navigation`);
 
-const statisticsComponent = new StatisticsComponent(filmsModel);
-render(siteMainElement, statisticsComponent);
+new FilterPresenter(mainNavigation, filmsModel).render();
+
+const statisticsComponent = new StatisticComponent(filmsModel);
 statisticsComponent.hide();
+render(siteMainElement, statisticsComponent);
 
-siteNavigationComponent.setClickHandler((isStatistics) => {
-  if (isStatistics) {
-    pagePresenter.destroy();
-    statisticsComponent.show();
-  } else {
-    statisticsComponent.hide();
-    pagePresenter.render();
+const pagePresenter = new PagePresenter(siteMainElement, filmsModel, api);
+pagePresenter.showPreloader();
+
+
+menuComponent.setOnChangeHandler((menuItem) => {
+
+  switch (menuItem) {
+    case MenuItem.FILMS:
+      statisticsComponent.hide();
+      pagePresenter.show();
+      break;
+
+    case MenuItem.STATS:
+      pagePresenter.hide();
+      statisticsComponent.show();
+      break;
   }
 });
+
+api.getFilms()
+  .then((films) => {
+    filmsModel.setFilms(films);
+    pagePresenter.removePreloader();
+    render(siteHeaderElement, new UserTitleComponent(getUserTitle(filmsModel.getWatchedFilms().length)));
+    renderPage();
+  })
+  .catch(() => {
+    renderPage();
+  });
