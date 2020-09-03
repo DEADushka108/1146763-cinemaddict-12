@@ -1,5 +1,3 @@
-import Adapter from '../models/adapter.js';
-
 const Method = {
   GET: `GET`,
   PUT: `PUT`,
@@ -22,8 +20,7 @@ export default class Api {
     return this._sendRequest({
       url: `movies`
     })
-    .then(Api.toJSON)
-    .then(Adapter.createFilms);
+    .then(Api.toJSON);
   }
 
   updateFilm(id, film) {
@@ -33,8 +30,7 @@ export default class Api {
       body: JSON.stringify(film.adaptToServer()),
       headers: new Headers({"Content-Type": `application/json`})
     })
-      .then(Api.toJSON)
-      .then(Adapter.createFilm);
+      .then(Api.toJSON);
   }
 
   getComment(id) {
@@ -58,6 +54,16 @@ export default class Api {
       url: `comments/${id}`,
       method: Method.DELETE
     });
+  }
+
+  sync(data) {
+    return this._sendRequest({
+      url: `movies/sync`,
+      method: Method.POST,
+      body: JSON.stringify(data),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+    .then(Api.toJSON);
   }
 
   _sendRequest({url, method = Method.GET, body = null, headers = new Headers()}) {
