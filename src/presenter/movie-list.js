@@ -6,7 +6,7 @@ import FilmsListContainerComponent from '../components/film-list-container.js';
 import MostCommentedFilmsComponent from '../components/most-commented.js';
 import TopRatedFilmsListComponent from '../components/top-rated.js';
 import NoFilmsComponent from '../components/no-films.js';
-import {render, remove} from '../utils/render.js';
+import {render, remove, replace} from '../utils/render.js';
 import {SortType} from '../const.js';
 import {getSortedFilms} from '../utils/sort.js';
 import FilmPresenter from '../presenter/movie-card.js';
@@ -41,8 +41,8 @@ export default class PagePresenter {
     this._filmsListContainerComponent = new FilmsListContainerComponent();
     this._noFilmsComponent = new NoFilmsComponent();
     this._showMoreButtonComponent = new ShowMoreButtonComponent();
-    this._mostCommentedFilmsComponent = new MostCommentedFilmsComponent();
-    this._topRatedFilmsComponent = new TopRatedFilmsListComponent();
+    this._mostCommentedFilmsComponent = null;
+    this._topRatedFilmsComponent = null;
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
@@ -125,8 +125,19 @@ export default class PagePresenter {
   }
 
   _renderExtraFilmList() {
-    render(this._filmsComponent.getElement(), this._topRatedFilmsComponent);
-    render(this._filmsComponent.getElement(), this._mostCommentedFilmsComponent);
+    const oldTopRatedComponent = this._topRatedFilmsComponent;
+    const oldMostCommentedComponent = this._mostCommentedFilmsComponent;
+
+    this._topRatedFilmsComponent = new TopRatedFilmsListComponent();
+    this._mostCommentedFilmsComponent = new MostCommentedFilmsComponent();
+
+    if (oldTopRatedComponent && oldMostCommentedComponent) {
+      replace(this._topRatedFilmsComponent, oldTopRatedComponent);
+      replace(this._mostCommentedFilmsComponent, oldMostCommentedComponent);
+    } else {
+      render(this._filmsComponent.getElement(), this._topRatedFilmsComponent);
+      render(this._filmsComponent.getElement(), this._mostCommentedFilmsComponent);
+    }
     this._currentTopRatedFilms = getSortedFilms(this._filmsModel.getAllFilms(), SortType.RATING, 0, CardCount.EXTRA);
     this._renderFilmPresenters(this._currentTopRatedFilms, this._topRatedFilmsComponent.getElement().querySelector(`.films-list__container`));
     this._currentMostCommentedFilms = getSortedFilms(this._filmsModel.getAllFilms(), SortType.COMMENTS, 0, CardCount.EXTRA);
@@ -156,6 +167,7 @@ export default class PagePresenter {
   }
 
   hide() {
+    this._sortComponent.setDefaultSortType();
     this._sortComponent.hide();
     this._filmsComponent.hide();
   }
