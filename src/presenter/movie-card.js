@@ -202,7 +202,6 @@ export default class FilmPresenter {
           .then(() => {
             this._commentsModel.removeComment(commentId);
             this._renderComments();
-            this._filmsModel.updateFilms(commentId, this._film);
           })
           .catch(() => {
             this._filmDetailsCommentsComponent.shakeComment(commentId);

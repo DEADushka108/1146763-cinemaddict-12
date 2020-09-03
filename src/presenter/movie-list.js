@@ -93,16 +93,6 @@ export default class PagePresenter {
     }
   }
 
-  _onSortTypeChange(sortType) {
-    this._currentCardsCount = CardCount.ON_START;
-    const sortedFilms = getSortedFilms(this._filmsModel.getFilms(), sortType, 0, CardCount.ON_START);
-
-    this._removeFilms();
-    this._renderFilms(sortedFilms, this._filmsListContainer);
-    this._renderShowMoreButton();
-    this._renderExtraFilmList();
-  }
-
   _onDataChange(filmPresenter, oldData, newData) {
     this._api.updateFilm(oldData.id, newData)
       .then((film) => {
@@ -115,12 +105,23 @@ export default class PagePresenter {
     this._currentFilmPresenters.forEach((presenter) => presenter.setDefaultView());
   }
 
+  _updateList(sortType) {
+    this._currentCardsCount = CardCount.ON_START;
+    this._removeFilms();
+    this._renderFilms(getSortedFilms(this._filmsModel.getFilms(), sortType, 0, this._currentCardsCount), this._filmsListContainer);
+    this._renderShowMoreButton();
+    this._renderExtraFilmList();
+  }
+
+  _onSortTypeChange(sortType) {
+    this._updateList(sortType);
+  }
+
   _onFilterChange() {
     if (this._noFilmsComponent) {
       remove(this._noFilmsComponent);
     }
-    this._sortComponent.setDefaultSortType();
-    this._onSortTypeChange(SortType.DEFAULT);
+    this._updateList(this._sortComponent.getSortType());
   }
 
   _renderExtraFilmList() {
