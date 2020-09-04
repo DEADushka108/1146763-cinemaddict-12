@@ -1,18 +1,5 @@
 import Adapter from '../models/adapter.js';
 
-// const getSyncedFilms = (items) => {
-//   return items.filter(({success}) => success)
-//     .map(({payload}) => payload.film);
-// };
-
-const createStoreStructure = (items) => {
-  return items.reduce((acc, current) => {
-    return Object.assign({}, acc, {
-      [current.id]: current,
-    });
-  }, {});
-};
-
 export default class Provider {
   constructor(api, store) {
     this._api = api;
@@ -23,8 +10,7 @@ export default class Provider {
     if (Provider.isOnline()) {
       return this._api.getFilms()
       .then((films) => {
-        const items = createStoreStructure(films);
-        this._store.setItems(items);
+        this._store.setItems(this._createStoreStructure(films));
         return Adapter.createFilms(films);
       });
     }
@@ -77,7 +63,7 @@ export default class Provider {
       return this._api.sync(storeFilms)
         .then((response) => {
           const updatedFilms = response.updated;
-          const items = createStoreStructure(updatedFilms);
+          const items = this._createStoreStructure(updatedFilms);
           this._store.setItems(items);
         });
     }
@@ -86,5 +72,13 @@ export default class Provider {
 
   static isOnline() {
     return window.navigator.onLine;
+  }
+
+  _createStoreStructure(items) {
+    return items.reduce((acc, current) => {
+      return Object.assign({}, acc, {
+        [current.id]: current,
+      });
+    }, {});
   }
 }

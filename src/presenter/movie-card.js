@@ -232,11 +232,7 @@ export default class FilmPresenter {
     newFilm[field] = !newFilm[field];
 
     if (field === Field.HISTORY) {
-      if (newFilm[field]) {
-        newFilm.watchingDate = new Date();
-      } else {
-        newFilm.watchingDate = null;
-      }
+      newFilm.watchingDate = newFilm[field] ? new Date() : null;
     }
 
     this._onDataChange(this, film, newFilm);
