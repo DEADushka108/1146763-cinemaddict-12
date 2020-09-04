@@ -82,7 +82,9 @@ export default class FilmPresenter {
 
   _closePopup() {
     this._filmDetailsNewCommentComponent.reset();
-    removeChild(this._filmDetailsCommentsComponent);
+    if (this._filmDetailsCommentsComponent) {
+      removeChild(this._filmDetailsCommentsComponent);
+    }
     removeChild(this._filmDetailsComponent);
     document.removeEventListener(`keydown`, this._closePopupOnEscPress);
     this._filmDetailsNewCommentComponent.removeCommentHandler();

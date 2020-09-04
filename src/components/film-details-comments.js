@@ -63,8 +63,11 @@ export default class FilmDetailsComments extends AbstractSmartComponent {
   shakeComment(commentId) {
     const index = this._comments.findIndex((comment) => comment.id === commentId);
     const comment = this.getElement().querySelectorAll(`.film-details__comment`)[index];
+    const deleteButton = comment.querySelector(`.film-details__comment-delete`);
     comment.disabled = false;
     comment.classList.add(`shake`);
+    deleteButton.disabled = false;
+    deleteButton.textContent = `Delete`;
 
     setTimeout(() => {
       comment.classList.remove(`shake`);

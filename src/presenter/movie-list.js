@@ -121,6 +121,7 @@ export default class PagePresenter {
     if (this._noFilmsComponent) {
       remove(this._noFilmsComponent);
     }
+    this._sortComponent.setDefaultSortType();
     this._updateList(this._sortComponent.getSortType());
   }
 
