@@ -37,9 +37,7 @@ const CASHED_ASSETS = [
 self.addEventListener(`install`, (evt) => {
   evt.waitUntil(
       caches.open(CACHE_NAME)
-        .then((cache) => {
-          return cache.addAll(CASHED_ASSETS);
-        })
+        .then((cache) => cache.addAll(CASHED_ASSETS))
   );
 });
 
