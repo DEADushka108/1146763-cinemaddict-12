@@ -132,10 +132,10 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
   shakeBlock() {
     const textarea = this.getElement().querySelector(`.film-details__comment-input`);
     textarea.disabled = false;
-    textarea.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    textarea.classList.add(`shake`);
 
     setTimeout(() => {
-      textarea.style.animation = ``;
+      textarea.classList.remove(`shake`);
 
     }, SHAKE_ANIMATION_TIMEOUT);
   }

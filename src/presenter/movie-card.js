@@ -43,6 +43,8 @@ export default class FilmPresenter {
     this._showPopupOnClick = this._showPopupOnClick.bind(this);
     this._closePopupOnClick = this._closePopupOnClick.bind(this);
     this._changeData = this._changeData.bind(this);
+    this._deleteComment = this._deleteComment.bind(this);
+    this._addComment = this._addComment.bind(this);
   }
 
   destroy() {
@@ -67,20 +69,7 @@ export default class FilmPresenter {
 
     document.addEventListener(`keydown`, this._closePopupOnEscPress);
 
-    this._filmDetailsNewCommentComponent.setAddCommentHandler((comment) => {
-      if (this._mode === Mode.OPEN) {
-        this._api.addComment(this._film.id, JSON.stringify(comment))
-        .then((res) => res.json())
-        .then((response) => {
-          this._commentsModel.setComments(response.comments);
-          this._resetTextarea();
-          this._renderComments();
-        })
-        .catch(() => {
-          this._filmDetailsNewCommentComponent.shakeBlock();
-        });
-      }
-    });
+    this._filmDetailsNewCommentComponent.setAddCommentHandler(this._addComment);
 
     appendChild(document.body, this._filmDetailsComponent);
     this._mode = Mode.OPEN;
@@ -93,7 +82,9 @@ export default class FilmPresenter {
 
   _closePopup() {
     this._filmDetailsNewCommentComponent.reset();
-    removeChild(this._filmDetailsCommentsComponent);
+    if (this._filmDetailsCommentsComponent) {
+      removeChild(this._filmDetailsCommentsComponent);
+    }
     removeChild(this._filmDetailsComponent);
     document.removeEventListener(`keydown`, this._closePopupOnEscPress);
     this._filmDetailsNewCommentComponent.removeCommentHandler();
@@ -196,22 +187,36 @@ export default class FilmPresenter {
 
       appendChild(this._filmDetailsComponent.getElement().querySelector(`.form-details__bottom-container`), this._filmDetailsCommentsComponent);
 
-      this._filmDetailsCommentsComponent.setDeleteButtonHandler((commentId) => {
-        if (this._mode === Mode.OPEN) {
-          this._api.deleteComment(commentId)
-          .then(() => {
-            this._commentsModel.removeComment(commentId);
-            this._renderComments();
-            this._filmsModel.updateFilms(commentId, this._film);
-          })
-          .catch(() => {
-            this._filmDetailsCommentsComponent.shakeComment(commentId);
-          });
-        }
-      });
+      this._filmDetailsCommentsComponent.setDeleteButtonHandler(this._deleteComment);
 
       appendChild(this._filmDetailsComponent.getElement().querySelector(`.film-details__comments-wrap`), this._filmDetailsNewCommentComponent);
     });
+  }
+
+  _addComment(comment) {
+    if (this._mode === Mode.OPEN) {
+      this._api.addComment(this._film.id, JSON.stringify(comment))
+      .then((res) => res.json())
+      .then((response) => {
+        this._commentsModel.setComments(response.comments);
+        this._resetTextarea();
+        this._renderComments();
+      })
+      .catch(() => {
+        this._filmDetailsNewCommentComponent.shakeBlock();
+      });
+    }
+  }
+
+  _deleteComment(commentId) {
+    this._api.deleteComment(commentId)
+        .then(() => {
+          this._commentsModel.removeComment(commentId);
+          this._renderComments();
+        })
+        .catch(() => {
+          this._filmDetailsCommentsComponent.shakeComment(commentId);
+        });
   }
 
   setDefaultView() {
@@ -228,10 +233,8 @@ export default class FilmPresenter {
     const newFilm = Adapter.clone(film);
     newFilm[field] = !newFilm[field];
 
-    if (newFilm[field] === Field.HISTORY) {
-      newFilm.watchingDate = new Date();
-    } else {
-      newFilm.watchingDate = null;
+    if (field === Field.HISTORY) {
+      newFilm.watchingDate = newFilm[field] ? new Date() : null;
     }
 
     this._onDataChange(this, film, newFilm);

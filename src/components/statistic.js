@@ -1,5 +1,6 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
 import {getUserTitle} from '../utils/utils.js';
+import {TimePeriod} from '../const.js';
 
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -16,7 +17,8 @@ const renderChart = (statisticCtx, stats) => {
         data: stats.map((stat) => stat.count),
         backgroundColor: `#ffe800`,
         hoverBackgroundColor: `#ffe800`,
-        anchor: `start`
+        anchor: `start`,
+        barThickness: 24,
       }]
     },
     options: {
@@ -42,7 +44,6 @@ const renderChart = (statisticCtx, stats) => {
             display: false,
             drawBorder: false
           },
-          barThickness: 24
         }],
         xAxes: [{
           ticks: {
@@ -70,23 +71,23 @@ const getTimeRange = (filter) => {
   let dateFrom = new Date();
 
   switch (filter) {
-    case `all-time`:
+    case TimePeriod.ALL_TIME:
       dateFrom = null;
       break;
 
-    case `today`:
+    case TimePeriod.TODAY:
       dateFrom.setDate(dateTo.getDate() - 1);
       break;
 
-    case `week`:
+    case TimePeriod.WEEK:
       dateFrom.setDate(dateTo.getDate() - 7);
       break;
 
-    case `month`:
+    case TimePeriod.MONTH:
       dateFrom.setMonth(dateTo.getMonth() - 1);
       break;
 
-    case `year`:
+    case TimePeriod.YEAR:
       dateFrom.setFullYear(dateTo.getFullYear() - 1);
       break;
   }
@@ -145,11 +146,11 @@ const createTotalDurationMarkup = (films) => {
     return sum + film.duration;
   }, 0);
 
-  const hours = totalDuration >= 60 ? `${Math.trunc(totalDuration / 60)} <span class="statistic__item-description">h</span>` : ``;
+  const hours = `${Math.trunc(totalDuration / 60)} <span class="statistic__item-description">h</span>`;
 
-  const minutes = (totalDuration % 60) > 0 ? `${totalDuration % 60} <span class="statistic__item-description">m</span>` : ``;
+  const minutes = `${totalDuration % 60} <span class="statistic__item-description">m</span>`;
 
-  return hours && minutes ? `${hours} ${minutes}` : null;
+  return `${hours} ${minutes}`;
 };
 
 const createStatisticsTemplate = (films, activeFilter) => {
@@ -215,7 +216,7 @@ export default class Statistics extends AbstractSmartComponent {
 
     this._filmsModel = filmsModel;
 
-    this._activeFilter = `all-time`;
+    this._activeFilter = TimePeriod.ALL_TIME;
 
     this._filmsChart = null;
     this._statisticCtx = null;
@@ -231,7 +232,7 @@ export default class Statistics extends AbstractSmartComponent {
   show() {
     super.show();
 
-    this._activeFilter = `all-time`;
+    this._activeFilter = TimePeriod.ALL_TIME;
 
     this.rerender();
   }

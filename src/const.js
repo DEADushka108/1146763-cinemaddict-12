@@ -27,4 +27,3 @@ export const TimePeriod = {
 };
 
 export const SHAKE_ANIMATION_TIMEOUT = 600;
-export const MAIN = document.querySelector(`.main`);

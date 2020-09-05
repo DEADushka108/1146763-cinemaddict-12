@@ -1,4 +1,6 @@
-import API from './api/api.js';
+import API from './api/index.js';
+import Store from './api/store.js';
+import Provider from './api/provider.js';
 import FilterPresenter from './presenter/filter.js';
 import FooterStatisticComponent from './components/footer-statistic.js';
 import UserTitleComponent from './components/user-title.js';
@@ -11,6 +13,9 @@ import {getUserTitle} from './utils/utils.js';
 
 const AUTHORIZATION = `Basic dfnjsadjnfasdjfn`;
 const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
+const STORE_PREFIX = `cinemaddict-localstorage`;
+const STORE_VER = `v1`;
+const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
 
 export const MenuItem = {
   FILMS: `films`,
@@ -27,6 +32,8 @@ const renderPage = () => {
 };
 
 const api = new API(END_POINT, AUTHORIZATION);
+const store = new Store(STORE_NAME, window.localStorage);
+const apiWithProvider = new Provider(api, store);
 
 const filmsModel = new FilmsModel();
 
@@ -41,7 +48,7 @@ const statisticsComponent = new StatisticComponent(filmsModel);
 statisticsComponent.hide();
 render(siteMainElement, statisticsComponent);
 
-const pagePresenter = new PagePresenter(siteMainElement, filmsModel, api);
+const pagePresenter = new PagePresenter(siteMainElement, filmsModel, apiWithProvider);
 pagePresenter.showPreloader();
 
 
@@ -60,7 +67,7 @@ menuComponent.setOnChangeHandler((menuItem) => {
   }
 });
 
-api.getFilms()
+apiWithProvider.getFilms()
   .then((films) => {
     filmsModel.setFilms(films);
     pagePresenter.removePreloader();
@@ -68,5 +75,16 @@ api.getFilms()
     renderPage();
   })
   .catch(() => {
+    pagePresenter.removePreloader();
     renderPage();
   });
+
+window.addEventListener(`load`, () => {
+  navigator.serviceWorker.register(`/sw.js`)
+    .then(() => {
+      document.title = document.title.replace(` [offline]`, ``);
+      apiWithProvider.sync();
+    }).catch(() => {
+      document.title += ` [offline]`;
+    });
+});
