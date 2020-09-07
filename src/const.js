@@ -25,8 +25,6 @@ export const MenuItem = {
 
 export const MINUTES_PER_HOUR = 60;
 
-export const SHAKE_ANIMATION_TIMEOUT = 600;
-
 export const SHAKE_CLASS = `shake`;
 
 export const NAVIGATION_ACTIVE_CLASS = `main-navigation__item--active`;

@@ -1,5 +1,5 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
-import {SHAKE_ANIMATION_TIMEOUT, SHAKE_CLASS} from '../const.js';
+import {SHAKE_CLASS} from '../const.js';
 import moment from 'moment';
 import he from 'he';
 
@@ -69,14 +69,12 @@ export default class FilmDetailsComments extends AbstractSmartComponent {
     const index = this._comments.findIndex((comment) => comment.id === commentId);
     const comment = this.getElement().querySelectorAll(`.film-details__comment`)[index];
     const deleteButton = comment.querySelector(`.film-details__comment-delete`);
+    if (comment.classList.contains(SHAKE_CLASS)) {
+      comment.classList.toggle(SHAKE_CLASS);
+    };
     comment.disabled = false;
     comment.classList.add(SHAKE_CLASS);
     deleteButton.disabled = false;
     deleteButton.textContent = ButtonText.DELETE;
-
-    setTimeout(() => {
-      comment.classList.remove(SHAKE_CLASS);
-
-    }, SHAKE_ANIMATION_TIMEOUT);
   }
 }

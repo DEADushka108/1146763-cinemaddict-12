@@ -1,5 +1,5 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
-import {SHAKE_ANIMATION_TIMEOUT, SHAKE_CLASS} from '../const.js';
+import {SHAKE_CLASS} from '../const.js';
 
 const ENTER_KEY = `Enter`;
 
@@ -133,12 +133,11 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
 
   shakeBlock() {
     const textarea = this.getElement().querySelector(`.film-details__comment-input`);
+     if (textarea.classList.contains(SHAKE_CLASS)) {
+      textarea.classList.remove(SHAKE_CLASS);
+      textarea.offsetWidth = textarea.offsetWidth;
+    }
     textarea.disabled = false;
     textarea.classList.add(SHAKE_CLASS);
-
-    setTimeout(() => {
-      textarea.classList.remove(SHAKE_CLASS);
-
-    }, SHAKE_ANIMATION_TIMEOUT);
   }
 }
