@@ -2,16 +2,16 @@ import API from './api/index.js';
 import Store from './api/store.js';
 import Provider from './api/provider.js';
 import FilterPresenter from './presenter/filter.js';
-import FooterStatisticComponent from './components/footer-statistic.js';
-import UserTitleComponent from './components/user-title.js';
-import MenuComponent from './components/menu.js';
+import FooterStatisticView from './view/footer-statistic.js';
+import UserTitleView from './view/user-title.js';
+import MenuView from './view/menu.js';
 import FilmsModel from './models/films.js';
 import PagePresenter from './presenter/movie-list.js';
-import StatisticComponent from './components/statistic.js';
+import StatisticView from './view/statistic.js';
 import {render} from './utils/render.js';
 import {getUserTitle} from './utils/utils.js';
 
-const AUTHORIZATION = `Basic dfnjsadjnfasdjfn`;
+const AUTHORIZATION = `Basic fvbdflmskncfvwlfm`;
 const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 const STORE_PREFIX = `cinemaddict-localstorage`;
 const STORE_VER = `v1`;
@@ -28,7 +28,7 @@ const siteFooterElement = document.querySelector(`.footer`);
 
 const renderPage = () => {
   pagePresenter.render();
-  render(siteFooterElement, new FooterStatisticComponent(filmsModel.getAllFilms().length));
+  render(siteFooterElement, new FooterStatisticView(filmsModel.getAllFilms().length));
 };
 
 const api = new API(END_POINT, AUTHORIZATION);
@@ -37,32 +37,30 @@ const apiWithProvider = new Provider(api, store);
 
 const filmsModel = new FilmsModel();
 
-const menuComponent = new MenuComponent();
-render(siteMainElement, menuComponent);
+const menuView = new MenuView();
+render(siteMainElement, menuView);
 
-const mainNavigation = siteMainElement.querySelector(`.main-navigation`);
+new FilterPresenter(menuView.getElement(), filmsModel).render();
 
-new FilterPresenter(mainNavigation, filmsModel).render();
-
-const statisticsComponent = new StatisticComponent(filmsModel);
-statisticsComponent.hide();
-render(siteMainElement, statisticsComponent);
+const statisticsView = new StatisticView(filmsModel);
+statisticsView.hide();
+render(siteMainElement, statisticsView);
 
 const pagePresenter = new PagePresenter(siteMainElement, filmsModel, apiWithProvider);
 pagePresenter.showPreloader();
 
 
-menuComponent.setOnChangeHandler((menuItem) => {
+menuView.setOnChangeHandler((menuItem) => {
 
   switch (menuItem) {
     case MenuItem.FILMS:
-      statisticsComponent.hide();
+      statisticsView.hide();
       pagePresenter.show();
       break;
 
     case MenuItem.STATS:
       pagePresenter.hide();
-      statisticsComponent.show();
+      statisticsView.show();
       break;
   }
 });
@@ -71,7 +69,7 @@ apiWithProvider.getFilms()
   .then((films) => {
     filmsModel.setFilms(films);
     pagePresenter.removePreloader();
-    render(siteHeaderElement, new UserTitleComponent(getUserTitle(filmsModel.getWatchedFilms().length)));
+    render(siteHeaderElement, new UserTitleView(getUserTitle(filmsModel.getWatchedFilms().length)));
     renderPage();
   })
   .catch(() => {
@@ -82,9 +80,17 @@ apiWithProvider.getFilms()
 window.addEventListener(`load`, () => {
   navigator.serviceWorker.register(`/sw.js`)
     .then(() => {
-      document.title = document.title.replace(` [offline]`, ``);
-      apiWithProvider.sync();
+      console.log(`ServiceWorker available`); //eslint-disable-line
     }).catch(() => {
-      document.title += ` [offline]`;
+      console.error(`ServiceWorker isn't available`); //eslint-disable-line
     });
+});
+
+window.addEventListener(`online`, () => {
+  document.title = document.title.replace(` [offline]`, ``);
+  apiWithProvider.sync();
+});
+
+window.addEventListener(`offline`, () => {
+  document.title += ` [offline]`;
 });

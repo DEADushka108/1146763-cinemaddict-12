@@ -1,13 +1,5 @@
 import {SortType} from "../const.js";
 
-/**
- * Create sorted sliced araay
- * @param {Array} films
- * @param {String} filterType
- * @param {Number} from
- * @param {Number} to
- * @return {Array}
- */
 export const getSortedFilms = (films, filterType, from, to) => {
   let sortedFilms = [];
   const shownFilms = films.slice();
