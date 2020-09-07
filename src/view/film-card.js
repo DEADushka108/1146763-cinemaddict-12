@@ -13,7 +13,7 @@ const createFilmCardTemplate = (film) => {
 
   const RatingQuality = {
     POOR: 0,
-    AVERAGE: 4,
+    AVERAGE: 5,
     GOOD: 7,
   };
 
