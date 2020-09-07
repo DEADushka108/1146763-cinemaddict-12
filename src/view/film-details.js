@@ -1,5 +1,6 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
 import moment from 'moment';
+import {MINUTES_PER_HOUR} from '../const.js';
 
 const createGenresTemplate = (genres) => {
   return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(`\n`);
@@ -57,7 +58,7 @@ const createFilmDetailsTemplate = (film) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>
-                  <td class="film-details__cell">${Math.trunc(duration / 60)}h ${duration % 60}m</td>
+                  <td class="film-details__cell">${Math.trunc(duration / MINUTES_PER_HOUR)}h ${duration % MINUTES_PER_HOUR}m</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Country</td>

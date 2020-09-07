@@ -3,6 +3,7 @@ import {getUserTitle} from '../utils/utils.js';
 
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import {MINUTES_PER_HOUR} from '../const.js';
 
 const BAR_HEIGHT = 50;
 
@@ -153,9 +154,9 @@ const createTotalDurationMarkup = (films) => {
     return sum + film.duration;
   }, 0);
 
-  const hours = `${Math.trunc(totalDuration / 60)} <span class="statistic__item-description">h</span>`;
+  const hours = `${Math.trunc(totalDuration / MINUTES_PER_HOUR)} <span class="statistic__item-description">h</span>`;
 
-  const minutes = `${totalDuration % 60} <span class="statistic__item-description">m</span>`;
+  const minutes = `${totalDuration % MINUTES_PER_HOUR} <span class="statistic__item-description">m</span>`;
 
   return `${hours} ${minutes}`;
 };

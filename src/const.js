@@ -23,6 +23,8 @@ export const MenuItem = {
   STATS: `stats`,
 };
 
+export const MINUTES_PER_HOUR = 60;
+
 export const SHAKE_ANIMATION_TIMEOUT = 600;
 
 export const SHAKE_CLASS = `shake`;
