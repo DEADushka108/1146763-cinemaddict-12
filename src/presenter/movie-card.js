@@ -89,7 +89,7 @@ export default class FilmPresenter {
     document.removeEventListener(`keydown`, this._closePopupOnEscPress);
     this._filmDetailsNewCommentView.removeCommentHandler();
     this._mode = Mode.CLOSED;
-    this._onDataChange(this, this._film, Adapter.clone(this._film));
+    this._onDataChange(this, this._film.id, this._film);
   }
 
   _renderFilmCard(film) {
