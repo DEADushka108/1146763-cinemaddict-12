@@ -27,7 +27,7 @@ export default class Provider {
         return Adapter.createFilm(newFilm);
       });
     }
-    const localFilm = Object.assign(film, {id});
+    const localFilm = Object.assign({id}, film);
     this._store.setItem(id, localFilm);
     return Promise.resolve(Adapter.clone(localFilm));
   }

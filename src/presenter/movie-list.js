@@ -90,11 +90,13 @@ export default class PagePresenter {
     }
   }
 
-  _onDataChange(filmPresenter, oldData, newData) {
-    this._api.updateFilm(oldData.id, newData)
+  _onDataChange(filmPresenter, id, newData) {
+    this._api.updateFilm(id, newData)
       .then((film) => {
-        this._filmsModel.updateFilms(oldData.id, film);
+        this._filmsModel.updateFilms(id, film);
         filmPresenter.rerender(film);
+        this._renderTopRatedFilmList();
+        this._renderMostCommentedFilmList();
       });
   }
 

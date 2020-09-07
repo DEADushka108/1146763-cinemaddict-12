@@ -230,13 +230,12 @@ export default class FilmPresenter {
   }
 
   _changeData(film, field) {
-    const newFilm = Adapter.clone(film);
-    newFilm[field] = !newFilm[field];
+    film[field] = !film[field];
 
     if (field === Field.HISTORY) {
-      newFilm.watchingDate = newFilm[field] ? new Date() : null;
+      film.watchingDate = film[field] ? new Date() : null;
     }
 
-    this._onDataChange(this, film, newFilm);
+    this._onDataChange(this, film.id, film);
   }
 }
