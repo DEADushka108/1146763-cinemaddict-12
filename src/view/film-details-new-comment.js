@@ -1,5 +1,7 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
-import {SHAKE_ANIMATION_TIMEOUT} from '../const.js';
+import {SHAKE_ANIMATION_TIMEOUT, SHAKE_CLASS} from '../const.js';
+
+const ENTER_KEY = `Enter`;
 
 const EmojiAddress = {
   SMILE: `smile`,
@@ -113,7 +115,7 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
   }
 
   _newCommentSubmitHandler(evt) {
-    const isCtrlAndEnterPressed = evt.ctrlKey && evt.key === `Enter`;
+    const isCtrlAndEnterPressed = evt.ctrlKey && evt.key === ENTER_KEY;
 
     if (isCtrlAndEnterPressed && this._comment && this._emoji) {
       this.getElement().querySelector(`.film-details__comment-input`).disabled = true;
@@ -132,10 +134,10 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
   shakeBlock() {
     const textarea = this.getElement().querySelector(`.film-details__comment-input`);
     textarea.disabled = false;
-    textarea.classList.add(`shake`);
+    textarea.classList.add(SHAKE_CLASS);
 
     setTimeout(() => {
-      textarea.classList.remove(`shake`);
+      textarea.classList.remove(SHAKE_CLASS);
 
     }, SHAKE_ANIMATION_TIMEOUT);
   }

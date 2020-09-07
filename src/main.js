@@ -10,17 +10,13 @@ import PagePresenter from './presenter/movie-list.js';
 import StatisticView from './view/statistic.js';
 import {render} from './utils/render.js';
 import {getUserTitle} from './utils/utils.js';
+import {MenuItem} from './const.js';
 
 const AUTHORIZATION = `Basic fvbdflmskncfvwlfm`;
 const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 const STORE_PREFIX = `cinemaddict-localstorage`;
 const STORE_VER = `v1`;
 const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
-
-export const MenuItem = {
-  FILMS: `films`,
-  STATS: `stats`,
-};
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);

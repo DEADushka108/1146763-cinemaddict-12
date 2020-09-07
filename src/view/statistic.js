@@ -1,11 +1,18 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
 import {getUserTitle} from '../utils/utils.js';
-import {TimePeriod} from '../const.js';
 
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 const BAR_HEIGHT = 50;
+
+const TimePeriod = {
+  ALL_TIME: `all-time`,
+  TODAY: `today`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`,
+};
 
 const renderChart = (statisticCtx, stats) => {
   return new Chart(statisticCtx, {
