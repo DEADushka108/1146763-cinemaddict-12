@@ -4,7 +4,6 @@ import FilmDetailsCommentsView from '../view/film-details-comments.js';
 import FilmDetailsControlsView from '../view/film-details-controls.js';
 import FilmDetailsNewCommentView from '../view/film-details-new-comment.js';
 import CommentsModel from '../models/comments.js';
-import Adapter from '../models/adapter.js';
 import {render, removeChild, appendChild, replace, remove} from '../utils/render.js';
 
 const ESC_KEYCODE = 27;

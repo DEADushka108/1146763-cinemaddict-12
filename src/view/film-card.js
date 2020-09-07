@@ -15,13 +15,13 @@ const createFilmCardTemplate = (film) => {
     POOR: 0,
     AVERAGE: 4,
     GOOD: 7,
-  }
+  };
 
   const RatingActiveClass = {
     POOR: `poor`,
     AVERAGE: `average`,
     GOOD: `good`,
-  }
+  };
 
   const getRatingState = (filmRating) => {
 
