@@ -18,12 +18,12 @@ export default class FilterPresenter {
   }
 
   render() {
-    const oldView = this._filterView;
+    const oldFilterView = this._filterView;
     this._filterView = new FilterView(this._createFilters());
     this._filterView.setFilterChangeHandler(this._onFilterChange);
 
-    if (oldView) {
-      replace(this._filterView, oldView);
+    if (oldFilterView) {
+      replace(this._filterView, oldFilterView);
     } else {
       render(this._container, this._filterView, RenderPosition.AFTERBEGIN);
     }
