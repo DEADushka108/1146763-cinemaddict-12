@@ -133,9 +133,8 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
 
   shakeBlock() {
     const textarea = this.getElement().querySelector(`.film-details__comment-input`);
-     if (textarea.classList.contains(SHAKE_CLASS)) {
+    if (textarea.classList.contains(SHAKE_CLASS)) {
       textarea.classList.remove(SHAKE_CLASS);
-      textarea.offsetWidth = textarea.offsetWidth;
     }
     textarea.disabled = false;
     textarea.classList.add(SHAKE_CLASS);

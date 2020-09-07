@@ -70,8 +70,8 @@ export default class FilmDetailsComments extends AbstractSmartComponent {
     const comment = this.getElement().querySelectorAll(`.film-details__comment`)[index];
     const deleteButton = comment.querySelector(`.film-details__comment-delete`);
     if (comment.classList.contains(SHAKE_CLASS)) {
-      comment.classList.toggle(SHAKE_CLASS);
-    };
+      comment.classList.remove(SHAKE_CLASS);
+    }
     comment.disabled = false;
     comment.classList.add(SHAKE_CLASS);
     deleteButton.disabled = false;
