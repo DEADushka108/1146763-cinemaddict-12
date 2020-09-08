@@ -3,13 +3,12 @@ import Store from './api/store.js';
 import Provider from './api/provider.js';
 import FilterPresenter from './presenter/filter.js';
 import FooterStatisticView from './view/footer-statistic.js';
-import UserTitleView from './view/user-title.js';
 import MenuView from './view/menu.js';
 import FilmsModel from './models/films.js';
 import PagePresenter from './presenter/movie-list.js';
 import StatisticView from './view/statistic.js';
 import {render} from './utils/render.js';
-import {getUserTitle} from './utils/utils.js';
+import UserPresenter from './presenter/user-title.js';
 import {MenuItem} from './const.js';
 
 const AUTHORIZATION = `Basic fvbdflmskncfvwlfm`;
@@ -65,7 +64,7 @@ apiWithProvider.getFilms()
   .then((films) => {
     filmsModel.setFilms(films);
     pagePresenter.removePreloader();
-    render(siteHeaderElement, new UserTitleView(getUserTitle(filmsModel.getWatchedFilms().length)));
+    new UserPresenter(siteHeaderElement, filmsModel).render();
     renderPage();
   })
   .catch(() => {
