@@ -22,8 +22,8 @@ const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
 const renderPage = () => {
+  pagePresenter.removePreloader();
   pagePresenter.render();
-  render(siteFooterElement, new FooterStatisticView(filmsModel.getAllFilms().length));
 };
 
 const api = new API(END_POINT, AUTHORIZATION);
@@ -63,12 +63,11 @@ menuView.setOnChangeHandler((menuItem) => {
 apiWithProvider.getFilms()
   .then((films) => {
     filmsModel.setFilms(films);
-    pagePresenter.removePreloader();
     new UserPresenter(siteHeaderElement, filmsModel).render();
     renderPage();
+    render(siteFooterElement, new FooterStatisticView(filmsModel.getAllFilms().length));
   })
   .catch(() => {
-    pagePresenter.removePreloader();
     renderPage();
   });
 
