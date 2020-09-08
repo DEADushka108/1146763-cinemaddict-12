@@ -8,7 +8,7 @@ import FilmsModel from './models/films.js';
 import PagePresenter from './presenter/movie-list.js';
 import StatisticView from './view/statistic.js';
 import {render} from './utils/render.js';
-import UserPresenter from './presenter/user-title.js';
+import UserPresenter from './presenter/user.js';
 import {MenuItem} from './const.js';
 
 const AUTHORIZATION = `Basic fvbdflmskncfvwlfm`;
