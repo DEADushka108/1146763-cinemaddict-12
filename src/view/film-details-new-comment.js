@@ -133,11 +133,12 @@ export default class FilmDetailsNewComment extends AbstractSmartView {
 
       this._callback(comment);
     } else if (isCtrlAndEnterPressed && (this._comment || this._emoji)) {
-      this.shakeBlock(textarea);
+      this.shakeBlock();
     }
   }
 
-  shakeBlock(textarea) {
+  shakeBlock() {
+    const textarea = this.getElement().querySelector(`.film-details__comment-input`);
     textarea.disabled = false;
     textarea.classList.add(SHAKE_CLASS);
   }
