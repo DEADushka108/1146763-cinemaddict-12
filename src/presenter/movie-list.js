@@ -90,10 +90,10 @@ export default class PagePresenter {
     }
   }
 
-  _onDataChange(filmPresenter, id, newData) {
-    this._api.updateFilm(id, newData)
+  _onDataChange(filmPresenter, newData) {
+    this._api.updateFilm(newData.id, newData)
       .then((film) => {
-        this._filmsModel.updateFilms(id, film);
+        this._filmsModel.updateFilms(film.id, film);
         filmPresenter.rerender(film);
         this._renderTopRatedFilmList();
         this._renderMostCommentedFilmList();

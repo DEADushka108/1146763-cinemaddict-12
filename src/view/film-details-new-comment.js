@@ -116,26 +116,28 @@ export default class FilmDetailsNewComment extends AbstractSmartView {
 
   _newCommentSubmitHandler(evt) {
     const isCtrlAndEnterPressed = evt.ctrlKey && evt.key === ENTER_KEY;
+    const textarea = this.getElement().querySelector(`.film-details__comment-input`);
+
+    if (textarea.classList.contains(SHAKE_CLASS)) {
+      textarea.classList.remove(SHAKE_CLASS);
+    }
 
     if (isCtrlAndEnterPressed && this._comment && this._emoji) {
-      this.getElement().querySelector(`.film-details__comment-input`).disabled = true;
+      textarea.disabled = true;
 
       const comment = {
         'emotion': this._emoji,
         'comment': this._comment,
         'date': new Date(),
       };
+
       this._callback(comment);
     } else if (isCtrlAndEnterPressed && (this._comment || this._emoji)) {
-      this.shakeBlock();
+      this.shakeBlock(textarea);
     }
   }
 
-  shakeBlock() {
-    const textarea = this.getElement().querySelector(`.film-details__comment-input`);
-    if (textarea.classList.contains(SHAKE_CLASS)) {
-      textarea.classList.remove(SHAKE_CLASS);
-    }
+  shakeBlock(textarea) {
     textarea.disabled = false;
     textarea.classList.add(SHAKE_CLASS);
   }

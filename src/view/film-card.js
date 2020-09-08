@@ -2,43 +2,14 @@ import AbstractSmartView from './abstract-smart-view.js';
 import moment from 'moment';
 import {MINUTES_PER_HOUR} from '../const.js';
 
+const DescriptionLength = {
+  MAX: 140,
+  REQUIRE: 139,
+  MIN: 0,
+};
+
 const createFilmCardTemplate = (film) => {
   const {title, poster, description, comments, rating, releaseDate, duration, genres, isInFavorites, isInWatchlist, isInHistory} = film;
-
-  const DescriptionLength = {
-    MAX: 140,
-    REQUIRE: 139,
-    MIN: 0,
-  };
-
-  const RatingQuality = {
-    POOR: 0,
-    AVERAGE: 5,
-    GOOD: 7,
-  };
-
-  const RatingActiveClass = {
-    POOR: `poor`,
-    AVERAGE: `average`,
-    GOOD: `good`,
-  };
-
-  const getRatingState = (filmRating) => {
-
-    if (filmRating >= RatingQuality.POOR && filmRating <= RatingQuality.AVERAGE) {
-      return RatingActiveClass.POOR;
-    }
-
-    if (filmRating > RatingQuality.AVERAGE && filmRating <= RatingQuality.GOOD) {
-      return RatingActiveClass.AVERAGE;
-    }
-
-    if (filmRating > RatingQuality.GOOD) {
-      return RatingActiveClass.GOOD;
-    }
-
-    return ``;
-  };
 
   const getCommentsLength = () => comments ? comments.length : 0;
 
@@ -49,7 +20,7 @@ const createFilmCardTemplate = (film) => {
   return (
     `<article class="film-card">
       <h3 class="film-card__title">${title}</h3>
-      <p class="film-card__rating film-card__rating--${getRatingState(rating)}">${rating}</p>
+      <p class="film-card__rating">${rating}</p>
       <p class="film-card__info">
         <span class="film-card__year">${moment(releaseDate).format(`YYYY`)}</span>
         <span class="film-card__duration">${Math.trunc(duration / MINUTES_PER_HOUR)}h ${duration % MINUTES_PER_HOUR}m</span>
