@@ -1,14 +1,15 @@
-import AbstractSmartComponent from './abstract-smart-component.js';
+import AbstractSmartView from './abstract-smart-view.js';
 import moment from 'moment';
+import {MINUTES_PER_HOUR} from '../const.js';
+
+const DescriptionLength = {
+  MAX: 140,
+  REQUIRE: 139,
+  MIN: 0,
+};
 
 const createFilmCardTemplate = (film) => {
   const {title, poster, description, comments, rating, releaseDate, duration, genres, isInFavorites, isInWatchlist, isInHistory} = film;
-
-  const DescriptionLength = {
-    MAX: 140,
-    REQUIRE: 139,
-    MIN: 0,
-  };
 
   const getCommentsLength = () => comments ? comments.length : 0;
 
@@ -22,7 +23,7 @@ const createFilmCardTemplate = (film) => {
       <p class="film-card__rating">${rating}</p>
       <p class="film-card__info">
         <span class="film-card__year">${moment(releaseDate).format(`YYYY`)}</span>
-        <span class="film-card__duration">${Math.trunc(duration / 60)}h ${duration % 60}m</span>
+        <span class="film-card__duration">${Math.trunc(duration / MINUTES_PER_HOUR)}h ${duration % MINUTES_PER_HOUR}m</span>
         <span class="film-card__genre">${genres[0]}</span>
       </p>
       <img src="./${poster}" alt="${title}" class="film-card__poster">
@@ -37,7 +38,7 @@ const createFilmCardTemplate = (film) => {
   );
 };
 
-export default class FilmCard extends AbstractSmartComponent {
+export default class FilmCard extends AbstractSmartView {
   constructor(film) {
     super();
     this._film = film;

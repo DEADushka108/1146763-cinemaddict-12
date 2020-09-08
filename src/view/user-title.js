@@ -1,6 +1,6 @@
-import AbstractComponent from './abstract-component.js';
+import AbstractView from './abstract-view.js';
 
-export default class UserTitle extends AbstractComponent {
+export default class UserTitle extends AbstractView {
   constructor(title) {
     super();
 

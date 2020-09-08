@@ -1,5 +1,7 @@
-import AbstractSmartComponent from './abstract-smart-component.js';
-import {SHAKE_ANIMATION_TIMEOUT} from '../const.js';
+import AbstractSmartView from './abstract-smart-view.js';
+import {SHAKE_CLASS} from '../const.js';
+
+const ENTER_KEY = `Enter`;
 
 const EmojiAddress = {
   SMILE: `smile`,
@@ -40,7 +42,7 @@ const createFilmDetailsCommentSectionTemplate = (comment, emojiTemplate, emoji) 
   );
 };
 
-export default class FilmDetailsNewComment extends AbstractSmartComponent {
+export default class FilmDetailsNewComment extends AbstractSmartView {
   constructor() {
     super();
 
@@ -113,16 +115,22 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
   }
 
   _newCommentSubmitHandler(evt) {
-    const isCtrlAndEnterPressed = evt.ctrlKey && evt.key === `Enter`;
+    const isCtrlAndEnterPressed = evt.ctrlKey && evt.key === ENTER_KEY;
+    const textarea = this.getElement().querySelector(`.film-details__comment-input`);
+
+    if (textarea.classList.contains(SHAKE_CLASS)) {
+      textarea.classList.remove(SHAKE_CLASS);
+    }
 
     if (isCtrlAndEnterPressed && this._comment && this._emoji) {
-      this.getElement().querySelector(`.film-details__comment-input`).disabled = true;
+      textarea.disabled = true;
 
       const comment = {
         'emotion': this._emoji,
         'comment': this._comment,
         'date': new Date(),
       };
+
       this._callback(comment);
     } else if (isCtrlAndEnterPressed && (this._comment || this._emoji)) {
       this.shakeBlock();
@@ -132,11 +140,6 @@ export default class FilmDetailsNewComment extends AbstractSmartComponent {
   shakeBlock() {
     const textarea = this.getElement().querySelector(`.film-details__comment-input`);
     textarea.disabled = false;
-    textarea.classList.add(`shake`);
-
-    setTimeout(() => {
-      textarea.classList.remove(`shake`);
-
-    }, SHAKE_ANIMATION_TIMEOUT);
+    textarea.classList.add(SHAKE_CLASS);
   }
 }

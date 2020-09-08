@@ -10,6 +10,14 @@ const SuccessHTTPStatusRange = {
   MAX: 299
 };
 
+const Url = {
+  MOVIES: `movies`,
+  COMMENTS: `comments`,
+  SYNC: `movies/sync`,
+};
+
+const HEADER = {"Content-Type": `application/json`};
+
 export default class Api {
   constructor(endPoint, authorization) {
     this._endPoint = endPoint;
@@ -18,50 +26,50 @@ export default class Api {
 
   getFilms() {
     return this._sendRequest({
-      url: `movies`
+      url: Url.MOVIES,
     })
     .then(Api.toJSON);
   }
 
   updateFilm(id, film) {
     return this._sendRequest({
-      url: `movies/${id}`,
+      url: `${Url.MOVIES}/${id}`,
       method: Method.PUT,
       body: JSON.stringify(film.adaptToServer()),
-      headers: new Headers({"Content-Type": `application/json`})
+      headers: new Headers(HEADER)
     })
       .then(Api.toJSON);
   }
 
   getComment(id) {
     return this._sendRequest({
-      url: `comments/${id}`
+      url: `${Url.COMMENTS}/${id}`
     })
     .then(Api.toJSON);
   }
 
   addComment(id, comment) {
     return this._sendRequest({
-      url: `comments/${id}`,
+      url: `${Url.COMMENTS}/${id}`,
       method: Method.POST,
       body: comment,
-      headers: new Headers({"Content-Type": `application/json`})
+      headers: new Headers(HEADER)
     });
   }
 
   deleteComment(id) {
     return this._sendRequest({
-      url: `comments/${id}`,
+      url: `${Url.COMMENTS}/${id}`,
       method: Method.DELETE
     });
   }
 
-  sync(data) {
+  sync(films) {
     return this._sendRequest({
-      url: `movies/sync`,
+      url: Url.SYNC,
       method: Method.POST,
-      body: JSON.stringify(data),
-      headers: new Headers({"Content-Type": `application/json`})
+      body: JSON.stringify(films),
+      headers: new Headers(HEADER)
     })
     .then(Api.toJSON);
   }

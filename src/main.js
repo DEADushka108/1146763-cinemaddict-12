@@ -1,34 +1,29 @@
-import API from './api/index.js';
+import API from './api/api.js';
 import Store from './api/store.js';
 import Provider from './api/provider.js';
 import FilterPresenter from './presenter/filter.js';
-import FooterStatisticComponent from './components/footer-statistic.js';
-import UserTitleComponent from './components/user-title.js';
-import MenuComponent from './components/menu.js';
+import FooterStatisticView from './view/footer-statistic.js';
+import MenuView from './view/menu.js';
 import FilmsModel from './models/films.js';
 import PagePresenter from './presenter/movie-list.js';
-import StatisticComponent from './components/statistic.js';
+import StatisticView from './view/statistic.js';
 import {render} from './utils/render.js';
-import {getUserTitle} from './utils/utils.js';
+import UserPresenter from './presenter/user.js';
+import {MenuItem} from './const.js';
 
-const AUTHORIZATION = `Basic dfnjsadjnfasdjfn`;
+const AUTHORIZATION = `Basic fvbdflmskncfvwlfm`;
 const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 const STORE_PREFIX = `cinemaddict-localstorage`;
 const STORE_VER = `v1`;
 const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
-
-export const MenuItem = {
-  FILMS: `films`,
-  STATS: `stats`,
-};
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
 const renderPage = () => {
+  pagePresenter.removePreloader();
   pagePresenter.render();
-  render(siteFooterElement, new FooterStatisticComponent(filmsModel.getAllFilms().length));
 };
 
 const api = new API(END_POINT, AUTHORIZATION);
@@ -37,32 +32,30 @@ const apiWithProvider = new Provider(api, store);
 
 const filmsModel = new FilmsModel();
 
-const menuComponent = new MenuComponent();
-render(siteMainElement, menuComponent);
+const menuView = new MenuView();
+render(siteMainElement, menuView);
 
-const mainNavigation = siteMainElement.querySelector(`.main-navigation`);
+new FilterPresenter(menuView.getElement(), filmsModel).render();
 
-new FilterPresenter(mainNavigation, filmsModel).render();
-
-const statisticsComponent = new StatisticComponent(filmsModel);
-statisticsComponent.hide();
-render(siteMainElement, statisticsComponent);
+const statisticsView = new StatisticView(filmsModel);
+statisticsView.hide();
+render(siteMainElement, statisticsView);
 
 const pagePresenter = new PagePresenter(siteMainElement, filmsModel, apiWithProvider);
 pagePresenter.showPreloader();
 
 
-menuComponent.setOnChangeHandler((menuItem) => {
+menuView.setOnChangeHandler((menuItem) => {
 
   switch (menuItem) {
     case MenuItem.FILMS:
-      statisticsComponent.hide();
+      statisticsView.hide();
       pagePresenter.show();
       break;
 
     case MenuItem.STATS:
       pagePresenter.hide();
-      statisticsComponent.show();
+      statisticsView.show();
       break;
   }
 });
@@ -70,21 +63,23 @@ menuComponent.setOnChangeHandler((menuItem) => {
 apiWithProvider.getFilms()
   .then((films) => {
     filmsModel.setFilms(films);
-    pagePresenter.removePreloader();
-    render(siteHeaderElement, new UserTitleComponent(getUserTitle(filmsModel.getWatchedFilms().length)));
+    new UserPresenter(siteHeaderElement, filmsModel).render();
     renderPage();
+    render(siteFooterElement, new FooterStatisticView(filmsModel.getAllFilms().length));
   })
   .catch(() => {
-    pagePresenter.removePreloader();
     renderPage();
   });
 
 window.addEventListener(`load`, () => {
-  navigator.serviceWorker.register(`/sw.js`)
-    .then(() => {
-      document.title = document.title.replace(` [offline]`, ``);
-      apiWithProvider.sync();
-    }).catch(() => {
-      document.title += ` [offline]`;
-    });
+  navigator.serviceWorker.register(`/sw.js`);
+});
+
+window.addEventListener(`online`, () => {
+  document.title = document.title.replace(` [offline]`, ``);
+  apiWithProvider.sync();
+});
+
+window.addEventListener(`offline`, () => {
+  document.title += ` [offline]`;
 });

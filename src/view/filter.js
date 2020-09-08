@@ -1,7 +1,5 @@
-import AbstractComponent from "./abstract-component";
-import {FilterType} from '../const.js';
-import {MenuItem} from '../main.js';
-import {NAVIGATION_ACTIVE} from './menu.js';
+import AbstractView from './abstract-view';
+import {FilterType, MenuItem, NAVIGATION_ACTIVE_CLASS} from '../const.js';
 
 const createFiltersTemplate = (filters) => {
   return filters.map(({address, name, count, isChecked}) => {
@@ -9,7 +7,7 @@ const createFiltersTemplate = (filters) => {
       `<a href="#${address}"
          data-id="${MenuItem.FILMS}"
          data-filter-type="${name}"
-         class="main-navigation__item${isChecked ? ` ${NAVIGATION_ACTIVE}` : ``}">
+         class="main-navigation__item${isChecked ? ` ${NAVIGATION_ACTIVE_CLASS}` : ``}">
          ${name}
          ${name === FilterType.ALL ? `` : `<span  class="main-navigation__item-count">${count}</span>`}
       </a>`
@@ -25,7 +23,7 @@ const createFilterTemplate = (filters) => {
   );
 };
 
-export default class Filter extends AbstractComponent {
+export default class Filter extends AbstractView {
   constructor(filters) {
     super();
     this._filters = filters;
@@ -43,7 +41,7 @@ export default class Filter extends AbstractComponent {
       if (evt.target.tagName !== `A`) {
         return;
       }
-      document.querySelector(`.main-navigation__additional`).classList.remove(NAVIGATION_ACTIVE);
+      document.querySelector(`.main-navigation__additional`).classList.remove(NAVIGATION_ACTIVE_CLASS);
 
       callback(evt.target.dataset.filterType);
     });

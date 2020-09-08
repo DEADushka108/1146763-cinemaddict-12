@@ -1,4 +1,4 @@
-import FilterComponent from '../components/filter.js';
+import FilterView from '../view/filter.js';
 import {RenderPosition, render, replace} from '../utils/render.js';
 import {getFilteredFilms} from '../utils/filter.js';
 import {FilterType} from '../const.js';
@@ -9,7 +9,7 @@ export default class FilterPresenter {
     this._filmsModel = filmsModel;
 
     this._activeFilterType = FilterType.ALL;
-    this._filterComponent = null;
+    this._filterView = null;
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
@@ -18,14 +18,14 @@ export default class FilterPresenter {
   }
 
   render() {
-    const oldComponent = this._filterComponent;
-    this._filterComponent = new FilterComponent(this._createFilters());
-    this._filterComponent.setFilterChangeHandler(this._onFilterChange);
+    const oldFilterView = this._filterView;
+    this._filterView = new FilterView(this._createFilters());
+    this._filterView.setFilterChangeHandler(this._onFilterChange);
 
-    if (oldComponent) {
-      replace(this._filterComponent, oldComponent);
+    if (oldFilterView) {
+      replace(this._filterView, oldFilterView);
     } else {
-      render(this._container, this._filterComponent, RenderPosition.AFTERBEGIN);
+      render(this._container, this._filterView, RenderPosition.AFTERBEGIN);
     }
   }
 

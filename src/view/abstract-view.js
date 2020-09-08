@@ -2,9 +2,9 @@ import {createElement} from '../utils/render.js';
 
 const HIDDEN_CLASS = `visually-hidden`;
 
-export default class AbstractComponent {
+export default class AbstractView {
   constructor() {
-    if (new.target === AbstractComponent) {
+    if (new.target === AbstractView) {
       throw new Error(`Can't instantiate AbstractComponent, only concrete one.`);
     }
 

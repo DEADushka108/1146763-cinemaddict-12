@@ -18,12 +18,13 @@ export const FilterType = {
   FAVORITES: `Favorites`,
 };
 
-export const TimePeriod = {
-  ALL_TIME: `all-time`,
-  TODAY: `today`,
-  WEEK: `week`,
-  MONTH: `month`,
-  YEAR: `year`,
+export const MenuItem = {
+  FILMS: `films`,
+  STATS: `stats`,
 };
 
-export const SHAKE_ANIMATION_TIMEOUT = 600;
+export const MINUTES_PER_HOUR = 60;
+
+export const SHAKE_CLASS = `shake`;
+
+export const NAVIGATION_ACTIVE_CLASS = `main-navigation__item--active`;

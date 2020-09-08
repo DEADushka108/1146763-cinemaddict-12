@@ -1,9 +1,7 @@
-import AbstractComponent from './abstract-component.js';
-import {MenuItem} from '../main.js';
+import AbstractView from './abstract-view.js';
+import {MenuItem, NAVIGATION_ACTIVE_CLASS} from '../const.js';
 
-export const NAVIGATION_ACTIVE = `main-navigation__item--active`;
-
-export default class Menu extends AbstractComponent {
+export default class Menu extends AbstractView {
 
   getTemplate() {
     return (
@@ -22,12 +20,12 @@ export default class Menu extends AbstractComponent {
 
       if (evt.target.dataset.id === MenuItem.STATS) {
         document.querySelectorAll(`.main-navigation__item`).forEach((it) => {
-          it.classList.remove(NAVIGATION_ACTIVE);
+          it.classList.remove(NAVIGATION_ACTIVE_CLASS);
         });
       }
 
       callback(evt.target.dataset.id);
-      evt.target.classList.add(NAVIGATION_ACTIVE);
+      evt.target.classList.add(NAVIGATION_ACTIVE_CLASS);
     });
   }
 }

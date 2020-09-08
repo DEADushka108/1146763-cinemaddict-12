@@ -1,11 +1,19 @@
-import AbstractSmartComponent from './abstract-smart-component.js';
+import AbstractSmartView from './abstract-smart-view.js';
 import {getUserTitle} from '../utils/utils.js';
-import {TimePeriod} from '../const.js';
 
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import {MINUTES_PER_HOUR} from '../const.js';
 
 const BAR_HEIGHT = 50;
+
+const TimePeriod = {
+  ALL_TIME: `all-time`,
+  TODAY: `today`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`,
+};
 
 const renderChart = (statisticCtx, stats) => {
   return new Chart(statisticCtx, {
@@ -146,9 +154,9 @@ const createTotalDurationMarkup = (films) => {
     return sum + film.duration;
   }, 0);
 
-  const hours = `${Math.trunc(totalDuration / 60)} <span class="statistic__item-description">h</span>`;
+  const hours = `${Math.trunc(totalDuration / MINUTES_PER_HOUR)} <span class="statistic__item-description">h</span>`;
 
-  const minutes = `${totalDuration % 60} <span class="statistic__item-description">m</span>`;
+  const minutes = `${totalDuration % MINUTES_PER_HOUR} <span class="statistic__item-description">m</span>`;
 
   return `${hours} ${minutes}`;
 };
@@ -210,7 +218,7 @@ const createStatisticsTemplate = (films, activeFilter) => {
   );
 };
 
-export default class Statistics extends AbstractSmartComponent {
+export default class Statistics extends AbstractSmartView {
   constructor(filmsModel) {
     super();
 
