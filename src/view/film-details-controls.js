@@ -1,4 +1,4 @@
-import AbstractSmartComponent from "./abstract-smart-component.js";
+import AbstractSmartView from "./abstract-smart-view.js";
 
 const createFilmDetailsTemplate = ({isInWatchlist, isInHistory, isInFavorites}) => {
 
@@ -18,7 +18,7 @@ const createFilmDetailsTemplate = ({isInWatchlist, isInHistory, isInFavorites}) 
   );
 };
 
-export default class FilmDetailsControls extends AbstractSmartComponent {
+export default class FilmDetailsControls extends AbstractSmartView {
   constructor(controls) {
     super();
 

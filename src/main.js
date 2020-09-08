@@ -1,4 +1,4 @@
-import API from './api/index.js';
+import API from './api/api.js';
 import Store from './api/store.js';
 import Provider from './api/provider.js';
 import FilterPresenter from './presenter/filter.js';

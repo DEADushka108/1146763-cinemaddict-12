@@ -1,4 +1,4 @@
-import AbstractSmartComponent from './abstract-smart-component.js';
+import AbstractSmartView from './abstract-smart-view.js';
 import {getUserTitle} from '../utils/utils.js';
 
 import Chart from 'chart.js';
@@ -218,7 +218,7 @@ const createStatisticsTemplate = (films, activeFilter) => {
   );
 };
 
-export default class Statistics extends AbstractSmartComponent {
+export default class Statistics extends AbstractSmartView {
   constructor(filmsModel) {
     super();
 

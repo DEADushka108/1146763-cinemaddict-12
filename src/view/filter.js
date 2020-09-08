@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstract-component";
+import AbstractView from './abstract-view';
 import {FilterType, MenuItem, NAVIGATION_ACTIVE_CLASS} from '../const.js';
 
 const createFiltersTemplate = (filters) => {
@@ -23,7 +23,7 @@ const createFilterTemplate = (filters) => {
   );
 };
 
-export default class Filter extends AbstractComponent {
+export default class Filter extends AbstractView {
   constructor(filters) {
     super();
     this._filters = filters;

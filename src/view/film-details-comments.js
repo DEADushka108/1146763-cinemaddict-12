@@ -1,4 +1,4 @@
-import AbstractSmartComponent from './abstract-smart-component.js';
+import AbstractSmartView from './abstract-smart-view.js';
 import {SHAKE_CLASS} from '../const.js';
 import moment from 'moment';
 import he from 'he';
@@ -42,7 +42,7 @@ const createFilmDetailsCommentsTemplate = (comments) => {
   );
 };
 
-export default class FilmDetailsComments extends AbstractSmartComponent {
+export default class FilmDetailsComments extends AbstractSmartView {
   constructor(comments) {
     super();
 

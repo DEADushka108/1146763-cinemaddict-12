@@ -1,4 +1,4 @@
-import AbstractSmartComponent from './abstract-smart-component.js';
+import AbstractSmartView from './abstract-smart-view.js';
 import {SHAKE_CLASS} from '../const.js';
 
 const ENTER_KEY = `Enter`;
@@ -42,7 +42,7 @@ const createFilmDetailsCommentSectionTemplate = (comment, emojiTemplate, emoji) 
   );
 };
 
-export default class FilmDetailsNewComment extends AbstractSmartComponent {
+export default class FilmDetailsNewComment extends AbstractSmartView {
   constructor() {
     super();
 

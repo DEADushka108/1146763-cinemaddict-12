@@ -1,4 +1,4 @@
-import AbstractSmartComponent from './abstract-smart-component.js';
+import AbstractSmartView from './abstract-smart-view.js';
 import moment from 'moment';
 import {MINUTES_PER_HOUR} from '../const.js';
 
@@ -67,7 +67,7 @@ const createFilmCardTemplate = (film) => {
   );
 };
 
-export default class FilmCard extends AbstractSmartComponent {
+export default class FilmCard extends AbstractSmartView {
   constructor(film) {
     super();
     this._film = film;
