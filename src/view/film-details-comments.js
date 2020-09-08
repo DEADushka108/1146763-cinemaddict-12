@@ -66,7 +66,7 @@ export default class FilmDetailsComments extends AbstractSmartView {
       evt.preventDefault();
       evt.target.disabled = true;
       evt.target.textContent = ButtonText.DELETING;
-      callback(comment.dataset.id);
+      callback(evt.target.dataset.id);
     });
   }
 
