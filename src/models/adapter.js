@@ -58,8 +58,4 @@ export default class Adapter {
   static createFilms(data) {
     return data.map(Adapter.createFilm);
   }
-
-  static clone(data) {
-    return new Adapter(data.adaptToServer());
-  }
 }
