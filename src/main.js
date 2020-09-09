@@ -14,12 +14,12 @@ import {MenuItem} from './const.js';
 const AUTHORIZATION = `Basic 12312312;dfsd'f;g,s'fdl,v`;
 const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 
-const StoreParameters = {
+const StoreParameter = {
   PREFIX: `cinemaddict-localstorage`,
   VER: `v1`,
 };
 
-const STORE_NAME = `${StoreParameters.PREFIX}-${StoreParameters.VER}`;
+const STORE_NAME = `${StoreParameter.PREFIX}-${StoreParameter.VER}`;
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
