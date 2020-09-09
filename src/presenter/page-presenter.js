@@ -1,15 +1,15 @@
-import FilmsView from '../view/films.js';
-import SortView from '../view/sort.js';
-import ShowMoreButtonView from '../view/show-more-button.js';
-import FilmsListView from '../view/films-list.js';
-import MostCommentedFilmsView from '../view/most-commented.js';
-import TopRatedFilmsListView from '../view/top-rated.js';
-import NoFilmsView from '../view/no-films.js';
+import FilmsView from '../view/films-view.js';
+import SortView from '../view/sort-view.js';
+import ShowMoreButtonView from '../view/show-more-button-view.js';
+import FilmsListView from '../view/films-list-view.js';
+import MostCommentedFilmsView from '../view/most-commented-films-view.js';
+import TopRatedFilmsListView from '../view/top-rated-films-view.js';
+import NoFilmsView from '../view/no-films-view.js';
 import {render, remove, replace} from '../utils/render.js';
 import {SortType} from '../const.js';
 import {getSortedFilms} from '../utils/sort.js';
-import FilmPresenter from './film.js';
-import FilmsLoadView from '../view/film-load.js';
+import FilmPresenter from './film-presenter.js';
+import FilmsLoadView from '../view/film-load-view.js';
 
 const CardCount = {
   ON_START: 5,

@@ -1,9 +1,9 @@
-import FilmCardView from '../view/film-card.js';
-import FilmDetailsView from '../view/film-details.js';
-import FilmDetailsCommentsView from '../view/film-details-comments.js';
-import FilmDetailsControlsView from '../view/film-details-controls.js';
-import FilmDetailsNewCommentView from '../view/film-details-new-comment.js';
-import CommentsModel from '../models/comments.js';
+import FilmCardView from '../view/film-card-view.js';
+import FilmDetailsView from '../view/film-details-view.js';
+import FilmDetailsCommentsView from '../view/film-details-comments-view.js';
+import FilmDetailsControlsView from '../view/film-details-controls-view.js';
+import FilmDetailsNewCommentView from '../view/film-details-new-comment-view.js';
+import CommentsModel from '../models/comments-model.js';
 import {render, removeChild, appendChild, replace, remove} from '../utils/render.js';
 
 const ESC_KEYCODE = 27;

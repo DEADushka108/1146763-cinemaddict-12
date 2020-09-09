@@ -1,4 +1,4 @@
-import AdapterModel from '../models/adapter.js';
+import AdapterModel from '../models/adapter-model.js';
 
 export default class Provider {
   constructor(api, store) {

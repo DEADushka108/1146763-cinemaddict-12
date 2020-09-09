@@ -1,4 +1,4 @@
-import UserTitleView from '../view/user-title.js';
+import UserTitleView from '../view/user-title-view.js';
 import {render, replace} from '../utils/render.js';
 import {getUserTitle} from '../utils/utils.js';
 
@@ -7,20 +7,20 @@ export default class UserPresenter {
     this._container = container;
     this._filmsModel = filmsModel;
 
-    this._userView = null;
+    this._userTitleView = null;
 
     this._onDataChange = this._onDataChange.bind(this);
     this._filmsModel.setDataChangeHandlers(this._onDataChange);
   }
 
   render() {
-    const oldUserView = this._userView;
-    this._userView = new UserTitleView(getUserTitle(this._filmsModel.getWatchedFilms().length));
+    const oldUserTitleView = this._userTitleView;
+    this._userTitleView = new UserTitleView(getUserTitle(this._filmsModel.getWatchedFilms().length));
 
-    if (oldUserView) {
-      replace(this._userView, oldUserView);
+    if (oldUserTitleView) {
+      replace(this._userTitleView, oldUserTitleView);
     } else {
-      render(this._container, this._userView);
+      render(this._container, this._userTitleView);
     }
   }
 

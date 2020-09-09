@@ -1,14 +1,14 @@
 import API from './api/api.js';
 import Store from './api/store.js';
 import Provider from './api/provider.js';
-import FilterPresenter from './presenter/filter.js';
-import FooterStatisticView from './view/footer-statistic.js';
-import MenuView from './view/menu.js';
-import FilmsModel from './models/films.js';
-import PagePresenter from './presenter/page.js';
-import StatisticView from './view/statistic.js';
+import FilterPresenter from './presenter/filter-presenter.js';
+import FooterStatisticView from './view/footer-statistic-view.js';
+import MenuView from './view/menu-view.js';
+import FilmsModel from './models/films-model.js';
+import PagePresenter from './presenter/page-presenter.js';
+import StatisticView from './view/statistic-view.js';
 import {render} from './utils/render.js';
-import UserPresenter from './presenter/user.js';
+import UserPresenter from './presenter/user-presenter.js';
 import {MenuItem} from './const.js';
 
 const AUTHORIZATION = `Basic 12312312;dfsd'f;g,s'fdl,v`;
