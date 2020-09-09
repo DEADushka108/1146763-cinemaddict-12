@@ -1,4 +1,4 @@
-import Adapter from '../models/adapter.js';
+import AdapterModel from '../models/adapter.js';
 
 export default class Provider {
   constructor(api, store) {
@@ -11,25 +11,11 @@ export default class Provider {
       return this._api.getFilms()
       .then((films) => {
         this._store.setItems(this._createStoreStructure(films));
-        return Adapter.createFilms(films);
+        return AdapterModel.createFilms(films);
       });
     }
     const storeFilms = Object.values(this._store.getItems());
-    return Promise.resolve(Adapter.createFilms(storeFilms));
-  }
-
-  updateFilm(id, film) {
-    if (Provider.isOnline()) {
-      return this._api.updateFilm(id, film)
-      .then((newFilm) => {
-        this._store.setItem(newFilm.id, newFilm);
-
-        return Adapter.createFilm(newFilm);
-      });
-    }
-    const localFilm = Object.assign({id}, film.adaptToServer());
-    this._store.setItem(id, localFilm);
-    return Promise.resolve(Adapter.createFilm(localFilm));
+    return Promise.resolve(AdapterModel.createFilms(storeFilms));
   }
 
   getComment(id) {
@@ -38,6 +24,20 @@ export default class Provider {
     }
 
     return Promise.reject(`offline`);
+  }
+
+  updateFilm(id, film) {
+    if (Provider.isOnline()) {
+      return this._api.updateFilm(id, film)
+      .then((newFilm) => {
+        this._store.setItem(newFilm.id, newFilm);
+
+        return AdapterModel.createFilm(newFilm);
+      });
+    }
+    const localFilm = Object.assign({id}, film.adaptToServer());
+    this._store.setItem(id, localFilm);
+    return Promise.resolve(AdapterModel.createFilm(localFilm));
   }
 
   addComment(id, comment) {
@@ -70,15 +70,15 @@ export default class Provider {
     return Promise.reject(new Error(`Sync data failed`));
   }
 
-  static isOnline() {
-    return window.navigator.onLine;
-  }
-
   _createStoreStructure(items) {
     return items.reduce((acc, current) => {
       return Object.assign({}, acc, {
         [current.id]: current,
       });
     }, {});
+  }
+
+  static isOnline() {
+    return window.navigator.onLine;
   }
 }

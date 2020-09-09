@@ -31,6 +31,13 @@ export default class Api {
     .then(Api.toJSON);
   }
 
+  getComment(id) {
+    return this._sendRequest({
+      url: `${Url.COMMENTS}/${id}`
+    })
+    .then(Api.toJSON);
+  }
+
   updateFilm(id, film) {
     return this._sendRequest({
       url: `${Url.MOVIES}/${id}`,
@@ -41,20 +48,14 @@ export default class Api {
       .then(Api.toJSON);
   }
 
-  getComment(id) {
-    return this._sendRequest({
-      url: `${Url.COMMENTS}/${id}`
-    })
-    .then(Api.toJSON);
-  }
-
   addComment(id, comment) {
     return this._sendRequest({
       url: `${Url.COMMENTS}/${id}`,
       method: Method.POST,
       body: comment,
       headers: new Headers(HEADER)
-    });
+    })
+      .then(Api.toJSON);
   }
 
   deleteComment(id) {

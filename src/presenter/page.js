@@ -8,7 +8,7 @@ import NoFilmsView from '../view/no-films.js';
 import {render, remove, replace} from '../utils/render.js';
 import {SortType} from '../const.js';
 import {getSortedFilms} from '../utils/sort.js';
-import FilmPresenter from '../presenter/movie-card.js';
+import FilmPresenter from './film.js';
 import FilmsLoadView from '../view/film-load.js';
 
 const CardCount = {
@@ -53,7 +53,7 @@ export default class PagePresenter {
   }
 
   render() {
-    this._films = this._filmsModel.getAllFilms();
+    this._films = this._filmsModel.getAll();
     render(this._container, this._sortView);
     render(this._container, this._filmsView);
 
@@ -70,9 +70,29 @@ export default class PagePresenter {
     this._renderMostCommentedFilmList();
   }
 
+  hide() {
+    this._sortView.setDefaultSortType();
+    this._sortView.hide();
+    this._filmsView.hide();
+  }
+
+  show() {
+    this._sortView.show();
+    this._filmsView.show();
+  }
+
+  showPreloader() {
+    render(this._container, this._filmsView);
+    render(this._filmsView.getElement(), this._filmsLoadView);
+  }
+
+  removePreloader() {
+    remove(this._filmsLoadView);
+  }
+
   _renderShowMoreButton() {
     remove(this._showMoreButtonView);
-    if (this._currentCardsCount >= this._filmsModel.getFilms().length) {
+    if (this._currentCardsCount >= this._filmsModel.get().length) {
       return;
     }
     render(this._filmsListView.getElement(), this._showMoreButtonView);
@@ -81,7 +101,7 @@ export default class PagePresenter {
 
   _onShowMoreButtonClick() {
     const previousCardsCount = this._currentCardsCount;
-    const films = this._filmsModel.getFilms();
+    const films = this._filmsModel.get();
     this._currentCardsCount += CardCount.STEP;
     const sortedFilms = getSortedFilms(films, this._sortView.getSortType(), previousCardsCount, this._currentCardsCount);
     this._renderFilms(sortedFilms, this._filmsListContainer);
@@ -93,7 +113,7 @@ export default class PagePresenter {
   _onDataChange(filmPresenter, newData) {
     this._api.updateFilm(newData.id, newData)
       .then((film) => {
-        this._filmsModel.updateFilms(film.id, film);
+        this._filmsModel.update(film.id, film);
         filmPresenter.rerender(film);
         this._renderTopRatedFilmList();
         this._renderMostCommentedFilmList();
@@ -107,7 +127,7 @@ export default class PagePresenter {
   _updateList(sortType) {
     this._currentCardsCount = CardCount.ON_START;
     this._removeFilms();
-    this._renderFilms(getSortedFilms(this._filmsModel.getFilms(), sortType, 0, this._currentCardsCount), this._filmsListContainer);
+    this._renderFilms(getSortedFilms(this._filmsModel.get(), sortType, 0, this._currentCardsCount), this._filmsListContainer);
     this._renderShowMoreButton();
     this._renderTopRatedFilmList();
     this._renderMostCommentedFilmList();
@@ -126,7 +146,7 @@ export default class PagePresenter {
   }
 
   _renderMostCommentedFilmList() {
-    this._currentMostCommentedFilms = getSortedFilms(this._filmsModel.getAllFilms(), SortType.COMMENTS, 0, CardCount.EXTRA);
+    this._currentMostCommentedFilms = getSortedFilms(this._filmsModel.getAll(), SortType.COMMENTS, 0, CardCount.EXTRA);
     if (this._currentMostCommentedFilms.some((film) => film.comments.length !== 0)) {
       const oldMostCommentedView = this._mostCommentedFilmsView;
       this._mostCommentedFilmsView = new MostCommentedFilmsView();
@@ -140,7 +160,7 @@ export default class PagePresenter {
   }
 
   _renderTopRatedFilmList() {
-    this._currentTopRatedFilms = getSortedFilms(this._filmsModel.getAllFilms(), SortType.RATING, 0, CardCount.EXTRA);
+    this._currentTopRatedFilms = getSortedFilms(this._filmsModel.getAll(), SortType.RATING, 0, CardCount.EXTRA);
     if (this._currentTopRatedFilms.some((film) => film.rating !== 0)) {
       const oldTopRatedView = this._topRatedFilmsView;
       this._topRatedFilmsView = new TopRatedFilmsListView();
@@ -173,25 +193,5 @@ export default class PagePresenter {
   _removeFilms() {
     this._currentFilmPresenters.forEach((filmPresenter) => filmPresenter.destroy());
     this._currentFilmPresenters = [];
-  }
-
-  hide() {
-    this._sortView.setDefaultSortType();
-    this._sortView.hide();
-    this._filmsView.hide();
-  }
-
-  show() {
-    this._sortView.show();
-    this._filmsView.show();
-  }
-
-  showPreloader() {
-    render(this._container, this._filmsView);
-    render(this._filmsView.getElement(), this._filmsLoadView);
-  }
-
-  removePreloader() {
-    remove(this._filmsLoadView);
   }
 }

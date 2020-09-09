@@ -32,7 +32,7 @@ export default class FilterPresenter {
   _createFilters() {
     return Object.values(FilterType).map((filterType) => ({
       name: filterType,
-      count: getFilteredFilms(this._filmsModel.getAllFilms(), filterType).length,
+      count: getFilteredFilms(this._filmsModel.getAll(), filterType).length,
       address: filterType.replace(/\s+/g, ``).trim().toLowerCase(),
       isChecked: filterType === this._activeFilterType,
     })

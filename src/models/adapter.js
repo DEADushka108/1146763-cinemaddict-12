@@ -1,4 +1,4 @@
-export default class Adapter {
+export default class AdapterModel {
   constructor(film) {
     this.id = film[`id`];
     this.comments = film[`comments`];
@@ -51,11 +51,11 @@ export default class Adapter {
     };
   }
 
-  static createFilm(data) {
-    return new Adapter(data);
+  static createFilm(film) {
+    return new AdapterModel(film);
   }
 
-  static createFilms(data) {
-    return data.map(Adapter.createFilm);
+  static createFilms(films) {
+    return films.map(AdapterModel.createFilm);
   }
 }

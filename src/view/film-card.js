@@ -8,15 +8,14 @@ const DescriptionLength = {
   MIN: 0,
 };
 
+const getCommentsLength = (comments) => comments ? comments.length : 0;
+
+const getActiveState = (isCheckedParameter) => isCheckedParameter ? `film-card__controls-item--active` : ``;
+
+const getDescription = (description) => description.length > DescriptionLength.MAX ? `${description.substring(DescriptionLength.MIN, DescriptionLength.REQUIRE)}...` : description;
+
 const createFilmCardTemplate = (film) => {
   const {title, poster, description, comments, rating, releaseDate, duration, genres, isInFavorites, isInWatchlist, isInHistory} = film;
-
-  const getCommentsLength = () => comments ? comments.length : 0;
-
-  const getActiveState = (isCheckedParameter) => isCheckedParameter ? `film-card__controls-item--active` : ``;
-
-  const getDescription = () => description.length > DescriptionLength.MAX ? `${description.substring(DescriptionLength.MIN, DescriptionLength.REQUIRE)}...` : description;
-
   return (
     `<article class="film-card">
       <h3 class="film-card__title">${title}</h3>
@@ -27,8 +26,8 @@ const createFilmCardTemplate = (film) => {
         <span class="film-card__genre">${genres[0]}</span>
       </p>
       <img src="./${poster}" alt="${title}" class="film-card__poster">
-      <p class="film-card__description">${getDescription()}</p>
-      <a class="film-card__comments">${getCommentsLength()} comments</a>
+      <p class="film-card__description">${getDescription(description)}</p>
+      <a class="film-card__comments">${getCommentsLength(comments)} comments</a>
       <form class="film-card__controls">
         <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${getActiveState(isInWatchlist)}">Add to watchlist</button>
         <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${getActiveState(isInHistory)}">Mark as watched</button>
@@ -38,7 +37,7 @@ const createFilmCardTemplate = (film) => {
   );
 };
 
-export default class FilmCard extends AbstractSmartView {
+export default class FilmCardView extends AbstractSmartView {
   constructor(film) {
     super();
     this._film = film;

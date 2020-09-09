@@ -1,6 +1,6 @@
 import AbstractView from './abstract-view.js';
 
-export default class MostCommentedFilms extends AbstractView {
+export default class MostCommentedFilmsView extends AbstractView {
   getTemplate() {
     return (
       `<section class="films-list--extra">

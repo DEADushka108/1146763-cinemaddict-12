@@ -11,7 +11,7 @@ const createSortTemplate = () => {
   );
 };
 
-export default class Sort extends AbstractView {
+export default class SortView extends AbstractView {
   constructor() {
     super();
     this._currentSortType = SortType.DEFAULT;

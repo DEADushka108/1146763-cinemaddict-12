@@ -7,10 +7,6 @@ export default class Observer {
     this._dataChangeHandlers.push(handler);
   }
 
-  removeHandler(handler) {
-    this._dataChangeHandlers = this._dataChangeHandlers.filter((existedHandler) => existedHandler !== handler);
-  }
-
   _callHandlers(handlers) {
     handlers.forEach((handler) => handler());
   }

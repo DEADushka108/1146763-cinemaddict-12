@@ -6,13 +6,10 @@ const createGenresTemplate = (genres) => {
   return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(`\n`);
 };
 
+const getPluralOrSingularWordGenre = (genres) => genres.length > 1 ? `Genres` : `Genre`;
+
 const createFilmDetailsTemplate = (film) => {
   const {title, altTitle, poster, description, rating, releaseDate, duration, genres, age, director, writers, actors, country} = film;
-
-  const genresTemplate = createGenresTemplate(genres);
-
-  const getPluralOrSingularWordGenre = () => genres.length > 1 ? `Genres` : `Genre`;
-
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
@@ -65,9 +62,9 @@ const createFilmDetailsTemplate = (film) => {
                   <td class="film-details__cell">${country}</td>
                 </tr>
                 <tr class="film-details__row">
-                  <td class="film-details__term">${getPluralOrSingularWordGenre()}</td>
+                  <td class="film-details__term">${getPluralOrSingularWordGenre(genres)}</td>
                   <td class="film-details__cell">
-                    ${genresTemplate}
+                    ${createGenresTemplate(genres)}
                 </tr>
               </table>
 
@@ -86,7 +83,7 @@ const createFilmDetailsTemplate = (film) => {
   );
 };
 
-export default class FilmDetails extends AbstractSmartView {
+export default class FilmDetailsView extends AbstractSmartView {
   constructor(film) {
     super();
 

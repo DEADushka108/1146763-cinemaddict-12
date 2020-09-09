@@ -1,7 +1,7 @@
 import AbstractView from './abstract-view.js';
 import {MenuItem, NAVIGATION_ACTIVE_CLASS} from '../const.js';
 
-export default class Menu extends AbstractView {
+export default class MenuView extends AbstractView {
 
   getTemplate() {
     return (

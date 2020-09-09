@@ -5,17 +5,21 @@ import FilterPresenter from './presenter/filter.js';
 import FooterStatisticView from './view/footer-statistic.js';
 import MenuView from './view/menu.js';
 import FilmsModel from './models/films.js';
-import PagePresenter from './presenter/movie-list.js';
+import PagePresenter from './presenter/page.js';
 import StatisticView from './view/statistic.js';
 import {render} from './utils/render.js';
 import UserPresenter from './presenter/user.js';
 import {MenuItem} from './const.js';
 
-const AUTHORIZATION = `Basic fvbdflmskncfvwlfm`;
+const AUTHORIZATION = `Basic 12312312;dfsd'f;g,s'fdl,v`;
 const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
-const STORE_PREFIX = `cinemaddict-localstorage`;
-const STORE_VER = `v1`;
-const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
+
+const StoreParameters = {
+  PREFIX: `cinemaddict-localstorage`,
+  VER: `v1`,
+};
+
+const STORE_NAME = `${StoreParameters.PREFIX}-${StoreParameters.VER}`;
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
@@ -62,10 +66,10 @@ menuView.setOnChangeHandler((menuItem) => {
 
 apiWithProvider.getFilms()
   .then((films) => {
-    filmsModel.setFilms(films);
+    filmsModel.set(films);
     new UserPresenter(siteHeaderElement, filmsModel).render();
     renderPage();
-    render(siteFooterElement, new FooterStatisticView(filmsModel.getAllFilms().length));
+    render(siteFooterElement, new FooterStatisticView(filmsModel.getAll().length));
   })
   .catch(() => {
     renderPage();

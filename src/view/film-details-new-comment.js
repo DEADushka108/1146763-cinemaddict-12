@@ -11,7 +11,6 @@ const EmojiAddress = {
 };
 
 const createEmojiInputTemplate = (emojis, checkedEmoji) => {
-
   return (emojis.map((emoji) =>
     `<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emoji}" value="${emoji}" ${emoji === checkedEmoji ? `checked` : ``}>
     <label class="film-details__emoji-label" for="emoji-${emoji}">
@@ -24,13 +23,12 @@ const createEmojiImageTemplate = (emoji) => {
   return `<img src="images/emoji/${emoji}.png" width="55" height="55" alt="emoji-${emoji}" data-emoji-type="${emoji ? emoji : `none`}">`;
 };
 
+const setImgTemplate = (emojiTemplate) => emojiTemplate ? emojiTemplate : ``;
+
 const createFilmDetailsCommentSectionTemplate = (comment, emojiTemplate, emoji) => {
-
-  const setImgTemplate = () => emojiTemplate ? emojiTemplate : ``;
-
   return (
     `<div class="film-details__new-comment">
-        <div for="add-emoji" class="film-details__add-emoji-label">${setImgTemplate()}</div>
+        <div for="add-emoji" class="film-details__add-emoji-label">${setImgTemplate(emojiTemplate)}</div>
         <label class="film-details__comment-label">
           <textarea class="film-details__comment-input"
           placeholder="Select reaction below and write comment here" name="comment">${comment ? comment : ``}</textarea>
@@ -42,7 +40,7 @@ const createFilmDetailsCommentSectionTemplate = (comment, emojiTemplate, emoji) 
   );
 };
 
-export default class FilmDetailsNewComment extends AbstractSmartView {
+export default class FilmDetailsNewCommentView extends AbstractSmartView {
   constructor() {
     super();
 
@@ -57,6 +55,25 @@ export default class FilmDetailsNewComment extends AbstractSmartView {
     this._newCommentSubmitHandler = this._newCommentSubmitHandler.bind(this);
 
     this._subscribeOnEvents();
+  }
+
+  getTemplate() {
+    return createFilmDetailsCommentSectionTemplate(this._comment, this._emojiTemplate, this._emoji);
+  }
+
+  setAddCommentHandler(callback) {
+    this._callback = callback;
+    document.addEventListener(`keydown`, this._newCommentSubmitHandler);
+  }
+
+  removeCommentHandler() {
+    document.removeEventListener(`keydown`, this._newCommentSubmitHandler);
+  }
+
+  shakeBlock() {
+    const textarea = this.getElement().querySelector(`.film-details__comment-input`);
+    textarea.disabled = false;
+    textarea.classList.add(SHAKE_CLASS);
   }
 
   reset() {
@@ -101,19 +118,6 @@ export default class FilmDetailsNewComment extends AbstractSmartView {
       });
   }
 
-  getTemplate() {
-    return createFilmDetailsCommentSectionTemplate(this._comment, this._emojiTemplate, this._emoji);
-  }
-
-  setAddCommentHandler(callback) {
-    this._callback = callback;
-    document.addEventListener(`keydown`, this._newCommentSubmitHandler);
-  }
-
-  removeCommentHandler() {
-    document.removeEventListener(`keydown`, this._newCommentSubmitHandler);
-  }
-
   _newCommentSubmitHandler(evt) {
     const isCtrlAndEnterPressed = evt.ctrlKey && evt.key === ENTER_KEY;
     const textarea = this.getElement().querySelector(`.film-details__comment-input`);
@@ -135,11 +139,5 @@ export default class FilmDetailsNewComment extends AbstractSmartView {
     } else if (isCtrlAndEnterPressed && (this._comment || this._emoji)) {
       this.shakeBlock();
     }
-  }
-
-  shakeBlock() {
-    const textarea = this.getElement().querySelector(`.film-details__comment-input`);
-    textarea.disabled = false;
-    textarea.classList.add(SHAKE_CLASS);
   }
 }

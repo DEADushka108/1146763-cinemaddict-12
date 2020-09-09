@@ -7,71 +7,34 @@ import {MINUTES_PER_HOUR} from '../const.js';
 
 const BAR_HEIGHT = 50;
 
+const CHART = {
+  TYPE: `horizontalBar`,
+  DATASETS: {
+    BACKGROUND_COLOR: `#ffe800`,
+    HOVER_BACKGROUND_COLOR: `#ffe800`,
+    ANCHOR: `start`,
+    BAR_THICKNESS: 24,
+  },
+  DATALABELS: {
+    FONT_SIZE: 20,
+    COLOR: `#ffffff`,
+    ANCHOR: `start`,
+    ALIGN: `start`,
+    OFFSET: 40,
+  },
+  TICKS: {
+    FONT_COLOR: `#ffffff`,
+    PADDING: 100,
+    FONT_SIZE: 20,
+  },
+};
+
 const TimePeriod = {
   ALL_TIME: `all-time`,
   TODAY: `today`,
   WEEK: `week`,
   MONTH: `month`,
   YEAR: `year`,
-};
-
-const renderChart = (statisticCtx, stats) => {
-  return new Chart(statisticCtx, {
-    plugins: [ChartDataLabels],
-    type: `horizontalBar`,
-    data: {
-      labels: stats.map((stat) => stat.genre),
-      datasets: [{
-        data: stats.map((stat) => stat.count),
-        backgroundColor: `#ffe800`,
-        hoverBackgroundColor: `#ffe800`,
-        anchor: `start`,
-        barThickness: 24,
-      }]
-    },
-    options: {
-      plugins: {
-        datalabels: {
-          font: {
-            size: 20
-          },
-          color: `#ffffff`,
-          anchor: `start`,
-          align: `start`,
-          offset: 40,
-        }
-      },
-      scales: {
-        yAxes: [{
-          ticks: {
-            fontColor: `#ffffff`,
-            padding: 100,
-            fontSize: 20
-          },
-          gridLines: {
-            display: false,
-            drawBorder: false
-          },
-        }],
-        xAxes: [{
-          ticks: {
-            display: false,
-            beginAtZero: true
-          },
-          gridLines: {
-            display: false,
-            drawBorder: false
-          },
-        }],
-      },
-      legend: {
-        display: false
-      },
-      tooltips: {
-        enabled: false
-      }
-    }
-  });
 };
 
 const getTimeRange = (filter) => {
@@ -218,7 +181,7 @@ const createStatisticsTemplate = (films, activeFilter) => {
   );
 };
 
-export default class Statistics extends AbstractSmartView {
+export default class StatisticsView extends AbstractSmartView {
   constructor(filmsModel) {
     super();
 
@@ -227,10 +190,9 @@ export default class Statistics extends AbstractSmartView {
     this._activeFilter = TimePeriod.ALL_TIME;
 
     this._filmsChart = null;
-    this._statisticCtx = null;
 
     this._setFilterClickHandler();
-    this._renderChart();
+    this._renderChartBlock();
   }
 
   getTemplate() {
@@ -252,7 +214,7 @@ export default class Statistics extends AbstractSmartView {
   rerender() {
     super.rerender();
 
-    this._renderChart();
+    this._renderChartBlock();
   }
 
   _setFilterClickHandler() {
@@ -263,7 +225,7 @@ export default class Statistics extends AbstractSmartView {
     });
   }
 
-  _renderChart() {
+  _renderChartBlock() {
     const statisticCtx = this.getElement().querySelector(`.statistic__chart`);
 
     this._resetCharts();
@@ -272,7 +234,66 @@ export default class Statistics extends AbstractSmartView {
 
     const genresStats = sortByGenre(filteredFilms);
 
-    this._statisticCtx = renderChart(statisticCtx, genresStats);
+    this._renderChart(statisticCtx, genresStats);
+  }
+
+  _renderChart(statisticCtx, stats) {
+    return new Chart(statisticCtx, {
+      plugins: [ChartDataLabels],
+      type: CHART.TYPE,
+      data: {
+        labels: stats.map((stat) => stat.genre),
+        datasets: [{
+          data: stats.map((stat) => stat.count),
+          backgroundColor: CHART.DATASETS.BACKGROUND_COLOR,
+          hoverBackgroundColor: CHART.DATASETS.HOVER_BACKGROUND_COLOR,
+          anchor: CHART.DATASETS.ANCHOR,
+          barThickness: CHART.DATASETS.BAR_THICKNESS,
+        }]
+      },
+      options: {
+        plugins: {
+          datalabels: {
+            font: {
+              size: CHART.DATALABELS.FONT_SIZE
+            },
+            color: CHART.DATALABELS.COLOR,
+            anchor: CHART.DATALABELS.ANCHOR,
+            align: CHART.DATALABELS.ALIGN,
+            offset: CHART.DATALABELS.OFFSET,
+          }
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              fontColor: CHART.TICKS.FONT_COLOR,
+              padding: CHART.TICKS.PADDING,
+              fontSize: CHART.TICKS.FONT_SIZE,
+            },
+            gridLines: {
+              display: false,
+              drawBorder: false
+            },
+          }],
+          xAxes: [{
+            ticks: {
+              display: false,
+              beginAtZero: true
+            },
+            gridLines: {
+              display: false,
+              drawBorder: false
+            },
+          }],
+        },
+        legend: {
+          display: false
+        },
+        tooltips: {
+          enabled: false
+        }
+      }
+    });
   }
 
   _resetCharts() {

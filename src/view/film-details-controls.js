@@ -1,9 +1,8 @@
 import AbstractSmartView from "./abstract-smart-view.js";
 
+const getCheckedState = (isChecked) => isChecked ? `checked` : ``;
+
 const createFilmDetailsTemplate = ({isInWatchlist, isInHistory, isInFavorites}) => {
-
-  const getCheckedState = (isChecked) => isChecked ? `checked` : ``;
-
   return (
     `<section class="film-details__controls">
       <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${getCheckedState(isInWatchlist)}>
@@ -18,7 +17,7 @@ const createFilmDetailsTemplate = ({isInWatchlist, isInHistory, isInFavorites}) 
   );
 };
 
-export default class FilmDetailsControls extends AbstractSmartView {
+export default class FilmDetailsControlsView extends AbstractSmartView {
   constructor(controls) {
     super();
 

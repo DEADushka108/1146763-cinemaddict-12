@@ -46,6 +46,22 @@ export default class FilmPresenter {
     this._addComment = this._addComment.bind(this);
   }
 
+  setDefaultView() {
+    if (this._mode !== Mode.CLOSED) {
+      this._closePopup();
+    }
+  }
+
+  render(film) {
+    this._renderFilmCard(film);
+    this._renderFilmDetails(film);
+  }
+
+  rerender(film) {
+    this._renderFilmCard(film);
+    this._renderFilmDetailsControls(film);
+  }
+
   destroy() {
     remove(this._filmCardView);
     remove(this._filmDetailsView);
@@ -163,16 +179,6 @@ export default class FilmPresenter {
     });
   }
 
-  render(film) {
-    this._renderFilmCard(film);
-    this._renderFilmDetails(film);
-  }
-
-  rerender(film) {
-    this._renderFilmCard(film);
-    this._renderFilmDetailsControls(film);
-  }
-
   _renderComments() {
     if (this._filmDetailsCommentsView) {
       remove(this._filmDetailsCommentsView);
@@ -180,8 +186,8 @@ export default class FilmPresenter {
 
     this._api.getComment(this._film.id)
     .then((comments) => {
-      this._commentsModel.setComments(comments);
-      this._comments = this._commentsModel.getComments();
+      this._commentsModel.set(comments);
+      this._comments = this._commentsModel.get();
       this._filmDetailsCommentsView = new FilmDetailsCommentsView(this._comments);
 
       appendChild(this._filmDetailsView.getElement().querySelector(`.form-details__bottom-container`), this._filmDetailsCommentsView);
@@ -195,9 +201,8 @@ export default class FilmPresenter {
   _addComment(comment) {
     if (this._mode === Mode.OPEN) {
       this._api.addComment(this._film.id, JSON.stringify(comment))
-      .then((res) => res.json())
       .then((response) => {
-        this._commentsModel.setComments(response.comments);
+        this._commentsModel.set(response.comments);
         this._resetTextarea();
         this._renderComments();
       })
@@ -210,18 +215,12 @@ export default class FilmPresenter {
   _deleteComment(commentId) {
     this._api.deleteComment(commentId)
         .then(() => {
-          this._commentsModel.removeComment(commentId);
+          this._commentsModel.remove(commentId);
           this._renderComments();
         })
         .catch(() => {
           this._filmDetailsCommentsView.shakeComment(commentId);
         });
-  }
-
-  setDefaultView() {
-    if (this._mode !== Mode.CLOSED) {
-      this._closePopup();
-    }
   }
 
   _resetTextarea() {
