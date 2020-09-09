@@ -59,7 +59,7 @@ export default class FilmDetailsCommentsView extends AbstractSmartView {
         return;
       }
       evt.preventDefault();
-      this._removeCommentShakeClass(evt.target.closest(`.film-details__comment`));
+      this._disableComment(evt.target.closest(`.film-details__comment`));
       this._disableDeleteButton(evt.target);
       callback(evt.target.dataset.id);
     });
@@ -70,11 +70,11 @@ export default class FilmDetailsCommentsView extends AbstractSmartView {
     const comment = this.getElement().querySelectorAll(`.film-details__comment`)[index];
     const deleteButton = comment.querySelector(`.film-details__comment-delete`);
 
-    this._addCommentShakeClass(comment);
+    this._activateComment(comment);
     this._activateDeleteButton(deleteButton);
   }
 
-  _removeCommentShakeClass(comment) {
+  _disableComment(comment) {
     if (comment.classList.contains(SHAKE_CLASS)) {
       comment.classList.remove(SHAKE_CLASS);
     }
@@ -91,7 +91,7 @@ export default class FilmDetailsCommentsView extends AbstractSmartView {
     button.textContent = ButtonText.DELETE;
   }
 
-  _addCommentShakeClass(comment) {
+  _activateComment(comment) {
     comment.disabled = false;
     comment.classList.add(SHAKE_CLASS);
   }
